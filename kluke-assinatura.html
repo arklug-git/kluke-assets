@@ -123,6 +123,27 @@
     user-select: all; -webkit-user-select: all;
   }
 
+  .html-code-wrap {
+    margin-top: 20px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .html-code-label {
+    background: var(--dark); color: #fff;
+    font-size: 11px; font-weight: 600; letter-spacing: 1px;
+    text-transform: uppercase; padding: 10px 14px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .html-textarea {
+    width: 100%; height: 160px;
+    padding: 14px; border: none; outline: none; resize: vertical;
+    font-family: 'DM Mono', 'Courier New', monospace; font-size: 11px;
+    color: #333; background: #f9f9f7; line-height: 1.5;
+    cursor: text;
+  }
+  .html-textarea:focus { background: #fff; }
+
   .btn-copy {
     margin-top: 20px; width: 100%; padding: 13px;
     background: var(--dark); color: #fff; border: none; border-radius: 7px;
@@ -228,19 +249,12 @@
 
     </div>
 
-    <button class="btn-copy" id="btn-copy" onclick="copiarAssinatura()">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-        <rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
-      </svg>
-      Copiar assinatura
-    </button>
-
-    <div class="copy-area-wrap" id="copy-area-wrap">
-      <div class="copy-area-label">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-        Tudo selecionado — pressione Ctrl+C (ou ⌘C no Mac)
+    <div class="html-code-wrap">
+      <div class="html-code-label">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        Código HTML — selecione tudo (Ctrl+A) e copie (Ctrl+C), depois cole no Thunderbird/Gmail
       </div>
-      <div class="copy-area" id="copy-area" contenteditable="true" readonly></div>
+      <textarea id="html-output" class="html-textarea" readonly onclick="this.select()"></textarea>
     </div>
   </div>
 
@@ -290,54 +304,10 @@
     const html  = buildSignatureHTML(nome, email, dept);
     document.getElementById('sig-desktop').innerHTML = html;
     document.getElementById('sig-mobile').innerHTML  = html;
+    document.getElementById('html-output').value = html;
   }
 
-  async function copiarAssinatura() {
-    const nome  = document.getElementById('nome').value.trim();
-    const email = document.getElementById('email').value.trim();
-    const dept  = document.getElementById('dept').value;
-    const html  = buildSignatureHTML(nome, email, dept);
-    const btn   = document.getElementById('btn-copy');
-    const wrap  = document.getElementById('copy-area-wrap');
-    const area  = document.getElementById('copy-area');
 
-    // Sempre mostra a área de cópia selecionada — método mais confiável
-    area.innerHTML = html;
-    wrap.classList.add('visible');
-    wrap.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-
-    // Seleciona tudo na área
-    const range = document.createRange();
-    range.selectNodeContents(area);
-    const sel = window.getSelection();
-    sel.removeAllRanges();
-    sel.addRange(range);
-    area.focus();
-
-    // Tenta copiar automaticamente
-    let copiou = false;
-    try {
-      const blob = new Blob([html], { type: 'text/html' });
-      await navigator.clipboard.write([new ClipboardItem({ 'text/html': blob })]);
-      copiou = true;
-    } catch(e1) {
-      try {
-        copiou = document.execCommand('copy');
-      } catch(e2) {}
-    }
-
-    if (copiou) {
-      sel.removeAllRanges();
-      wrap.classList.remove('visible');
-      btn.classList.add('copied');
-      btn.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Copiado!`;
-      setTimeout(() => {
-        btn.classList.remove('copied');
-        btn.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copiar assinatura`;
-      }, 2500);
-    }
-    // Se não copiou automaticamente, a área já está visível e selecionada — só Ctrl+C
-  }
 
   atualizar();
 </script>
