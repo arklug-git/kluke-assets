@@ -252,7 +252,8 @@
     <div class="html-code-wrap">
       <div class="html-code-label">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-        Código HTML — selecione tudo (Ctrl+A) e copie (Ctrl+C), depois cole no Thunderbird/Gmail
+        Código HTML — cole no Thunderbird/Gmail
+        <button onclick="copiarCodigo()" id="btn-copy" style="margin-left:auto;background:#3fc4c4;color:#fff;border:none;border-radius:5px;padding:4px 14px;font-family:DM Sans,sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;cursor:pointer;text-transform:uppercase;">Copiar</button>
       </div>
       <textarea id="html-output" class="html-textarea" readonly onclick="this.select()"></textarea>
     </div>
@@ -295,6 +296,25 @@
     </td>
   </tr>
 </table>`;
+  }
+
+  function copiarCodigo() {
+    const btn = document.getElementById('btn-copy');
+    const texto = document.getElementById('html-output').value;
+    navigator.clipboard.writeText(texto).then(() => {
+      btn.textContent = '✓ Copiado!';
+      btn.style.background = '#1a1a1a';
+      setTimeout(() => {
+        btn.textContent = 'Copiar';
+        btn.style.background = '#3fc4c4';
+      }, 2500);
+    }).catch(() => {
+      // Fallback: seleciona o textarea para Ctrl+C manual
+      const ta = document.getElementById('html-output');
+      ta.select();
+      btn.textContent = 'Ctrl+C agora';
+      setTimeout(() => { btn.textContent = 'Copiar'; }, 2500);
+    });
   }
 
   function atualizar() {
