@@ -301,31 +301,33 @@
     const wrap  = document.getElementById('copy-area-wrap');
     const area  = document.getElementById('copy-area');
 
-    let copiou = false;
+    // Sempre mostra a área de cópia selecionada — método mais confiável
+    area.innerHTML = html;
+    wrap.classList.add('visible');
+    wrap.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
-    // Método 1: ClipboardItem HTML rico
+    // Seleciona tudo na área
+    const range = document.createRange();
+    range.selectNodeContents(area);
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+    area.focus();
+
+    // Tenta copiar automaticamente
+    let copiou = false;
     try {
       const blob = new Blob([html], { type: 'text/html' });
       await navigator.clipboard.write([new ClipboardItem({ 'text/html': blob })]);
       copiou = true;
-    } catch(e1) {}
-
-    // Método 2: execCommand via contenteditable visível
-    if (!copiou) {
+    } catch(e1) {
       try {
-        area.innerHTML = html;
-        wrap.classList.add('visible');
-        const range = document.createRange();
-        range.selectNodeContents(area);
-        const sel = window.getSelection();
-        sel.removeAllRanges();
-        sel.addRange(range);
         copiou = document.execCommand('copy');
       } catch(e2) {}
     }
 
     if (copiou) {
-      // Se copiou via método 1 ou 2 automaticamente
+      sel.removeAllRanges();
       wrap.classList.remove('visible');
       btn.classList.add('copied');
       btn.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Copiado!`;
@@ -333,17 +335,8 @@
         btn.classList.remove('copied');
         btn.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copiar assinatura`;
       }, 2500);
-    } else {
-      // Último recurso: exibe área selecionada para Ctrl+C manual
-      area.innerHTML = html;
-      wrap.classList.add('visible');
-      const range = document.createRange();
-      range.selectNodeContents(area);
-      const sel = window.getSelection();
-      sel.removeAllRanges();
-      sel.addRange(range);
-      area.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
+    // Se não copiou automaticamente, a área já está visível e selecionada — só Ctrl+C
   }
 
   atualizar();
