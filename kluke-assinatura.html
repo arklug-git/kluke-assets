@@ -318,7 +318,7 @@
   }
 
   function atualizar() {
-    const nome  = document.getElementById('nome').value.trim();
+    const nome  = document.getElementById('nome').value.trim().replace(/\w\S*/g, t => t.charAt(0).toUpperCase() + t.substr(1).toLowerCase());
     const email = document.getElementById('email').value.trim();
     const dept  = document.getElementById('dept').value;
     const html  = buildSignatureHTML(nome, email, dept);
