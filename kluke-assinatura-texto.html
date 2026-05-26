@@ -276,9 +276,9 @@
     <td style="padding:16px;background-color:#ffffff !important;">
       <table cellpadding="0" cellspacing="0" border="0" width="100%" style="font-family:Arial,Helvetica,sans-serif;width:100%;">
         <tr>
-          <td style="padding-bottom:10px;padding-left:0;background-color:#ffffff !important;">
+          <td style="padding-bottom:6px;padding-left:0;background-color:#ffffff !important;">
             <a href="https://www.kluke.com.br" style="display:block;border:0;outline:none;text-decoration:none;">
-              <span style="font-family:Arial Black,Arial,Helvetica,sans-serif;font-size:26px;font-weight:900;color:#1a1a1a;letter-spacing:2px;text-decoration:none;">KLUKE</span><span style="font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#777777;letter-spacing:3px;text-decoration:none;"> Contabilidade</span>
+              <span style="font-family:Arial Black,Arial,Helvetica,sans-serif;font-size:30px;font-weight:900;color:#1a1a1a;letter-spacing:2px;text-decoration:none;">KLUKE</span><span style="font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#777777;letter-spacing:3px;text-decoration:none;"> Contabilidade</span>
             </a>
           </td>
         </tr>
@@ -319,7 +319,7 @@
   }
 
   function atualizar() {
-    const nome  = document.getElementById('nome').value.trim();
+    const nome  = document.getElementById('nome').value.trim().replace(/\w\S*/g, t => t.charAt(0).toUpperCase() + t.substr(1).toLowerCase());
     const email = document.getElementById('email').value.trim();
     const dept  = document.getElementById('dept').value;
     const html  = buildSignatureHTML(nome, email, dept);
