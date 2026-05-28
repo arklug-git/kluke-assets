@@ -2,6 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
+<meta name="color-scheme" content="light only">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Gerador de Assinatura — Kluke Contabilidade</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -18,14 +19,7 @@
     padding: 40px 20px 60px;
   }
   header { text-align: center; margin-bottom: 40px; }
-  .logo-wrapper { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 8px; }
-  .logo-stripes { display: flex; flex-direction: column; gap: 4px; }
-  .stripe { height: 5px; border-radius: 2px; background: var(--teal); }
-  .stripe:nth-child(1) { width: 22px; }
-  .stripe:nth-child(2) { width: 16px; }
-  .stripe:nth-child(3) { width: 22px; }
-  .logo-text { font-size: 28px; font-weight: 700; letter-spacing: 3px; color: var(--dark); text-transform: uppercase; }
-  .logo-sub { font-size: 11px; letter-spacing: 5px; color: var(--muted); text-transform: uppercase; }
+  .logo-wrapper { display: flex; align-items: center; justify-content: center; gap: 0; margin-bottom: 8px; }
   h1 { font-size: 13px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-top: 28px; }
 
   .container { width: 100%; max-width: 860px; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
@@ -167,15 +161,12 @@
 <body>
 
 <header>
-  <div class="logo-wrapper">
-    <div class="logo-stripes">
-      <div class="stripe"></div><div class="stripe"></div><div class="stripe"></div>
-    </div>
-    <div class="logo-text">KLUKE</div>
+  <div class="logo-wrapper" style="display:flex;align-items:flex-end;justify-content:center;gap:8px;">
+    <span style="font-family:'Arial Black',Arial,Helvetica,sans-serif;font-size:36px;font-weight:900;color:#1a1a1a;letter-spacing:2px;line-height:1;">KLUKE</span><span style="font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#888;letter-spacing:3px;line-height:1;padding-bottom:4px;">Contabilidade</span>
   </div>
-  <div class="logo-sub">Contabilidade</div>
+  <div style="width:100%;max-width:280px;border-bottom:1px solid #e0e0dc;margin:10px auto 0;"></div>
   <h1>Gerador de Assinatura de E-mail</h1>
-  <p style="font-size:10px;color:#bbb;letter-spacing:1px;margin-top:6px;">v1.1</p>
+  <p style="font-size:10px;color:#bbb;letter-spacing:1px;margin-top:6px;">v1.9</p>
 </header>
 
 <div class="container">
@@ -195,10 +186,10 @@
       <div class="select-wrap">
         <select id="dept" onchange="atualizar()">
           <option value="">— Sem departamento —</option>
-          <option value="Departamento Fiscal">Departamento Fiscal</option>
-          <option value="Departamento Contábil">Departamento Contábil</option>
-          <option value="Departamento Pessoal">Departamento Pessoal</option>
           <option value="Administrativo">Administrativo</option>
+          <option value="Departamento Contábil">Departamento Contábil</option>
+          <option value="Departamento Fiscal">Departamento Fiscal</option>
+          <option value="Departamento Pessoal">Departamento Pessoal</option>
         </select>
       </div>
     </div>
@@ -255,7 +246,7 @@
       <div class="html-code-label">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
         Código HTML — cole no Thunderbird/Gmail
-        <button onclick="copiarCodigo()" id="btn-copy" style="margin-left:auto;background:#3fc4c4;color:#fff;border:none;border-radius:5px;padding:4px 14px;font-family:DM Sans,sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;cursor:pointer;text-transform:uppercase;">Copiar</button>
+        <button onclick="copiarCodigo()" id="btn-copy" style="margin-left:auto;background:#3fc4c4;color:#fff;border:none;border-radius:5px;padding:4px 14px;font-family:DM Sans,sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;cursor:pointer;text-transform:uppercase;">Copiar assinatura</button>
       </div>
       <textarea id="html-output" class="html-textarea" readonly onclick="this.select()"></textarea>
     </div>
@@ -270,27 +261,30 @@
     const nomeDisplay = nome || 'Seu Nome';
     const emailDisplay = email || '';
     const nomeHTML = emailDisplay
-      ? `<a href="mailto:${emailDisplay}" style="font-family:Arial,Helvetica,sans-serif;font-size:15px;font-weight:700;color:#1a1a1a;text-decoration:none;">${nomeDisplay}</a>`
-      : `<span style="font-family:Arial,Helvetica,sans-serif;font-size:15px;font-weight:700;color:#1a1a1a;">${nomeDisplay}</span>`;
+      ? `<a href="mailto:${emailDisplay}" style="font-family:Arial,Helvetica,sans-serif;font-size:13px;font-weight:600;color:#1a1a1a !important;text-decoration:none;">${nomeDisplay}</a>`
+      : `<span style="font-family:Arial,Helvetica,sans-serif;font-size:13px;font-weight:600;color:#1a1a1a !important;">${nomeDisplay}</span>`;
 
-    return `<table cellpadding="0" cellspacing="0" border="0" width="100%" style="font-family:Arial,Helvetica,sans-serif;background-color:#ffffff !important;width:100%;border-top:3px solid #3fc4c4;">
+    return `<table cellpadding="0" cellspacing="0" border="0" width="100%" style="font-family:Arial,Helvetica,sans-serif;background-color:#ffffff !important;width:100%;border-top:2px solid #3fc4c4;">
   <tr>
     <td style="padding:16px;background-color:#ffffff !important;">
       <table cellpadding="0" cellspacing="0" border="0" width="100%" style="font-family:Arial,Helvetica,sans-serif;width:100%;">
         <tr>
           <td style="padding-bottom:6px;padding-left:0;background-color:#ffffff !important;">
             <a href="https://www.kluke.com.br" style="display:block;border:0;outline:none;text-decoration:none;">
-              <span style="font-family:Arial Black,Arial,Helvetica,sans-serif;font-size:30px;font-weight:900;color:#1a1a1a;letter-spacing:2px;text-decoration:none;">KLUKE</span><span style="font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#777777;letter-spacing:3px;text-decoration:none;"> Contabilidade</span>
+              <span style="font-family:Arial Black,Arial,Helvetica,sans-serif;font-size:30px;font-weight:900;color:#1a1a1a !important;letter-spacing:2px;text-decoration:none;">KLUKE</span><span style="font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#777777 !important;letter-spacing:3px;text-decoration:none;"> Contabilidade</span>
             </a>
           </td>
         </tr>
         <tr>
+          <td style="padding:8px 0 0 0;background-color:#ffffff !important;"><div style="border-top:1px solid #e0e0dc;font-size:0;line-height:0;">&nbsp;</div></td>
+        </tr>
+        <tr>
           <td style="padding-top:10px;padding-left:0;background-color:#ffffff !important;">
             <p style="margin:0 0 2px 0;background-color:#ffffff !important;">${nomeHTML}</p>
-            <p style="margin:0 0 10px 0;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#3fc4c4;text-transform:uppercase;letter-spacing:1.5px;font-weight:700;">${dept}</p>
-            <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#555555;line-height:1.9;background-color:#ffffff !important;">
-              <span style="font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#555555;">Telefones: </span><a href="tel:+554733820601" style="font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#555555;text-decoration:none;">(47) 3382-0601</a><span style="font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#555555;"> / </span><a href="tel:+554733820767" style="font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#555555;text-decoration:none;">(47) 3382-0767</a><br>
-              <a href="https://wa.me/5547984321322" style="font-family:Arial,Helvetica,sans-serif;font-size:12px;color:#25d366;text-decoration:none;font-weight:700;">WhatsApp: (47) 98432-1322</a><br>
+            <p style="margin:0 0 10px 0;font-family:Arial,Helvetica,sans-serif;font-size:9px;color:#3fc4c4 !important;text-transform:uppercase;letter-spacing:1px;font-weight:700;">${dept}</p>
+            <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#555555 !important;line-height:1.6;background-color:#ffffff !important;">
+              <a href="tel:+554733820601" style="font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#555555 !important;text-decoration:none;">(47) 3382-0601</a><span style="font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#555555 !important;"> / </span><a href="tel:+554733820767" style="font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#555555 !important;text-decoration:none;">(47) 3382-0767</a><br>
+              <a href="https://wa.me/5547984321322" style="font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#25d366 !important;text-decoration:none;font-weight:700;">WhatsApp: <strong>(47) 98432-1322</strong></a><br>
 
             </p>
           </td>
