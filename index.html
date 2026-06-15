@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Documentos para IR 2025 — Kluke Serviços Contábeis</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0d1f3c;
+    --navy-mid: #162d52;
+    --gold: #c8a84b;
+    --gold-light: #e8c97a;
+    --cream: #f8f4ee;
+    --text: #2a2a2a;
+    --muted: #6b6b6b;
+    --line: #ddd5c4;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--cream);
+    color: var(--text);
+    font-family: 'Source Sans 3', sans-serif;
+    font-weight: 400;
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--navy);
+    padding: 40px 24px 32px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  header::before {
+    content: '';
+    position: absolute;
+    top: -60px; left: -60px;
+    width: 220px; height: 220px;
+    border: 1px solid rgba(200,168,75,0.15);
+    border-radius: 50%;
+  }
+  header::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; right: -40px;
+    width: 280px; height: 280px;
+    border: 1px solid rgba(200,168,75,0.1);
+    border-radius: 50%;
+  }
+
+  .logo-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .firm-name {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(22px, 5vw, 30px);
+    color: #fff;
+    letter-spacing: 0.02em;
+    line-height: 1.2;
+  }
+
+  .firm-sub {
+    font-size: 12px;
+    font-weight: 300;
+    color: var(--gold);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+
+  .divider-gold {
+    width: 48px;
+    height: 2px;
+    background: var(--gold);
+    margin: 18px auto;
+  }
+
+  .header-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(18px, 4vw, 24px);
+    color: var(--gold-light);
+    line-height: 1.3;
+  }
+
+  .header-year {
+    font-size: 13px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-top: 6px;
+  }
+
+  /* MAIN */
+  main {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 32px 20px 48px;
+  }
+
+  .prazo-box {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #fff7e6;
+    border: 1px solid var(--gold);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-bottom: 14px;
+    font-size: 14px;
+    color: #7a5500;
+    line-height: 1.5;
+  }
+
+  .prazo-box strong {
+    color: #5c3d00;
+  }
+
+  .prazo-icon {
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+
+  .intro-box {
+    background: white;
+    border-left: 3px solid var(--gold);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    margin-bottom: 28px;
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .intro-box strong {
+    color: var(--navy);
+  }
+
+  /* CHECKLIST */
+  .checklist {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .checklist li {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    background: white;
+    padding: 16px 18px;
+    border-radius: 6px;
+    font-size: 15px;
+    line-height: 1.55;
+    transition: box-shadow 0.15s;
+    border: 1px solid transparent;
+  }
+
+  .checklist li:hover {
+    box-shadow: 0 2px 12px rgba(13,31,60,0.08);
+    border-color: var(--line);
+  }
+
+  .item-num {
+    flex-shrink: 0;
+    width: 26px;
+    height: 26px;
+    background: var(--navy);
+    color: var(--gold);
+    font-family: 'Playfair Display', serif;
+    font-size: 13px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1px;
+  }
+
+  .item-text {
+    flex: 1;
+    color: var(--text);
+  }
+
+  /* OBS BOX */
+  .obs-box {
+    margin-top: 24px;
+    background: var(--navy);
+    color: rgba(255,255,255,0.85);
+    border-radius: 8px;
+    padding: 20px 22px;
+    font-size: 14px;
+    line-height: 1.65;
+  }
+
+  .obs-box .obs-label {
+    font-family: 'Playfair Display', serif;
+    color: var(--gold);
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  /* CONTATO */
+  .contact-section {
+    margin-top: 32px;
+    text-align: center;
+  }
+
+  .contact-section h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    color: var(--navy);
+    margin-bottom: 4px;
+  }
+
+  .contact-sub {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 20px;
+    letter-spacing: 0.04em;
+  }
+
+  .contact-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+  }
+
+  .contact-card {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 14px 20px;
+    min-width: 180px;
+    text-align: left;
+  }
+
+  .contact-card .c-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--gold);
+    font-weight: 600;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .contact-card .c-name {
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--navy);
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .contact-card a {
+    display: block;
+    font-size: 13.5px;
+    color: var(--muted);
+    text-decoration: none;
+    line-height: 1.7;
+  }
+
+  .contact-card a:hover {
+    color: var(--navy);
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--navy);
+    text-align: center;
+    padding: 20px;
+    font-size: 12px;
+    color: rgba(255,255,255,0.3);
+    letter-spacing: 0.05em;
+  }
+  /* BOTÃO FLUTUANTE */
+  .btn-print {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    background: var(--navy);
+    color: var(--gold);
+    border: 1px solid var(--gold);
+    border-radius: 50px;
+    padding: 12px 22px;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 16px rgba(13,31,60,0.25);
+    transition: background 0.2s, color 0.2s;
+    z-index: 999;
+  }
+  .btn-print:hover { background: var(--gold); color: var(--navy); }
+  #print-area { display: none; }
+  @media print {
+    body > *:not(#print-area) { display: none !important; }
+    #print-area { display: block !important; font-family: Arial, sans-serif; font-size: 12pt; color: #000; padding: 20px; }
+    #print-area h1 { font-size: 16pt; text-align: center; margin-bottom: 4px; }
+    #print-area h2 { font-size: 13pt; text-align: center; font-weight: normal; margin-bottom: 16px; }
+    #print-area hr { border: none; border-top: 1px solid #000; margin-bottom: 16px; }
+    #print-area ol { padding-left: 20px; line-height: 1.9; }
+    #print-area .print-obs { margin-top: 16px; font-size: 10pt; border-top: 1px solid #999; padding-top: 10px; color: #333; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-area">
+    <a href="https://www.kluke.com.br" target="_blank">
+      <img src="https://cdn.sonicadigital.com.br/klukecontab/storage/settings/1/original-5b2bf023264c2-K.png"
+           alt="Kluke" style="height:64px;margin-bottom:14px;filter:brightness(0) invert(1);">
+    </a>
+    <div class="divider-gold"></div>
+    <div class="header-title">Documentos para o<br>Imposto de Renda</div>
+    <div class="header-year">Ano-base 2025</div>
+  </div>
+</header>
+
+<main>
+
+  <div class="prazo-box">
+    <span class="prazo-icon">⏰</span>
+    <span>Prazo final para entrega da declaração: <strong>29 de maio de 2025</strong>. Não deixe para a última hora!</span>
+  </div>
+
+  <div class="intro-box">
+    Para agilizar seu atendimento, reúna com antecedência todos os documentos listados abaixo.
+    Itens já declarados em anos anteriores com dados completos podem ser dispensados —
+    confira a <strong>observação importante</strong> ao final da lista.
+  </div>
+
+  <ol class="checklist">
+    <li>
+      <span class="item-num">1</span>
+      <span class="item-text">Senha <strong>Gov.br</strong> nível <strong>prata ou ouro</strong></span>
+    </li>
+    <li>
+      <span class="item-num">2</span>
+      <span class="item-text">Todos os <strong>comprovantes de rendimentos de 2025</strong> — inclusive de dependentes: salário, pró-labore, aposentadoria, pensão, aluguel, benefícios INSS, rendimentos de aplicações etc.</span>
+    </li>
+    <li>
+      <span class="item-num">3</span>
+      <span class="item-text">Comprovante de rendimentos em caso de <strong>saque ou pagamento de verbas judiciais</strong> — indenizações por diferenças de aposentadoria e questões trabalhistas</span>
+    </li>
+    <li>
+      <span class="item-num">4</span>
+      <span class="item-text"><strong>Carteira de identidade, CPF e título de eleitor</strong></span>
+    </li>
+    <li>
+      <span class="item-num">5</span>
+      <span class="item-text"><strong>Declaração de IR do ano anterior</strong> — somente se a declaração não foi realizada pelo Kluke</span>
+    </li>
+    <li>
+      <span class="item-num">6</span>
+      <span class="item-text"><strong>Escrituras e carnê de IPTU</strong> de imóveis — dispensado quando já declarado anteriormente com todos os dados da escritura</span>
+    </li>
+    <li>
+      <span class="item-num">7</span>
+      <span class="item-text">Para <strong>imóveis em construção</strong>: trazer o <strong>alvará de construção</strong></span>
+    </li>
+    <li>
+      <span class="item-num">8</span>
+      <span class="item-text"><strong>Escritura de inventário e partilha</strong> (se houver)</span>
+    </li>
+    <li>
+      <span class="item-num">9</span>
+      <span class="item-text"><strong>Escritura de doação de imóveis</strong> (se houver)</span>
+    </li>
+    <li>
+      <span class="item-num">10</span>
+      <span class="item-text"><strong>Documento do veículo</strong> — se financiado: carnê e contrato de financiamento</span>
+    </li>
+    <li>
+      <span class="item-num">11</span>
+      <span class="item-text"><strong>Contrato e carnê de consórcio</strong> (se houver)</span>
+    </li>
+    <li>
+      <span class="item-num">12</span>
+      <span class="item-text"><strong>Informe de rendimentos</strong> para IR de conta corrente, aplicações e caderneta de poupança em <strong>31/12/2025</strong></span>
+    </li>
+    <li>
+      <span class="item-num">13</span>
+      <span class="item-text"><strong>Extrato de previdência privada</strong> em 31/12/2025</span>
+    </li>
+    <li>
+      <span class="item-num">14</span>
+      <span class="item-text"><strong>Nome, CPF e data de nascimento dos dependentes</strong> — verificar se tiveram rendimentos em 2025</span>
+    </li>
+    <li>
+      <span class="item-num">15</span>
+      <span class="item-text"><strong>Recibos e notas de despesas médicas</strong> — médicos, dentistas, psicólogos, fisioterapeutas, hospitais, planos de saúde (UNIMED e demais) e <strong>comprovantes de mensalidade escolar</strong></span>
+    </li>
+    <li>
+      <span class="item-num">16</span>
+      <span class="item-text">Verificar se houve <strong>ganho de capital</strong> na venda de imóveis ou veículos</span>
+    </li>
+    <li>
+      <span class="item-num">17</span>
+      <span class="item-text"><strong>Extrato consolidado da B3</strong> — obrigatório para quem possui ações, fundos imobiliários (FIIs), ETFs ou outros ativos na bolsa de valores</span>
+    </li>
+    <li>
+      <span class="item-num">18</span>
+      <span class="item-text">Informar se realizou <strong>operações de compra e venda na Bolsa de Valores</strong></span>
+    </li>
+    <li>
+      <span class="item-num">19</span>
+      <span class="item-text"><strong>Nome e CPF do cônjuge</strong></span>
+    </li>
+    <li>
+      <span class="item-num">20</span>
+      <span class="item-text"><strong>Dados bancários</strong> para recebimento da restituição: banco, agência e conta — ou <strong>chave PIX (CPF)</strong></span>
+    </li>
+  </ol>
+
+  <div class="obs-box">
+    <span class="obs-label">Observação importante</span>
+    Escrituras, documentos de veículo e documentos pessoais que já foram declarados em anos anteriores com todos os dados
+    <strong>não precisam ser apresentados novamente</strong>. Em caso de dúvida, entre em contato com nossa equipe antes de agendar.
+  </div>
+
+  <div class="contact-section">
+    <h2>Dúvidas? Fale conosco</h2>
+    <p class="contact-sub">Nossa equipe está à disposição</p>
+    <div class="contact-cards">
+      <div class="contact-card">
+        <span class="c-label">Responsável IR</span>
+        <span class="c-name">Kátia</span>
+        <a href="mailto:katia@kluke.com.br">katia@kluke.com.br</a>
+        <a href="tel:+554733820601">(47) 3382-0601</a>
+        <a href="tel:+554733990130">(47) 3399-0130</a>
+      </div>
+      <div class="contact-card">
+        <span class="c-label">WhatsApp</span>
+        <span class="c-name">Atendimento</span>
+        <a href="https://wa.me/5547984321322">(47) 98432-1322</a>
+        <a href="https://wa.me/5547988155277">(47) 98815-5277</a>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  © 2025 <a href="https://www.kluke.com.br" target="_blank" style="color:rgba(255,255,255,0.4);text-decoration:none;">Kluke Serviços Contábeis</a> — Todos os direitos reservados
+</footer>
+
+<button class="btn-print" onclick="window.print()">🖨️ Imprimir</button>
+
+<div id="print-area">
+  <h1>Kluke Serviços Contábeis</h1>
+  <h2>Documentos para o Imposto de Renda — Ano-base 2025</h2>
+  <hr>
+  <ol>
+    <li>Senha Gov.br nível prata ou ouro</li>
+    <li>Comprovantes de rendimentos de 2025 (salário, pró-labore, aposentadoria, pensão, aluguel, benefícios INSS, aplicações etc.) — inclusive de dependentes</li>
+    <li>Comprovante de rendimentos por saque ou verbas judiciais (indenizações trabalhistas e aposentadoria)</li>
+    <li>Carteira de identidade, CPF e título de eleitor</li>
+    <li>Declaração de IR do ano anterior (somente se não declarou pelo Kluke)</li>
+    <li>Escrituras e carnê de IPTU de imóveis</li>
+    <li>Imóveis em construção: alvará de construção</li>
+    <li>Escritura de inventário e partilha (se houver)</li>
+    <li>Escritura de doação de imóveis (se houver)</li>
+    <li>Documento do veículo — se financiado: carnê e contrato de financiamento</li>
+    <li>Contrato e carnê de consórcio (se houver)</li>
+    <li>Informe de rendimentos para IR de conta corrente, aplicações e poupança em 31/12/2025</li>
+    <li>Extrato de previdência privada em 31/12/2025</li>
+    <li>Nome, CPF e data de nascimento dos dependentes</li>
+    <li>Recibos de médicos, dentistas, psicólogos, fisioterapeutas, hospitais, planos de saúde e mensalidades escolares</li>
+    <li>Verificar ganho de capital na venda de imóveis ou veículos</li>
+    <li>Extrato consolidado da B3 — ações, fundos imobiliários (FIIs), ETFs e demais ativos</li>
+    <li>Informar operações de compra e venda na Bolsa de Valores</li>
+    <li>Nome e CPF do cônjuge</li>
+    <li>Dados bancários para restituição: banco, agência e conta — ou chave PIX (CPF)</li>
+  </ol>
+  <div class="print-obs">Obs.: Escrituras, documentos de veículo e documentos pessoais já declarados anteriormente com todos os dados não precisam ser apresentados novamente. Dúvidas: Kátia — katia@kluke.com.br — (47) 3382-0601 — WhatsApp: (47) 98432-1322</div>
+</div>
+
+</body>
+</html>
