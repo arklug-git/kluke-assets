@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gerador de Comunicados — Kluke</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="https://cdn.sonicadigital.com.br/klukecontab/storage/settings/1/96x96-5d0a63a33117b.png">
+<style>
+  :root {
+    --navy: #0d1f3c;
+    --gold: #c8a84b;
+    --gold-light: #e8c97a;
+    --cream: #f8f4ee;
+    --text: #2a2a2a;
+    --muted: #6b6b6b;
+    --line: #ddd5c4;
+    --red: #8b2626;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #eceae5;
+    color: var(--text);
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 15px;
+    min-height: 100vh;
+  }
+
+  .topbar {
+    background: var(--cream);
+    padding: 12px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 1px 0 var(--line), 0 2px 12px rgba(0,0,0,0.07);
+  }
+
+  .topbar-brand { display: flex; align-items: center; gap: 14px; }
+  .topbar-brand img { height: 34px; }
+  .topbar-divider { width: 1px; height: 28px; background: var(--line); }
+
+  .topbar-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    color: var(--navy);
+    line-height: 1.2;
+  }
+
+  .topbar-title span {
+    display: block;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 11px;
+    font-weight: 300;
+    color: var(--muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  .topbar-actions { display: flex; gap: 10px; align-items: center; }
+
+  .version-tag {
+    font-size: 10px;
+    color: #bbb;
+    letter-spacing: 0.08em;
+    font-weight: 300;
+    margin-right: 4px;
+    user-select: none;
+  }
+
+  .btn {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 6px;
+    padding: 9px 18px;
+    cursor: pointer;
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    transition: opacity 0.15s;
+    white-space: nowrap;
+  }
+
+  .btn:hover { opacity: 0.85; }
+  .btn:active { opacity: 0.7; }
+  .btn-gold    { background: var(--gold); color: var(--navy); }
+  .btn-outline { background: transparent; color: var(--navy); border: 1px solid var(--line); }
+
+  .workspace {
+    display: grid;
+    grid-template-columns: 420px 1fr;
+    min-height: calc(100vh - 58px);
+  }
+
+  .editor {
+    background: #f2efea;
+    border-right: 1px solid #d6d0c7;
+    padding: 28px 24px 48px;
+    overflow-y: auto;
+    height: calc(100vh - 58px);
+    position: sticky;
+    top: 58px;
+  }
+
+  .section-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 10px;
+    margin-top: 28px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .section-label:first-child { margin-top: 0; }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--line); }
+
+  label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted);
+    margin-bottom: 5px;
+    margin-top: 14px;
+  }
+
+  label:first-of-type { margin-top: 0; }
+
+  input[type="text"], textarea, select {
+    width: 100%;
+    background: #fff;
+    border: 1px solid #ccc8c0;
+    border-radius: 6px;
+    padding: 9px 12px;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 14px;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  input[type="text"]:focus, textarea:focus, select:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(200,168,75,0.12);
+  }
+
+  input[readonly] {
+    background: #f0ece6;
+    color: #aaa;
+    cursor: default;
+    border-color: #e0dbd3;
+  }
+
+  input[readonly]:focus { border-color: #e0dbd3; box-shadow: none; }
+
+  textarea { resize: vertical; min-height: 80px; line-height: 1.55; }
+
+  .field-note { font-size: 11px; color: #999; margin-top: 4px; font-style: italic; }
+
+  .link-preview {
+    font-size: 12px;
+    color: var(--gold);
+    margin-top: 6px;
+    font-family: monospace;
+    letter-spacing: 0.02em;
+    min-height: 18px;
+  }
+
+  .toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #fff;
+    border: 1px solid #ccc8c0;
+    border-radius: 6px;
+    padding: 10px 14px;
+    margin-top: 8px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .toggle-row .t-label { font-size: 13px; color: var(--text); font-weight: 400; }
+
+  .toggle {
+    width: 38px; height: 22px;
+    background: #ccc;
+    border-radius: 999px;
+    position: relative;
+    transition: background 0.2s;
+    flex-shrink: 0;
+  }
+
+  .toggle.on { background: var(--gold); }
+  .toggle::after {
+    content: '';
+    position: absolute;
+    top: 3px; left: 3px;
+    width: 16px; height: 16px;
+    background: #fff;
+    border-radius: 50%;
+    transition: left 0.2s;
+  }
+  .toggle.on::after { left: 19px; }
+
+  .emoji-select {
+    width: 100%;
+    font-size: 14px;
+    padding: 9px 12px;
+    cursor: pointer;
+    border-radius: 6px;
+    border: 1px solid #ccc8c0;
+    background: #fff;
+    margin-bottom: 6px;
+  }
+
+  /* Dropdown customizado — estilo de numeração */
+  .numstyle-dropdown {
+    position: relative;
+    margin-bottom: 8px;
+  }
+
+  .numstyle-trigger {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #fff;
+    border: 1px solid #ccc8c0;
+    border-radius: 6px;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 14px;
+    color: var(--text);
+    text-align: left;
+  }
+
+  .numstyle-trigger:hover { border-color: var(--gold); }
+
+  .numstyle-trigger-preview {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .numstyle-trigger-label { flex: 1; }
+
+  .numstyle-trigger-arrow {
+    font-size: 11px;
+    color: var(--muted);
+    flex-shrink: 0;
+  }
+
+  .numstyle-menu {
+    display: none;
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    background: #fff;
+    border: 1px solid #ccc8c0;
+    border-radius: 8px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+    z-index: 50;
+    overflow: hidden;
+  }
+
+  .numstyle-menu.open { display: block; }
+
+  .numstyle-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 12px;
+    cursor: pointer;
+    font-size: 13px;
+    color: var(--text);
+    transition: background 0.1s;
+  }
+
+  .numstyle-option:hover { background: #f5f0e6; }
+  .numstyle-option.selected { background: #fbf3e3; }
+
+  .numstyle-option-preview {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Mini-previews de cada estilo, reaproveitando paleta dourada/cream */
+  .ns-circle { width: 22px; height: 22px; background: var(--gold); color: var(--cream); font-family: 'Playfair Display', serif; font-size: 11px; border-radius: 50%; display:flex; align-items:center; justify-content:center; }
+  .ns-outline { width: 22px; height: 22px; border: 1.5px solid var(--gold); color: var(--gold); font-family: 'Playfair Display', serif; font-size: 11px; border-radius: 50%; display:flex; align-items:center; justify-content:center; }
+  .ns-plain { font-family: 'Playfair Display', serif; font-size: 18px; color: var(--gold); line-height: 1; }
+  .ns-dot { font-family: 'Source Sans 3', sans-serif; font-weight: 600; font-size: 13px; color: var(--gold); }
+  .ns-pill { min-width: 22px; height: 18px; padding: 0 7px; background: var(--gold); color: var(--cream); font-size: 10px; border-radius: 9px; display:flex; align-items:center; justify-content:center; }
+  .ns-square { width: 22px; height: 22px; background: var(--gold); color: var(--cream); font-family: 'Playfair Display', serif; font-size: 11px; border-radius: 5px; display:flex; align-items:center; justify-content:center; }
+
+  .items-list { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; }
+  .item-row { display: flex; align-items: flex-start; gap: 8px; }
+  .item-row textarea { flex: 1; min-height: 52px; font-size: 13px; padding: 7px 10px; }
+
+  .item-del {
+    background: none;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    color: #aaa;
+    padding: 6px 9px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 1px;
+    transition: color 0.15s, border-color 0.15s;
+    flex-shrink: 0;
+  }
+  .item-del:hover { color: var(--red); border-color: var(--red); }
+
+  .btn-add-item {
+    width: 100%;
+    background: none;
+    border: 1px dashed #bbb;
+    border-radius: 6px;
+    padding: 8px;
+    color: var(--muted);
+    font-size: 13px;
+    cursor: pointer;
+    margin-top: 6px;
+    transition: border-color 0.15s, color 0.15s;
+    font-family: 'Source Sans 3', sans-serif;
+  }
+  .btn-add-item:hover { border-color: var(--gold); color: var(--gold); }
+
+  .resp-group {
+    background: #fff;
+    border: 1px solid #ccc8c0;
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin-top: 6px;
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+  }
+
+  .resp-fields { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+  .resp-fields input { font-size: 13px; padding: 7px 10px; }
+
+  .preview-pane {
+    overflow-y: auto;
+    height: calc(100vh - 58px);
+    background: #dedad4;
+    padding: 32px 24px;
+  }
+
+  .preview-frame {
+    max-width: 700px;
+    margin: 0 auto;
+    background: var(--cream);
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 4px 32px rgba(0,0,0,0.18);
+  }
+
+  .preview-empty {
+    text-align: center;
+    padding: 60px 20px;
+    color: rgba(0,0,0,0.2);
+    font-size: 14px;
+  }
+
+  /* ── COMUNICADO STYLES ── */
+  .com-header-top {
+    background: var(--cream);
+    border-bottom: 1px solid var(--line);
+    padding: 18px 28px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .com-header-vdivider { width: 1px; align-self: stretch; background: var(--line); flex-shrink: 0; }
+
+  .com-header-info { display: flex; flex-direction: column; justify-content: center; }
+
+  .com-firm-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 14px;
+    color: var(--navy);
+    line-height: 1.3;
+  }
+
+  .com-firm-meta { font-size: 11px; color: var(--muted); line-height: 1.85; margin-top: 4px; }
+  .com-firm-meta a { color: var(--muted); text-decoration: none; }
+
+  .com-header-titles-block {
+    background: var(--cream);
+    padding: 20px 28px 22px;
+    text-align: center;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .com-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    color: var(--navy);
+    line-height: 1.3;
+  }
+
+  .com-subtitle {
+    font-size: 12px;
+    font-weight: 300;
+    color: var(--muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-top: 5px;
+  }
+
+  .com-gold-bar { height: 3px; background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold)); }
+
+  .com-main { background: var(--cream); padding: 32px 28px 48px; }
+
+  .com-alert {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: #fff7e6;
+    border: 1px solid var(--gold);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-bottom: 22px;
+    font-size: 14px;
+    color: #7a5500;
+    line-height: 1.5;
+  }
+
+  .com-intro {
+    background: white;
+    border-left: 3px solid var(--gold);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    margin-bottom: 24px;
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.65;
+    white-space: pre-wrap;
+  }
+
+  .com-body { font-size: 15px; line-height: 1.75; color: var(--text); white-space: pre-wrap; margin-bottom: 24px; }
+
+  ol.com-list { list-style: none; display: flex; flex-direction: column; gap: 2px; margin-bottom: 24px; }
+
+  ol.com-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    background: white;
+    padding: 14px 18px;
+    border-radius: 6px;
+    font-size: 14.5px;
+    line-height: 1.55;
+    border: 1px solid var(--line);
+  }
+
+  .com-num {
+    flex-shrink: 0;
+    font-family: 'Playfair Display', serif;
+    margin-top: 1px;
+  }
+
+  .com-num-circle {
+    width: 26px; height: 26px;
+    background: var(--gold);
+    color: var(--cream);
+    font-size: 13px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .com-num-outline {
+    width: 26px; height: 26px;
+    background: transparent;
+    border: 1.5px solid var(--gold);
+    color: var(--gold);
+    font-size: 13px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .com-num-plain {
+    font-size: 22px;
+    color: var(--gold);
+    line-height: 1;
+  }
+
+  .com-num-dot {
+    font-family: 'Source Sans 3', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--gold);
+    min-width: 20px;
+  }
+
+  .com-num-pill {
+    min-width: 26px; height: 22px;
+    padding: 0 9px;
+    background: var(--gold);
+    color: var(--cream);
+    font-size: 12px;
+    border-radius: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .com-num-square {
+    width: 26px; height: 26px;
+    background: var(--gold);
+    color: var(--cream);
+    font-size: 13px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .com-obs {
+    background: #fbf3e3;
+    border: 1.5px solid var(--gold);
+    color: #4a4a4a;
+    border-radius: 8px;
+    padding: 14px 22px;
+    font-size: 14px;
+    line-height: 1.65;
+    margin-top: 8px;
+  }
+
+  .com-obs-label {
+    font-family: 'Playfair Display', serif;
+    color: #8a6d1f;
+    font-size: 13px;
+    line-height: 1.2;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .com-obs-text {
+    display: block;
+    white-space: pre-wrap;
+  }
+
+  .com-contact { margin-top: 36px; padding-top: 28px; border-top: 1px solid var(--line); text-align: center; }
+  .com-contact h2 { font-family: 'Playfair Display', serif; font-size: 18px; color: var(--navy); margin-bottom: 4px; }
+  .com-contact-sub { font-size: 13px; color: var(--muted); margin-bottom: 20px; }
+  .com-cards { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+
+  .com-card {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 16px 20px;
+    min-width: 180px;
+    text-align: left;
+  }
+
+  .com-card-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--gold);
+    font-weight: 600;
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  .com-card-sublabel {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--gold);
+    font-weight: 600;
+    display: block;
+    margin-bottom: 6px;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--line);
+  }
+
+  .com-card-person { margin-bottom: 8px; }
+  .com-card-name { font-weight: 600; font-size: 14px; color: var(--navy); display: block; margin-bottom: 2px; }
+  .com-card a { display: block; font-size: 13px; color: var(--muted); text-decoration: none; line-height: 1.8; }
+
+  .com-footer {
+    background: var(--navy);
+    text-align: center;
+    padding: 16px 20px;
+    font-size: 12px;
+    color: rgba(255,255,255,0.3);
+    letter-spacing: 0.04em;
+    line-height: 1.9;
+  }
+
+  .com-footer a { color: rgba(255,255,255,0.4); text-decoration: none; }
+  .com-footer a:hover { color: rgba(255,255,255,0.65); }
+
+  @media (max-width: 860px) {
+    .workspace { grid-template-columns: 1fr; }
+    .editor { height: auto; position: static; }
+    .preview-pane { height: auto; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-brand">
+    <img src="https://cdn.sonicadigital.com.br/klukecontab/storage/settings/1/original-5b2bf023264c2-K.png" alt="Kluke">
+    <div class="topbar-divider"></div>
+    <div class="topbar-title">
+      Gerador de Comunicados
+      <span>Kluke Serviços Contábeis</span>
+    </div>
+  </div>
+  <div class="topbar-actions">
+    <span class="version-tag">v2.5</span>
+    <button class="btn btn-outline" onclick="resetForm()">↺ Limpar</button>
+    <button class="btn btn-outline" onclick="printComunicado()">🖨️ Imprimir</button>
+    <button class="btn btn-gold" onclick="downloadHTML()">⬇ Baixar HTML</button>
+  </div>
+</div>
+
+<div class="workspace">
+  <div class="editor">
+
+    <div class="section-label">Cabeçalho</div>
+
+    <label>Título do comunicado</label>
+    <input type="text" id="f-title" placeholder="Ex.: Documentos para o Imposto de Renda" oninput="render()">
+
+    <label>Subtítulo / ano-base <span style="font-weight:400;color:#999">(opcional)</span></label>
+    <input type="text" id="f-subtitle" placeholder="Ex.: Ano-base 2025" oninput="render()">
+
+    <div class="section-label">Conteúdo</div>
+
+    <label>Caixa de alerta / prazo <span style="font-weight:400;color:#999">(opcional)</span></label>
+    <div class="toggle-row" onclick="toggleField('alert')">
+      <span class="t-label">Exibir caixa de alerta</span>
+      <div class="toggle" id="tog-alert"></div>
+    </div>
+    <div id="field-alert" style="display:none;margin-top:8px;">
+      <select class="emoji-select" id="f-alert-icon" onchange="render()">
+        <option value="">— Sem emoji —</option>
+        <optgroup label="Atenção">
+          <option value="⚠️">⚠️  Atenção</option>
+          <option value="❗">❗  Importante</option>
+          <option value="🔴">🔴  Urgente</option>
+          <option value="❌">❌  Erro</option>
+        </optgroup>
+        <optgroup label="Informação">
+          <option value="ℹ️">ℹ️  Info</option>
+          <option value="📢">📢  Aviso</option>
+          <option value="📣">📣  Anúncio</option>
+          <option value="🔔">🔔  Notificação</option>
+        </optgroup>
+        <optgroup label="Prazo / Data">
+          <option value="⏰">⏰  Prazo</option>
+          <option value="📅">📅  Data</option>
+          <option value="🗓️">🗓️  Agenda</option>
+          <option value="⌛">⌛  Tempo</option>
+        </optgroup>
+        <optgroup label="Documentos">
+          <option value="📄">📄  Documento</option>
+          <option value="📝">📝  Observação</option>
+          <option value="📌">📌  Destaque</option>
+          <option value="📎">📎  Anexo</option>
+        </optgroup>
+        <optgroup label="Positivo">
+          <option value="✅">✅  Confirmado</option>
+          <option value="✔️">✔️  OK</option>
+          <option value="🎉">🎉  Novidade</option>
+          <option value="💡">💡  Dica</option>
+        </optgroup>
+      </select>
+      <input type="text" id="f-alert-text" placeholder="Texto do alerta..." oninput="render()">
+    </div>
+
+    <label style="margin-top:16px;">Texto de introdução <span style="font-weight:400;color:#999">(opcional)</span></label>
+    <textarea id="f-intro" placeholder="Texto introdutório em destaque. Use Enter para parágrafos." oninput="render()"></textarea>
+
+    <label style="margin-top:16px;">Corpo do comunicado <span style="font-weight:400;color:#999">(opcional)</span></label>
+    <textarea id="f-body" placeholder="Texto livre. Use Enter para parágrafos. URLs viram links automaticamente." style="min-height:120px;" oninput="render()"></textarea>
+
+    <label style="margin-top:16px;">Lista de itens <span style="font-weight:400;color:#999">(opcional)</span></label>
+    <div class="toggle-row" onclick="toggleField('list')">
+      <span class="t-label">Exibir lista numerada</span>
+      <div class="toggle" id="tog-list"></div>
+    </div>
+    <div id="field-list" style="display:none;margin-top:8px;">
+      <div class="numstyle-dropdown" id="numstyle-dropdown">
+        <button type="button" class="numstyle-trigger" id="numstyle-trigger" onclick="toggleNumStyleMenu()">
+          <span class="numstyle-trigger-preview" id="numstyle-trigger-preview"></span>
+          <span class="numstyle-trigger-label" id="numstyle-trigger-label">Círculo dourado</span>
+          <span class="numstyle-trigger-arrow">▾</span>
+        </button>
+        <div class="numstyle-menu" id="numstyle-menu"></div>
+      </div>
+      <div class="items-list" id="items-container"></div>
+      <button class="btn-add-item" onclick="addItem()">+ Adicionar item</button>
+    </div>
+
+    <label style="margin-top:16px;">Caixa de observação <span style="font-weight:400;color:#999">(opcional)</span></label>
+    <div class="toggle-row" onclick="toggleField('obs')">
+      <span class="t-label">Exibir observação</span>
+      <div class="toggle" id="tog-obs"></div>
+    </div>
+    <div id="field-obs" style="display:none;margin-top:8px;">
+      <input type="text" id="f-obs-label" placeholder="Rótulo (ex.: Observação importante)" oninput="render()" style="margin-bottom:6px;">
+      <textarea id="f-obs-text" placeholder="Texto da observação..." oninput="render()"></textarea>
+    </div>
+
+    <div class="section-label" style="margin-top:28px;">Contatos</div>
+
+    <p class="field-note" style="margin-bottom:8px;">Título, subtítulo, telefones e WhatsApp são fixos e sempre exibidos.</p>
+    <div id="resps-container"></div>
+    <button class="btn-add-item" onclick="addResp('','')">+ Adicionar responsável</button>
+
+    <div class="toggle-row" onclick="toggleField('printResp')" style="margin-top:10px;">
+      <span class="t-label">Incluir responsáveis na impressão</span>
+      <div class="toggle" id="tog-printResp"></div>
+    </div>
+    <p class="field-note">Exibe nome e e-mail dos responsáveis no rodapé impresso (somente no botão Imprimir do gerador).</p>
+
+    <div class="section-label" style="margin-top:28px;">Arquivo</div>
+    <label>Nome do arquivo para download</label>
+    <input type="text" id="f-filename" placeholder="comunicado-exemplo" oninput="updateLinkPreview()">
+    <div class="link-preview" id="link-preview">link.kluke.com.br/comunicado-exemplo</div>
+
+  </div>
+
+  <div class="preview-pane">
+    <div class="preview-frame" id="preview-frame">
+      <div class="preview-empty">Preencha os campos ao lado para visualizar o comunicado.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const CURRENT_YEAR = new Date().getFullYear();
+  const PHONES_FIXED = ['(47) 3382-0601', '(47) 3382-0767'];
+  const WA_FIXED     = { num: '(47) 98432-1322', href: 'https://wa.me/5547984321322' };
+  const MAPS_URL     = 'https://maps.app.goo.gl/BLgMuJf6wUEH9B5c6';
+
+  const FIRM = {
+    name:    'Kluke Serviços Contábeis e Econômicos Ltda',
+    cnpj:    '76.860.386/0001-73',
+    crc:     'CRC-SC 1081/O-8',
+    site:    'www.kluke.com.br',
+    url:     'https://www.kluke.com.br',
+    address: 'Av. Nereu Ramos, 64 · Timbó-SC',
+    logo:    'https://cdn.sonicadigital.com.br/klukecontab/storage/settings/1/original-5b2bf023264c2-K.png',
+  };
+
+  const state = { alert: false, list: false, obs: false, printResp: false };
+  let selectedNumStyle = 'circle';
+
+  const NUM_STYLES = [
+    { value: 'circle',  label: 'Círculo dourado',              previewClass: 'ns-circle',  previewChar: '1'  },
+    { value: 'outline', label: 'Contorno dourado',              previewClass: 'ns-outline', previewChar: '1'  },
+    { value: 'plain',   label: 'Número grande, sem caixa',      previewClass: 'ns-plain',   previewChar: '1'  },
+    { value: 'dot',     label: 'Numeral tradicional (1.)',      previewClass: 'ns-dot',     previewChar: '1.' },
+    { value: 'pill',    label: 'Pílula dourada',                previewClass: 'ns-pill',    previewChar: '1'  },
+    { value: 'square',  label: 'Quadrado dourado suave',        previewClass: 'ns-square',  previewChar: '1'  },
+  ];
+
+  function renderNumStyleDropdown() {
+    const menu = document.getElementById('numstyle-menu');
+    if (!menu) return;
+    menu.innerHTML = NUM_STYLES.map(s => `
+      <div class="numstyle-option${s.value === selectedNumStyle ? ' selected' : ''}" onclick="selectNumStyle('${s.value}')">
+        <span class="numstyle-option-preview"><span class="${s.previewClass}">${s.previewChar}</span></span>
+        <span>${s.label}</span>
+      </div>
+    `).join('');
+
+    const current = NUM_STYLES.find(s => s.value === selectedNumStyle) || NUM_STYLES[0];
+    document.getElementById('numstyle-trigger-preview').innerHTML =
+      `<span class="${current.previewClass}">${current.previewChar}</span>`;
+    document.getElementById('numstyle-trigger-label').textContent = current.label;
+  }
+
+  function toggleNumStyleMenu() {
+    document.getElementById('numstyle-menu').classList.toggle('open');
+  }
+
+  function selectNumStyle(value) {
+    selectedNumStyle = value;
+    renderNumStyleDropdown();
+    document.getElementById('numstyle-menu').classList.remove('open');
+    render();
+  }
+
+  document.addEventListener('click', (e) => {
+    const dropdown = document.getElementById('numstyle-dropdown');
+    if (dropdown && !dropdown.contains(e.target)) {
+      const menu = document.getElementById('numstyle-menu');
+      if (menu) menu.classList.remove('open');
+    }
+  });
+
+  let items = [];
+  let resps = [];
+
+  function toggleField(key) {
+    state[key] = !state[key];
+    document.getElementById('tog-' + key).classList.toggle('on', state[key]);
+    const field = document.getElementById('field-' + key);
+    if (field) field.style.display = state[key] ? 'block' : 'none';
+    render();
+  }
+
+  function updateLinkPreview() {
+    const raw  = (document.getElementById('f-filename')?.value || '').trim();
+    const slug = raw.replace(/[^a-z0-9\-_]/gi, '') || 'comunicado-exemplo';
+    document.getElementById('link-preview').textContent = `link.kluke.com.br/${slug}`;
+    render();
+  }
+
+  function addItem(text) {
+    const id = Date.now() + Math.random();
+    items.push({ id, text: text || '' });
+    renderItemsList();
+    render();
+  }
+
+  function removeItem(id) {
+    items = items.filter(i => i.id !== id);
+    renderItemsList();
+    render();
+  }
+
+  function renderItemsList() {
+    const c = document.getElementById('items-container');
+    c.innerHTML = '';
+    items.forEach((item, idx) => {
+      const row = document.createElement('div');
+      row.className = 'item-row';
+      row.innerHTML = `
+        <textarea placeholder="Item ${idx + 1}..." oninput="updateItem(${item.id}, this.value)">${escHtml(item.text)}</textarea>
+        <button class="item-del" onclick="removeItem(${item.id})" title="Remover">×</button>`;
+      c.appendChild(row);
+    });
+  }
+
+  function updateItem(id, value) {
+    const item = items.find(i => i.id === id);
+    if (item) { item.text = value; render(); }
+  }
+
+  function addResp(name, email) {
+    const id = Date.now() + Math.random();
+    resps.push({ id, name: name || '', email: email || '' });
+    renderRespList();
+    render();
+  }
+
+  function removeResp(id) {
+    resps = resps.filter(r => r.id !== id);
+    renderRespList();
+    render();
+  }
+
+  function renderRespList() {
+    const c = document.getElementById('resps-container');
+    c.innerHTML = '';
+    resps.forEach(r => {
+      const row = document.createElement('div');
+      row.className = 'resp-group';
+      row.innerHTML = `
+        <div class="resp-fields">
+          <input type="text" placeholder="Nome do responsável" value="${escHtml(r.name)}"
+            oninput="updateResp(${r.id},'name',this.value)">
+          <input type="text" placeholder="email@kluke.com.br" value="${escHtml(r.email)}"
+            oninput="updateResp(${r.id},'email',this.value)">
+        </div>
+        <button class="item-del" onclick="removeResp(${r.id})" title="Remover" style="margin-top:2px;">×</button>`;
+      c.appendChild(row);
+    });
+  }
+
+  function updateResp(id, field, value) {
+    const r = resps.find(r => r.id === id);
+    if (r) { r[field] = value; render(); }
+  }
+
+  function val(id) { return (document.getElementById(id)?.value || '').trim(); }
+
+  function escHtml(str) {
+    return String(str || '')
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  function titleCase(str) {
+    return str.replace(/\S+/g, w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase());
+  }
+
+  function linkify(text) {
+    return escHtml(text).replace(/(https?:\/\/[^\s&]+)/g,
+      url => `<a href="${url}" target="_blank" rel="noopener" style="color:var(--gold);word-break:break-all;">${url}</a>`);
+  }
+
+  /* ── BLOCOS ── */
+  function buildHeaderHTML(logoHeight) {
+    return `<div class="com-header-top">
+      <a href="${FIRM.url}" target="_blank" rel="noopener" style="display:flex;align-items:center;flex-shrink:0;">
+        <img src="${FIRM.logo}" alt="Kluke" style="height:${logoHeight}px;display:block;align-self:center;">
+      </a>
+      <div class="com-header-vdivider"></div>
+      <div class="com-header-info">
+        <div class="com-firm-name">${escHtml(FIRM.name)}</div>
+        <div class="com-firm-meta">
+          CNPJ ${escHtml(FIRM.cnpj)}<br>
+          ${escHtml(FIRM.crc)}
+        </div>
+      </div>
+    </div>`;
+  }
+
+  function buildTitlesHTML(title, subtitle) {
+    if (!title && !subtitle) return '';
+    return `<div class="com-header-titles-block">
+      ${title    ? `<div class="com-title">${escHtml(title)}</div>`       : ''}
+      ${subtitle ? `<div class="com-subtitle">${escHtml(subtitle)}</div>` : ''}
+    </div>`;
+  }
+
+  function buildContactCards() {
+    const validResps = resps.filter(r => r.name.trim() || r.email.trim());
+    let html = `<div class="com-cards">`;
+
+    if (validResps.length > 0) {
+      const label = validResps.length === 1 ? 'Responsável' : 'Responsáveis';
+      html += `<div class="com-card"><span class="com-card-label">${label}</span>`;
+      validResps.forEach(r => {
+        const nome  = titleCase(r.name.trim());
+        const email = r.email.trim().toLowerCase();
+        html += `<div class="com-card-person">
+          ${nome  ? `<span class="com-card-name">${escHtml(nome)}</span>` : ''}
+          ${email ? `<a href="mailto:${escHtml(email)}">${escHtml(email)}</a>` : ''}
+        </div>`;
+      });
+      html += `</div>`;
+    }
+
+    html += `<div class="com-card">
+      <span class="com-card-label">Atendimento</span>
+      ${PHONES_FIXED.map(p => `<a href="tel:${p.replace(/\D/g,'')}">${escHtml(p)}</a>`).join('')}
+      <span class="com-card-sublabel">WhatsApp</span>
+      <a href="${WA_FIXED.href}" target="_blank">${escHtml(WA_FIXED.num)}</a>
+    </div>`;
+
+    html += `</div>`;
+    return html;
+  }
+
+  function buildBodyHTML({ intro, body }) {
+    let html = `<div class="com-main">`;
+
+    if (state.alert) {
+      const icon      = document.getElementById('f-alert-icon')?.value || '';
+      const alertText = val('f-alert-text');
+      if (alertText) {
+        const iconSpan = icon
+          ? `<span style="font-size:20px;flex-shrink:0;margin-top:1px">${icon}</span>`
+          : '';
+        html += `<div class="com-alert">${iconSpan}<span>${linkify(alertText)}</span></div>`;
+      }
+    }
+
+    if (intro) html += `<div class="com-intro">${linkify(intro)}</div>`;
+    if (body)  html += `<div class="com-body">${linkify(body)}</div>`;
+
+    if (state.list && items.some(i => i.text.trim())) {
+      const numStyle = selectedNumStyle || 'circle';
+      html += `<ol class="com-list">`;
+      items.forEach((item, idx) => {
+        if (item.text.trim()) {
+          const label = numStyle === 'dot' ? `${idx+1}.` : `${idx+1}`;
+          html += `<li><span class="com-num com-num-${numStyle}">${label}</span><span style="flex:1">${linkify(item.text)}</span></li>`;
+        }
+      });
+      html += `</ol>`;
+    }
+
+    if (state.obs) {
+      const obsLabel = val('f-obs-label') || 'Observação importante';
+      const obsText  = val('f-obs-text');
+      if (obsText) {
+        html += `<div class="com-obs"><span class="com-obs-label">${escHtml(obsLabel)}</span><span class="com-obs-text">${linkify(obsText)}</span></div>`;
+      }
+    }
+
+    html += `<div class="com-contact">
+      <h2>Dúvidas? Fale conosco</h2>
+      <p class="com-contact-sub">Nossa equipe está à disposição</p>
+      ${buildContactCards()}
+    </div>`;
+
+    html += `</div>`;
+    return html;
+  }
+
+  function buildFooterHTML(includeResp) {
+    const validResps = resps.filter(r => r.name.trim() || r.email.trim());
+
+    let respLine = '';
+    if (includeResp && validResps.length > 0) {
+      const label = validResps.length === 1 ? 'Responsável' : 'Responsáveis';
+      const names = validResps.map(r => {
+        const nome  = titleCase(r.name.trim());
+        const email = r.email.trim().toLowerCase();
+        if (nome && email) return `${escHtml(nome)} (${escHtml(email)})`;
+        if (nome) return escHtml(nome);
+        return escHtml(email);
+      }).join(' · ');
+      respLine = `<br>${label}: ${names}`;
+    }
+
+    return `<div class="com-footer">
+      <a href="${MAPS_URL}" target="_blank" rel="noopener">${escHtml(FIRM.address)}</a><br>
+      © ${CURRENT_YEAR} ${escHtml(FIRM.name)}
+    </div>
+    <div class="com-print-footer">
+      ${escHtml(FIRM.name)} &nbsp;·&nbsp; ${escHtml(FIRM.address)}<br>
+      ${PHONES_FIXED.map(escHtml).join(' &nbsp;·&nbsp; ')} &nbsp;·&nbsp; WhatsApp ${escHtml(WA_FIXED.num)}${respLine}
+    </div>`;
+  }
+
+  /* ── RENDER PREVIEW ── */
+  function render() {
+    const title    = val('f-title');
+    const subtitle = val('f-subtitle');
+    const intro    = val('f-intro');
+    const body     = val('f-body');
+
+    if (!title && !intro && !body && items.length === 0) {
+      document.getElementById('preview-frame').innerHTML =
+        '<div class="preview-empty">Preencha os campos ao lado para visualizar o comunicado.</div>';
+      return;
+    }
+
+    let html = buildHeaderHTML(50);
+    html += buildTitlesHTML(title, subtitle);
+    html += `<div class="com-gold-bar"></div>`;
+    html += buildBodyHTML({ intro, body });
+    html += buildFooterHTML(false);
+
+    document.getElementById('preview-frame').innerHTML = html;
+  }
+
+  /* ── CSS STANDALONE ── */
+  function buildStandaloneCSS() {
+    return `<style>
+:root{--navy:#0d1f3c;--gold:#c8a84b;--gold-light:#e8c97a;--cream:#f8f4ee;--text:#2a2a2a;--muted:#6b6b6b;--line:#ddd5c4}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#e8e4de;font-family:'Source Sans 3',sans-serif;min-height:100vh}
+.com-wrapper{max-width:700px;margin:0 auto;background:var(--cream);box-shadow:0 4px 32px rgba(0,0,0,0.15)}
+.com-header-top{background:var(--cream);border-bottom:1px solid var(--line);padding:18px 28px;display:flex;align-items:center;gap:20px}
+.com-header-vdivider{width:1px;align-self:stretch;background:var(--line);flex-shrink:0}
+.com-header-info{display:flex;flex-direction:column;justify-content:center}
+.com-firm-name{font-family:'Playfair Display',serif;font-size:14px;color:var(--navy);line-height:1.3}
+.com-firm-meta{font-size:11px;color:var(--muted);line-height:1.85;margin-top:4px}
+.com-firm-meta a{color:var(--muted);text-decoration:none}
+.com-header-titles-block{background:var(--cream);padding:20px 28px 22px;text-align:center;border-bottom:1px solid var(--line)}
+.com-title{font-family:'Playfair Display',serif;font-size:22px;color:var(--navy);line-height:1.3}
+.com-subtitle{font-size:12px;font-weight:300;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-top:5px}
+.com-gold-bar{height:3px;background:linear-gradient(90deg,var(--gold),var(--gold-light),var(--gold))}
+.com-main{padding:32px 28px 48px}
+.com-alert{display:flex;align-items:flex-start;gap:12px;background:#fff7e6;border:1px solid var(--gold);border-radius:8px;padding:16px 20px;margin-bottom:22px;font-size:14px;color:#7a5500;line-height:1.5}
+.com-intro{background:#fff;border-left:3px solid var(--gold);border-radius:0 8px 8px 0;padding:16px 20px;margin-bottom:24px;font-size:14px;color:var(--muted);line-height:1.65;white-space:pre-wrap}
+.com-body{font-size:15px;line-height:1.75;color:var(--text);white-space:pre-wrap;margin-bottom:24px}
+ol.com-list{list-style:none;display:flex;flex-direction:column;gap:2px;margin-bottom:24px}
+ol.com-list li{display:flex;align-items:flex-start;gap:14px;background:#fff;padding:14px 18px;border-radius:6px;font-size:14.5px;line-height:1.55;border:1px solid var(--line)}
+.com-num{flex-shrink:0;font-family:'Playfair Display',serif;margin-top:1px}
+.com-num-circle{width:26px;height:26px;background:var(--gold);color:var(--cream);font-size:13px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.com-num-outline{width:26px;height:26px;background:transparent;border:1.5px solid var(--gold);color:var(--gold);font-size:13px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.com-num-plain{font-size:22px;color:var(--gold);line-height:1}
+.com-num-dot{font-family:'Source Sans 3',sans-serif;font-weight:600;font-size:14px;color:var(--gold);min-width:20px}
+.com-num-pill{min-width:26px;height:22px;padding:0 9px;background:var(--gold);color:var(--cream);font-size:12px;border-radius:11px;display:flex;align-items:center;justify-content:center}
+.com-num-square{width:26px;height:26px;background:var(--gold);color:var(--cream);font-size:13px;border-radius:6px;display:flex;align-items:center;justify-content:center}
+.com-obs{background:#fbf3e3;border:1.5px solid var(--gold);color:#4a4a4a;border-radius:8px;padding:14px 22px;font-size:14px;line-height:1.65;margin-top:8px}
+.com-obs-label{font-family:'Playfair Display',serif;color:#8a6d1f;font-size:13px;line-height:1.2;letter-spacing:.12em;text-transform:uppercase;display:block;margin-bottom:6px}
+.com-obs-text{display:block;white-space:pre-wrap}
+.com-contact{margin-top:36px;padding-top:28px;border-top:1px solid var(--line);text-align:center}
+.com-contact h2{font-family:'Playfair Display',serif;font-size:18px;color:var(--navy);margin-bottom:4px}
+.com-contact-sub{font-size:13px;color:var(--muted);margin-bottom:20px}
+.com-cards{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+.com-card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:16px 20px;min-width:180px;text-align:left}
+.com-card-label{font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--gold);font-weight:600;display:block;margin-bottom:10px}
+.com-card-sublabel{font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--gold);font-weight:600;display:block;margin-bottom:6px;margin-top:10px;padding-top:10px;border-top:1px solid var(--line)}
+.com-card-person{margin-bottom:8px}
+.com-card-name{font-weight:600;font-size:14px;color:var(--navy);display:block;margin-bottom:2px}
+.com-card a{display:block;font-size:13px;color:var(--muted);text-decoration:none;line-height:1.8}
+.com-footer{background:var(--navy);text-align:center;padding:16px 20px;font-size:12px;color:rgba(255,255,255,.3);letter-spacing:.04em;line-height:1.9}
+.com-footer a{color:rgba(255,255,255,.4);text-decoration:none}
+.com-print-footer{display:none;text-align:center;padding:16px 20px 8px;font-size:11px;color:#999;border-top:1px solid #ddd;letter-spacing:.03em}
+.btn-print{position:fixed;bottom:28px;right:28px;background:var(--navy);color:var(--gold);border:1px solid var(--gold);border-radius:50px;padding:12px 22px;font-family:'Source Sans 3',sans-serif;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px;box-shadow:0 4px 16px rgba(13,31,60,.25);transition:background .2s,color .2s;z-index:999}
+.btn-print:hover{background:var(--gold);color:var(--navy)}
+@media print{
+  body{background:#fff}
+  .btn-print{display:none!important}
+  .com-wrapper{box-shadow:none;max-width:100%}
+  .com-header-top{border-bottom:1px solid #ccc;padding:14px 20px}
+  .com-header-titles-block{border-bottom:none;padding:14px 20px 10px}
+  .com-gold-bar{height:1px;background:var(--gold);-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .com-alert{background:#fff!important;border-color:#999!important;color:#000!important}
+  .com-intro{background:#fff!important;border-left-color:#999!important;color:#333!important}
+  .com-obs{background:#fff!important;color:#000!important;border:1px solid #999}
+  .com-obs-label{color:#555!important}
+  ol.com-list li{background:#fff;border-color:#ccc}
+  .com-num-circle,.com-num-outline,.com-num-pill,.com-num-square,.com-num-plain,.com-num-dot{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .com-contact{display:none!important}
+  .com-footer{display:none!important}
+  .com-print-footer{display:block!important}
+}
+</style>`;
+  }
+
+  /* ── BUILD STANDALONE ── */
+  function buildStandaloneHTML() {
+    const title    = val('f-title')    || 'Comunicado';
+    const subtitle = val('f-subtitle');
+    const intro    = val('f-intro');
+    const body     = val('f-body');
+
+    return `<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>${escHtml(title)} — Kluke Serviços Contábeis</title>
+<link rel="icon" type="image/png" href="https://cdn.sonicadigital.com.br/klukecontab/storage/settings/1/96x96-5d0a63a33117b.png">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet">
+${buildStandaloneCSS()}
+</head>
+<body>
+<div class="com-wrapper">
+${buildHeaderHTML(50)}
+${buildTitlesHTML(title, subtitle)}
+<div class="com-gold-bar"></div>
+${buildBodyHTML({ intro, body })}
+${buildFooterHTML(false)}
+</div>
+<button class="btn-print" onclick="window.print()">🖨️ Imprimir</button>
+</body>
+</html>`;
+  }
+
+  function printComunicado() {
+    const title    = val('f-title')    || 'Comunicado';
+    const subtitle = val('f-subtitle');
+    const intro    = val('f-intro');
+    const body     = val('f-body');
+
+    const win = window.open('', '_blank');
+    win.document.write(`<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>${escHtml(title)} — Kluke</title>
+<link rel="icon" type="image/png" href="https://cdn.sonicadigital.com.br/klukecontab/storage/settings/1/96x96-5d0a63a33117b.png">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet">
+${buildStandaloneCSS()}
+</head>
+<body>
+<div class="com-wrapper">
+${buildHeaderHTML(50)}
+${buildTitlesHTML(title, subtitle)}
+<div class="com-gold-bar"></div>
+${buildBodyHTML({ intro, body })}
+${buildFooterHTML(state.printResp)}
+</div>
+</body>
+</html>`);
+    win.document.close();
+    win.onload = () => { win.focus(); win.print(); };
+  }
+
+  function downloadHTML() {
+    const raw      = (document.getElementById('f-filename')?.value || '').trim();
+    const filename = (raw.replace(/[^a-z0-9\-_]/gi,'') || 'comunicado-kluke') + '.html';
+    const blob     = new Blob([buildStandaloneHTML()], { type: 'text/html;charset=utf-8' });
+    const a        = document.createElement('a');
+    a.href         = URL.createObjectURL(blob);
+    a.download     = filename;
+    a.click();
+  }
+
+  function resetForm() {
+    ['f-title','f-subtitle','f-intro','f-body','f-obs-label',
+     'f-obs-text','f-alert-text','f-filename'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.value = '';
+    });
+    const sel = document.getElementById('f-alert-icon');
+    if (sel) sel.selectedIndex = 0;
+    selectedNumStyle = 'circle';
+    renderNumStyleDropdown();
+    items = [];
+    resps = [];
+    renderItemsList();
+    renderRespList();
+    ['alert','list','obs'].forEach(k => { if (state[k]) toggleField(k); });
+    if (state.printResp) toggleField('printResp');
+    updateLinkPreview();
+    render();
+  }
+
+  renderNumStyleDropdown();
+  updateLinkPreview();
+  render();
+</script>
+</body>
+</html>
