@@ -437,8 +437,16 @@
   .preview-empty {
     text-align: center;
     padding: 60px 20px;
-    color: rgba(0,0,0,0.2);
+    color: rgba(0,0,0,0.25);
     font-size: 14px;
+    line-height: 1.8;
+  }
+
+  .preview-empty-icon {
+    font-size: 36px;
+    display: block;
+    margin-bottom: 12px;
+    opacity: 0.4;
   }
 
   /* ── COMUNICADO STYLES ── */
@@ -681,6 +689,16 @@
   .com-footer a { color: rgba(255,255,255,0.4); text-decoration: none; }
   .com-footer a:hover { color: rgba(255,255,255,0.65); }
 
+  .com-print-footer {
+    display: none;
+    text-align: center;
+    padding: 16px 20px 8px;
+    font-size: 11px;
+    color: #999;
+    border-top: 1px solid #ddd;
+    letter-spacing: 0.03em;
+  }
+
   @media (max-width: 860px) {
     .workspace { grid-template-columns: 1fr; }
     .editor { height: auto; position: static; }
@@ -891,7 +909,7 @@
           <ul class="welcome-actions-list">
             <li>📂 <strong>Carregar HTML</strong> — abre um comunicado já gerado por esta ferramenta para editar e fazer pequenos ajustes, sem precisar digitar tudo de novo.</li>
             <li>🖨️ <strong>Imprimir</strong> — gera uma versão simplificada, ideal para imprimir em papel ou salvar como PDF para guardar internamente. Serve para padronizar os documentos da empresa, mantendo o mesmo visual em todos os comunicados arquivados ou impressos pelos colaboradores.</li>
-            <li>⬇ <strong>Salvar HTML</strong> — salva o arquivo do comunicado. Envie esse arquivo para o responsável publicar online — depois disso, basta compartilhar o link com o cliente por WhatsApp ou e-mail.</li>
+            <li>⬇ <strong>Salvar HTML</strong> — salva o arquivo do comunicado. Envie para o responsável publicar na internet e compartilhar o link com o cliente por WhatsApp ou e-mail.</li>
             <li>↺ <strong>Limpar</strong> — apaga tudo e começa um novo comunicado do zero.</li>
           </ul>
         </span>
@@ -923,20 +941,23 @@
     </div>
   </div>
   <div class="topbar-actions">
-    <span class="version-tag">v3.8</span>
+    <span class="version-tag">v4.0</span>
     <span class="tip-wrap">
       <button class="btn btn-outline" onclick="document.getElementById('load-html-input').click()">📂 Carregar HTML</button>
       <span class="tip-box">Editar um comunicado já gerado</span>
     </span>
     <input type="file" id="load-html-input" accept=".html" style="display:none;" onchange="loadHTMLFile(event)">
-    <button class="btn btn-outline" onclick="resetForm()">↺ Limpar</button>
     <span class="tip-wrap">
       <button class="btn btn-outline" onclick="printComunicado()">🖨️ Imprimir</button>
-      <span class="tip-box">Imprimir ou salvar como PDF</span>
+      <span class="tip-box" style="white-space:normal;width:220px;text-align:left;">Imprimir ou selecione 'Salvar como PDF' na lista de impressoras</span>
     </span>
     <span class="tip-wrap">
       <button class="btn btn-gold" onclick="downloadHTML()">⬇ Salvar HTML</button>
-      <span class="tip-box tip-box-right">Salva o arquivo do comunicado para publicar na internet</span>
+      <span class="tip-box tip-box-right" style="white-space:normal;width:260px;text-align:left;">Salva o arquivo do comunicado. Envie para o responsável publicar na internet e compartilhar o link com o cliente.</span>
+    </span>
+    <span class="tip-wrap">
+      <button class="btn btn-outline" onclick="resetForm()">↺ Limpar</button>
+      <span class="tip-box tip-box-right">Apaga tudo e começa do zero</span>
     </span>
   </div>
 </div>
@@ -947,10 +968,10 @@
     <div class="section-label">Cabeçalho</div>
 
     <label>Título do comunicado</label>
-    <input type="text" id="f-title" placeholder="Ex.: Documentos para o Imposto de Renda" oninput="render()">
+    <input type="text" id="f-title" placeholder="Ex.: Documentos para o Imposto de Renda" oninput="render(); updateFilenamePlaceholder()">
 
     <label>Subtítulo / ano-base <span style="font-weight:400;color:#999">(opcional)</span></label>
-    <input type="text" id="f-subtitle" placeholder="Ex.: Ano-base 2025" oninput="render()">
+    <input type="text" id="f-subtitle" placeholder="Ex.: Ano-base 2025 · Competência Junho" oninput="render()">
 
     <div class="section-label">Conteúdo</div>
 
@@ -1036,7 +1057,7 @@
       <div class="toggle" id="tog-obs"></div>
     </div>
     <div id="field-obs" style="display:none;margin-top:8px;">
-      <input type="text" id="f-obs-label" placeholder="Rótulo (ex.: Observação importante)" oninput="render()" style="margin-bottom:6px;">
+      <input type="text" id="f-obs-label" placeholder="Deixe em branco para usar 'Observação importante'" oninput="render()" style="margin-bottom:6px;">
       <textarea id="f-obs-text" placeholder="Texto da observação..." oninput="render()"></textarea>
     </div>
 
@@ -1058,13 +1079,14 @@
     <div class="section-label" style="margin-top:28px;">Arquivo</div>
     <label>Nome do arquivo para download</label>
     <input type="text" id="f-filename" placeholder="comunicado-exemplo" oninput="updateLinkPreview()">
+    <p class="field-note">Este nome fará parte do link enviado ao cliente.</p>
     <div class="link-preview" id="link-preview">link.kluke.com.br/comunicado-exemplo</div>
 
   </div>
 
   <div class="preview-pane">
     <div class="preview-frame" id="preview-frame">
-      <div class="preview-empty">Preencha os campos ao lado para visualizar o comunicado.</div>
+      <div class="preview-empty"><span class="preview-empty-icon">📄</span>Preencha os campos ao lado<br>para visualizar o comunicado.</div>
     </div>
   </div>
 </div>
@@ -1143,9 +1165,28 @@
     render();
   }
 
+  function slugify(str) {
+    return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase().trim()
+      .replace(/[^a-z0-9\s-]/g, '')
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-')
+      .substring(0, 50);
+  }
+
+  function updateFilenamePlaceholder() {
+    const titleVal = (document.getElementById('f-title')?.value || '').trim();
+    const filenameInput = document.getElementById('f-filename');
+    if (!filenameInput) return;
+    const slug = titleVal ? slugify(titleVal) : 'comunicado-exemplo';
+    filenameInput.placeholder = slug;
+  }
+
   function updateLinkPreview() {
     const raw  = (document.getElementById('f-filename')?.value || '').trim();
-    const slug = raw.replace(/[^a-z0-9\-_]/gi, '') || 'comunicado-exemplo';
+    const titleVal = (document.getElementById('f-title')?.value || '').trim();
+    const fallback = titleVal ? slugify(titleVal) : 'comunicado-exemplo';
+    const slug = raw.replace(/[^a-z0-9\-_]/gi, '') || fallback;
     document.getElementById('link-preview').textContent = `link.kluke.com.br/${slug}`;
     render();
   }
@@ -1397,7 +1438,7 @@
 
     if (!title && !intro && !body && items.length === 0) {
       document.getElementById('preview-frame').innerHTML =
-        '<div class="preview-empty">Preencha os campos ao lado para visualizar o comunicado.</div>';
+        '<div class="preview-empty"><span class="preview-empty-icon">📄</span>Preencha os campos ao lado<br>para visualizar o comunicado.</div>';
       return;
     }
 
@@ -1576,7 +1617,9 @@ ${buildFooterHTML(state.printResp)}
 
   function downloadHTML() {
     const raw      = (document.getElementById('f-filename')?.value || '').trim();
-    const filename = (raw.replace(/[^a-z0-9\-_]/gi,'') || 'comunicado-kluke') + '.html';
+    const titleVal = (document.getElementById('f-title')?.value || '').trim();
+    const fallback = titleVal ? slugify(titleVal) : 'comunicado-kluke';
+    const filename = (raw.replace(/[^a-z0-9\-_]/gi,'') || fallback) + '.html';
     const blob     = new Blob([buildStandaloneHTML()], { type: 'text/html;charset=utf-8' });
     const a        = document.createElement('a');
     a.href         = URL.createObjectURL(blob);
@@ -1645,7 +1688,7 @@ ${buildFooterHTML(state.printResp)}
     resps = (data.resps || []).map(r => ({ id: Date.now() + Math.random(), name: r.name || '', email: r.email || '' }));
     renderRespList();
 
-    updateLinkPreview();
+    updateFilenamePlaceholder(); updateLinkPreview();
     render();
   }
 
@@ -1665,11 +1708,12 @@ ${buildFooterHTML(state.printResp)}
     renderRespList();
     ['alert','list','obs'].forEach(k => { if (state[k]) toggleField(k); });
     if (state.printResp) toggleField('printResp');
-    updateLinkPreview();
+    updateFilenamePlaceholder(); updateLinkPreview();
     render();
   }
 
   renderNumStyleDropdown();
+  updateFilenamePlaceholder();
   updateLinkPreview();
   render();
 
