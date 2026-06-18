@@ -889,15 +889,16 @@
         <span class="welcome-step-text">
           <strong>Escolha como usar:</strong>
           <ul class="welcome-actions-list">
+            <li>📂 <strong>Carregar HTML</strong> — abre um comunicado já gerado por esta ferramenta para editar e fazer pequenos ajustes, sem precisar digitar tudo de novo.</li>
             <li>🖨️ <strong>Imprimir</strong> — gera uma versão simplificada, ideal para imprimir em papel ou salvar como PDF para guardar internamente. Serve para padronizar os documentos da empresa, mantendo o mesmo visual em todos os comunicados arquivados ou impressos pelos colaboradores.</li>
-            <li>⬇ <strong>Baixar HTML</strong> — salva o arquivo do comunicado. Envie esse arquivo para o responsável publicar online — depois disso, basta compartilhar o link com o cliente por WhatsApp ou e-mail.</li>
+            <li>⬇ <strong>Salvar HTML</strong> — salva o arquivo do comunicado. Envie esse arquivo para o responsável publicar online — depois disso, basta compartilhar o link com o cliente por WhatsApp ou e-mail.</li>
             <li>↺ <strong>Limpar</strong> — apaga tudo e começa um novo comunicado do zero.</li>
           </ul>
         </span>
       </div>
 
       <div class="welcome-tip">
-        <strong>Dica:</strong> pode usar sem medo — nada aqui é salvo automaticamente nem enviado para lugar nenhum, tudo fica só no seu computador. Por isso, para textos mais longos, é mais seguro escrever primeiro no Word ou Bloco de Notas e depois colar aqui, evitando perder o que já foi digitado caso a página seja fechada por engano.
+        <strong>Dica:</strong> pode usar sem medo — nada aqui é salvo automaticamente nem enviado para lugar nenhum, tudo fica só no seu computador. Use o <strong>Salvar HTML</strong> para guardar o progresso e o <strong>Carregar HTML</strong> para retomar depois.
       </div>
     </div>
     <div class="welcome-footer">
@@ -922,14 +923,19 @@
     </div>
   </div>
   <div class="topbar-actions">
-    <span class="version-tag">v3.4</span>
+    <span class="version-tag">v3.8</span>
+    <span class="tip-wrap">
+      <button class="btn btn-outline" onclick="document.getElementById('load-html-input').click()">📂 Carregar HTML</button>
+      <span class="tip-box">Editar um comunicado já gerado</span>
+    </span>
+    <input type="file" id="load-html-input" accept=".html" style="display:none;" onchange="loadHTMLFile(event)">
     <button class="btn btn-outline" onclick="resetForm()">↺ Limpar</button>
     <span class="tip-wrap">
       <button class="btn btn-outline" onclick="printComunicado()">🖨️ Imprimir</button>
       <span class="tip-box">Imprimir ou salvar como PDF</span>
     </span>
     <span class="tip-wrap">
-      <button class="btn btn-gold" onclick="downloadHTML()">⬇ Baixar HTML</button>
+      <button class="btn btn-gold" onclick="downloadHTML()">⬇ Salvar HTML</button>
       <span class="tip-box tip-box-right">Salva o arquivo do comunicado para publicar na internet</span>
     </span>
   </div>
@@ -1011,7 +1017,17 @@
         <div class="numstyle-menu" id="numstyle-menu"></div>
       </div>
       <div class="items-list" id="items-container"></div>
-      <button class="btn-add-item" onclick="addItem()">+ Adicionar item</button>
+      <div style="display:flex;gap:8px;margin-top:6px;">
+        <button class="btn-add-item" onclick="addItem()" style="flex:1;margin-top:0;">+ Adicionar item</button>
+        <span class="tip-wrap" style="flex-shrink:0;">
+          <span style="display:flex;align-items:center;gap:6px;background:#fff;border:1px solid #ccc8c0;border-radius:6px;padding:0 4px 0 10px;">
+            <span style="font-size:12px;color:var(--muted);white-space:nowrap;">+</span>
+            <input type="number" id="f-bulk-add-qty" value="5" min="1" max="50" style="width:42px;border:none;text-align:center;padding:8px 0;font-size:13px;">
+            <button onclick="addBulkItems()" style="background:var(--gold);color:var(--navy);border:none;border-radius:4px;padding:6px 10px;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;">Add</button>
+          </span>
+          <span class="tip-box tip-box-below tip-box-right" style="white-space:normal;width:200px;">Adiciona vários itens de uma vez, sem precisar clicar um por um</span>
+        </span>
+      </div>
     </div>
 
     <label style="margin-top:16px;">Caixa de observação <span style="font-weight:400;color:#999">(opcional)</span></label>
@@ -1137,6 +1153,18 @@
   function addItem(text) {
     const id = Date.now() + Math.random();
     items.push({ id, text: text || '' });
+    renderItemsList();
+    render();
+  }
+
+  function addBulkItems() {
+    const input = document.getElementById('f-bulk-add-qty');
+    let qty = parseInt(input?.value, 10);
+    if (isNaN(qty) || qty < 1) qty = 1;
+    if (qty > 50) qty = 50;
+    for (let i = 0; i < qty; i++) {
+      items.push({ id: Date.now() + Math.random() + i, text: '' });
+    }
     renderItemsList();
     render();
   }
@@ -1442,10 +1470,12 @@ ol.com-list li{display:flex;align-items:flex-start;gap:14px;background:#fff;padd
   .com-header-top{border-bottom:1px solid #ccc;padding:14px 20px}
   .com-header-titles-block{border-bottom:none;padding:14px 20px 10px}
   .com-gold-bar{height:1px;background:var(--gold);-webkit-print-color-adjust:exact;print-color-adjust:exact}
-  .com-alert{background:#fff!important;border-color:#999!important;color:#000!important}
-  .com-intro{background:#fff!important;border-left-color:#999!important;color:#333!important}
-  .com-obs{background:#fff!important;color:#000!important;border:1px solid #999}
-  .com-obs-label{color:#555!important}
+  .com-alert{display:block;background:none!important;border:none!important;padding:0;margin-bottom:14px;color:#000!important;font-weight:600;font-size:13px;line-height:1.6}
+  .com-alert span{display:inline!important}
+  .com-intro{display:block;background:none!important;border:none!important;border-radius:0;padding:0;margin-bottom:14px;color:#333!important;font-style:italic;font-size:13px}
+  .com-obs{display:block;background:none!important;border:none!important;padding:0;margin-top:0;margin-bottom:14px;color:#000!important;font-size:13px}
+  .com-obs-label{color:#000!important;font-weight:700;font-family:'Source Sans 3',sans-serif!important;letter-spacing:normal;text-transform:none;font-size:13px;margin-bottom:4px}
+  .com-obs-text{display:inline}
   ol.com-list{display:block;margin-bottom:18px}
   ol.com-list li{display:block;background:none!important;border:none!important;padding:0;margin-bottom:10px;font-size:13px;line-height:1.6}
   .com-num-circle,.com-num-outline,.com-num-pill,.com-num-square{display:inline!important;width:auto!important;height:auto!important;background:none!important;border:none!important;color:#000!important;border-radius:0!important;padding:0;font-family:'Source Sans 3',sans-serif!important;font-size:13px!important;font-weight:600;}
@@ -1461,6 +1491,29 @@ ol.com-list li{display:flex;align-items:flex-start;gap:14px;background:#fff;padd
   }
 
   /* ── BUILD STANDALONE ── */
+  function buildEditorStateJSON() {
+    const numStyleVal = selectedNumStyle || 'circle';
+    const data = {
+      title: val('f-title'),
+      subtitle: val('f-subtitle'),
+      intro: val('f-intro'),
+      body: val('f-body'),
+      filename: val('f-filename'),
+      alertOn: state.alert,
+      alertIcon: document.getElementById('f-alert-icon')?.value || '',
+      alertText: val('f-alert-text'),
+      listOn: state.list,
+      listStyle: numStyleVal,
+      items: items.map(i => i.text),
+      obsOn: state.obs,
+      obsLabel: val('f-obs-label'),
+      obsText: val('f-obs-text'),
+      printResp: state.printResp,
+      resps: resps.map(r => ({ name: r.name, email: r.email })),
+    };
+    return JSON.stringify(data).replace(/<\/script/gi, '<\\/script');
+  }
+
   function buildStandaloneHTML() {
     const title    = val('f-title')    || 'Comunicado';
     const subtitle = val('f-subtitle');
@@ -1478,6 +1531,7 @@ ol.com-list li{display:flex;align-items:flex-start;gap:14px;background:#fff;padd
 ${buildStandaloneCSS()}
 </head>
 <body>
+<script type="application/json" id="kluke-comm-data">${buildEditorStateJSON()}<\/script>
 <div class="com-wrapper">
 ${buildHeaderHTML(50)}
 ${buildTitlesHTML(title, subtitle)}
@@ -1528,6 +1582,71 @@ ${buildFooterHTML(state.printResp)}
     a.href         = URL.createObjectURL(blob);
     a.download     = filename;
     a.click();
+  }
+
+  function loadHTMLFile(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const content = e.target.result;
+      const match = content.match(/<script type="application\/json" id="kluke-comm-data">([\s\S]*?)<\/script>/);
+
+      if (!match) {
+        alert('Não foi possível carregar este arquivo. Ele não foi gerado por este gerador de comunicados, ou os dados internos foram removidos.');
+        event.target.value = '';
+        return;
+      }
+
+      let data;
+      try {
+        data = JSON.parse(match[1].replace(/<\\\/script/gi, '<\/script'));
+      } catch (err) {
+        alert('Não foi possível ler os dados deste arquivo. O conteúdo pode estar corrompido.');
+        event.target.value = '';
+        return;
+      }
+
+      applyLoadedData(data);
+      event.target.value = '';
+    };
+    reader.onerror = function() {
+      alert('Não foi possível abrir o arquivo selecionado.');
+    };
+    reader.readAsText(file);
+  }
+
+  function applyLoadedData(data) {
+    document.getElementById('f-title').value    = data.title    || '';
+    document.getElementById('f-subtitle').value  = data.subtitle || '';
+    document.getElementById('f-intro').value     = data.intro    || '';
+    document.getElementById('f-body').value      = data.body     || '';
+    document.getElementById('f-filename').value  = data.filename || '';
+
+    if (state.alert !== !!data.alertOn) toggleField('alert');
+    const alertIconSel = document.getElementById('f-alert-icon');
+    if (alertIconSel) alertIconSel.value = data.alertIcon || '';
+    document.getElementById('f-alert-text').value = data.alertText || '';
+
+    if (state.list !== !!data.listOn) toggleField('list');
+    selectedNumStyle = data.listStyle || 'circle';
+    renderNumStyleDropdown();
+
+    items = (data.items || []).map(text => ({ id: Date.now() + Math.random(), text }));
+    renderItemsList();
+
+    if (state.obs !== !!data.obsOn) toggleField('obs');
+    document.getElementById('f-obs-label').value = data.obsLabel || '';
+    document.getElementById('f-obs-text').value   = data.obsText  || '';
+
+    if (state.printResp !== !!data.printResp) toggleField('printResp');
+
+    resps = (data.resps || []).map(r => ({ id: Date.now() + Math.random(), name: r.name || '', email: r.email || '' }));
+    renderRespList();
+
+    updateLinkPreview();
+    render();
   }
 
   function resetForm() {
