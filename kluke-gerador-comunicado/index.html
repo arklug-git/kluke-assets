@@ -728,7 +728,7 @@
   .welcome-modal {
     background: var(--cream);
     border-radius: 12px;
-    max-width: 560px;
+    max-width: 720px;
     width: 100%;
     max-height: 85vh;
     overflow-y: auto;
@@ -879,9 +879,45 @@
   }
 
   .help-fab:hover { transform: scale(1.08); }
+
+  /* Aviso ao tentar imprimir a página do gerador (Ctrl+P) */
+  .print-redirect-notice { display: none; }
+
+  @media print {
+    body * { display: none !important; }
+    .print-redirect-notice,
+    .print-redirect-notice .icon,
+    .print-redirect-notice h2,
+    .print-redirect-notice p {
+      display: block !important;
+    }
+    .print-redirect-notice {
+      text-align: center;
+      padding: 120px 40px;
+      font-family: 'Source Sans 3', sans-serif;
+    }
+    .print-redirect-notice .icon { font-size: 48px; margin-bottom: 20px; }
+    .print-redirect-notice h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      color: #0d1f3c;
+      margin-bottom: 12px;
+    }
+    .print-redirect-notice p {
+      font-size: 15px;
+      color: #555;
+      line-height: 1.6;
+    }
+  }
 </style>
 </head>
 <body>
+
+<div class="print-redirect-notice">
+  <div class="icon">🖨️</div>
+  <h2>Use o botão Imprimir</h2>
+  <p>Para imprimir o comunicado, cancele esta janela e clique<br>no botão 🖨️ Imprimir na barra superior do gerador.</p>
+</div>
 
 <div class="welcome-overlay" id="welcome-overlay">
   <div class="welcome-modal">
@@ -908,8 +944,8 @@
           <strong>Escolha como usar:</strong>
           <ul class="welcome-actions-list">
             <li>📂 <strong>Carregar HTML</strong> — abre um comunicado já gerado por esta ferramenta para editar e fazer pequenos ajustes, sem precisar digitar tudo de novo.</li>
-            <li>🖨️ <strong>Imprimir</strong> — gera uma versão simplificada, ideal para imprimir em papel ou salvar como PDF para guardar internamente. Serve para padronizar os documentos da empresa, mantendo o mesmo visual em todos os comunicados arquivados ou impressos pelos colaboradores.</li>
-            <li>⬇ <strong>Salvar HTML</strong> — salva o arquivo do comunicado. Envie para o responsável publicar na internet e compartilhar o link com o cliente por WhatsApp ou e-mail.</li>
+            <li>🖨️ <strong>Imprimir</strong> — gera uma versão simplificada para imprimir ou salvar como PDF, padronizando os documentos da empresa. Salve o HTML antes, caso queira editar depois.</li>
+            <li>⬇ <strong>Salvar HTML</strong> — salva o arquivo do comunicado. Envie para o responsável publicar na internet e compartilhar o link com o cliente por WhatsApp ou e-mail. <em>Dando dois cliques no arquivo salvo, ele já abre direto, sem precisar deste gerador.</em></li>
             <li>↺ <strong>Limpar</strong> — apaga tudo e começa um novo comunicado do zero.</li>
           </ul>
         </span>
@@ -941,7 +977,7 @@
     </div>
   </div>
   <div class="topbar-actions">
-    <span class="version-tag">v4.0</span>
+    <span class="version-tag">v1.3</span>
     <span class="tip-wrap">
       <button class="btn btn-outline" onclick="document.getElementById('load-html-input').click()">📂 Carregar HTML</button>
       <span class="tip-box">Editar um comunicado já gerado</span>
