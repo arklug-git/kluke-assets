@@ -711,6 +711,64 @@
     .com-header-info { align-items: center; text-align: center; }
   }
 
+  /* ── MOBILE: TOPBAR E CONTROLES GERAIS ── */
+  @media (max-width: 720px) {
+    .topbar {
+      flex-direction: column;
+      align-items: stretch;
+      padding: 12px 14px;
+      gap: 10px;
+    }
+
+    .topbar-brand { justify-content: center; }
+
+    .topbar-title { font-size: 14px; }
+
+    .topbar-actions {
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .topbar-actions .btn {
+      font-size: 12px;
+      padding: 8px 12px;
+    }
+
+    .version-tag { width: 100%; text-align: center; margin: 0 0 4px; }
+
+    .editor, .preview-pane { padding: 18px 14px; }
+
+    /* Tooltips: em telas de toque, abrir sempre centralizado e abaixo, nunca cortado nas laterais */
+    .tip-box, .tip-box-right {
+      left: 50% !important;
+      right: auto !important;
+      transform: translateX(-50%) !important;
+      max-width: 90vw;
+      white-space: normal !important;
+    }
+
+    .tip-box::after, .tip-box-right::after {
+      left: 50% !important;
+      right: auto !important;
+      transform: translateX(-50%) !important;
+    }
+
+    /* Dropdown de estilo de numeração: menu ocupa largura total disponível */
+    .numstyle-menu { left: 0; right: 0; }
+
+    /* Itens da lista: textarea com fonte um pouco maior para toque */
+    .item-row textarea { font-size: 14px; }
+
+    /* Card de responsável: campos empilham melhor */
+    .resp-group { flex-wrap: wrap; }
+
+    /* Evita zoom automático em iOS ao focar campos de texto */
+    input[type="text"], textarea, select, .emoji-select, .numstyle-trigger {
+      font-size: 16px;
+    }
+  }
+
   /* ── MODAL DE BOAS-VINDAS ── */
   .welcome-overlay {
     position: fixed;
@@ -880,6 +938,16 @@
 
   .help-fab:hover { transform: scale(1.08); }
 
+  @media (max-width: 600px) {
+    .welcome-overlay { padding: 12px; }
+    .welcome-header { padding: 20px 18px 16px; }
+    .welcome-header h2 { font-size: 18px; }
+    .welcome-body { padding: 18px 18px 4px; }
+    .welcome-footer { padding: 16px 18px 20px; }
+    .welcome-close-btn { width: 100%; padding: 13px; }
+    .help-fab { bottom: 16px; right: 16px; }
+  }
+
   /* Aviso ao tentar imprimir a página do gerador (Ctrl+P) */
   .print-redirect-notice { display: none; }
 
@@ -977,7 +1045,7 @@
     </div>
   </div>
   <div class="topbar-actions">
-    <span class="version-tag">v1.3</span>
+    <span class="version-tag">v1.4</span>
     <span class="tip-wrap">
       <button class="btn btn-outline" onclick="document.getElementById('load-html-input').click()">📂 Carregar HTML</button>
       <span class="tip-box">Editar um comunicado já gerado</span>
