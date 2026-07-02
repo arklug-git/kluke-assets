@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Registro de Empresas — Kluke Serviços Contábeis</title>
+<link rel="icon" type="image/png" href="https://link.kluke.com.br/96x96-5d0a63a33117b.png">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0d1f3c;--gold:#c8a84b;--gold-light:#e8c97a;--cream:#f8f4ee;--text:#2a2a2a;--muted:#6b6b6b;--line:#ddd5c4}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#e8e4de;font-family:'Source Sans 3',sans-serif;min-height:100vh}
+.com-wrapper{max-width:700px;margin:0 auto;background:var(--cream);box-shadow:0 4px 32px rgba(0,0,0,0.15)}
+.com-header-top{background:#f0e9da;border-bottom:1px solid var(--line);padding:18px 28px;display:flex;align-items:center;gap:20px}
+.com-header-vdivider{width:1px;align-self:stretch;background:var(--line);flex-shrink:0}
+.com-header-info{display:flex;flex-direction:column;justify-content:center}
+.com-firm-name{font-family:'Playfair Display',serif;font-size:14px;color:var(--navy);line-height:1.3}
+.com-firm-meta{font-size:11px;color:var(--muted);line-height:1.85;margin-top:4px}
+.com-firm-meta a{color:var(--muted);text-decoration:none}
+.com-header-titles-block{background:var(--cream);padding:20px 28px 22px;text-align:center;border-bottom:1px solid var(--line)}
+.com-title{font-family:'Playfair Display',serif;font-size:22px;color:var(--navy);line-height:1.3}
+.com-subtitle{font-size:12px;font-weight:300;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-top:5px}
+.com-gold-bar{height:3px;background:linear-gradient(90deg,var(--gold),var(--gold-light),var(--gold))}
+.com-main{padding:32px 28px 48px}
+.com-intro{background:#fff;border-left:3px solid var(--gold);border-radius:0 8px 8px 0;padding:16px 20px;margin-bottom:28px;font-size:14px;color:var(--muted);line-height:1.65;white-space:pre-wrap}
+.com-section-title{font-family:'Playfair Display',serif;font-size:16px;color:var(--navy);margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+ol.com-list{list-style:none;display:flex;flex-direction:column;gap:2px;margin-bottom:32px}
+ol.com-list li{display:flex;align-items:flex-start;gap:14px;background:#fff;padding:14px 18px;border-radius:6px;font-size:14.5px;line-height:1.55;border:1px solid var(--line)}
+.com-num{flex-shrink:0;width:26px;height:26px;background:var(--gold);color:var(--cream);font-family:'Playfair Display',serif;font-size:13px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-top:1px}
+.com-contact{margin-top:36px;padding-top:28px;border-top:1px solid var(--line);text-align:center}
+.com-contact h2{font-family:'Playfair Display',serif;font-size:18px;color:var(--navy);margin-bottom:4px}
+.com-contact-sub{font-size:13px;color:var(--muted);margin-bottom:20px}
+.com-cards{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+.com-card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:16px 20px;min-width:180px;text-align:left}
+.com-card-label{font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--gold);font-weight:600;display:block;margin-bottom:10px}
+.com-card-sublabel{font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--gold);font-weight:600;display:block;margin-bottom:6px;margin-top:10px;padding-top:10px;border-top:1px solid var(--line)}
+.com-card a{display:block;font-size:13px;color:var(--muted);text-decoration:none;line-height:1.8}
+.com-footer{background:var(--navy);text-align:center;padding:16px 20px;font-size:12px;color:rgba(255,255,255,.3);letter-spacing:.04em;line-height:1.9}
+.com-footer a{color:rgba(255,255,255,.4);text-decoration:none}
+.com-print-footer{display:none;text-align:center;padding:16px 20px 8px;font-size:11px;color:#999;border-top:1px solid #ddd;letter-spacing:.03em}
+.btn-print{position:fixed;bottom:28px;right:28px;background:var(--navy);color:var(--gold);border:1px solid var(--gold);border-radius:50px;padding:12px 22px;font-family:'Source Sans 3',sans-serif;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px;box-shadow:0 4px 16px rgba(13,31,60,.25);transition:background .2s,color .2s;z-index:999}
+.btn-print:hover{background:var(--gold);color:var(--navy)}
+@media (max-width:480px){
+  .com-header-top{flex-direction:column;text-align:center;padding:18px 20px}
+  .com-header-vdivider{display:none}
+  .com-header-info{align-items:center;text-align:center}
+  .com-cards{flex-direction:column}
+  .com-card{min-width:unset}
+}
+@media print{
+  body{background:#fff}
+  .btn-print{display:none!important}
+  .com-wrapper{box-shadow:none;max-width:100%}
+  .com-header-top{border-bottom:1px solid #ccc;padding:14px 20px}
+  .com-header-titles-block{border-bottom:none;padding:14px 20px 10px}
+  .com-gold-bar{height:1px;background:var(--gold);-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .com-intro{background:#fff!important;border-left-color:#999!important;color:#333!important}
+  .com-section-title{border-bottom-color:#ccc}
+  ol.com-list{display:block;margin-bottom:18px}
+  ol.com-list li{display:block;background:none!important;border:none!important;padding:0;margin-bottom:8px;font-size:13px;line-height:1.6}
+  .com-num{display:inline!important;width:auto!important;height:auto!important;background:none!important;border:none!important;color:#000!important;border-radius:0!important;font-size:13px!important;font-weight:600;font-family:'Source Sans 3',sans-serif!important}
+  .com-num::after{content:'. '}
+  .com-contact{display:none!important}
+  .com-footer{display:none!important}
+  .com-print-footer{display:block!important}
+}
+</style>
+</head>
+<body>
+<div class="com-wrapper">
+
+  <!-- HEADER -->
+  <div class="com-header-top">
+    <a href="https://www.kluke.com.br" target="_blank" rel="noopener" style="display:flex;align-items:center;flex-shrink:0;">
+      <img src="https://link.kluke.com.br/original-5b2bf023264c2-K.png" alt="Kluke" style="height:50px;display:block;">
+    </a>
+    <div class="com-header-vdivider"></div>
+    <div class="com-header-info">
+      <div class="com-firm-name">Kluke Serviços Contábeis e Econômicos Ltda</div>
+      <div class="com-firm-meta">
+        CNPJ 76.860.386/0001-73 &nbsp;·&nbsp; CRC-SC 1081/O-8<br>
+        <a href="https://www.kluke.com.br" target="_blank">www.kluke.com.br</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- TÍTULO -->
+  <div class="com-header-titles-block">
+    <div class="com-title">Registro de Empresas</div>
+    <div class="com-subtitle">Documentos e informações necessários</div>
+  </div>
+
+  <div class="com-gold-bar"></div>
+
+  <!-- CORPO -->
+  <div class="com-main">
+
+    <!-- Introdução -->
+    <div class="com-intro">Para abrir uma empresa, seja como sociedade ou como empresário individual, você precisará reunir alguns documentos e informações. Confira tudo abaixo antes de nos contatar — assim agilizamos o processo!</div>
+
+    <!-- Lista 1: Documentos -->
+    <div class="com-section-title">Documentos</div>
+    <ol class="com-list">
+      <li><span class="com-num">1</span><span style="flex:1">Cópia simples do RG e CPF</span></li>
+      <li><span class="com-num">2</span><span style="flex:1">Cópia do CPF do cônjuge e dos filhos menores (se casado)</span></li>
+      <li><span class="com-num">3</span><span style="flex:1">Certidão de casamento atualizada (se casado)</span></li>
+      <li><span class="com-num">4</span><span style="flex:1">Cópia do Título de Eleitor ou da Declaração do IR dos últimos 2 anos</span></li>
+      <li><span class="com-num">5</span><span style="flex:1">Cópia simples do Comprovante de Residência</span></li>
+      <li><span class="com-num">6</span><span style="flex:1">Cópia do Carnê do IPTU do imóvel onde ficará a empresa</span></li>
+      <li><span class="com-num">7</span><span style="flex:1">Área do imóvel alugado e área total construída</span></li>
+      <li><span class="com-num">8</span><span style="flex:1">Cópia do Contrato de Locação ou nome e CPF do proprietário do imóvel</span></li>
+    </ol>
+
+    <!-- Lista 2: Dados e Informações -->
+    <div class="com-section-title">Dados e Informações</div>
+    <ol class="com-list">
+      <li><span class="com-num">1</span><span style="flex:1">Qualificação completa dos sócios com endereço de residência</span></li>
+      <li><span class="com-num">2</span><span style="flex:1">3 opções de nome para a empresa e título do estabelecimento (se houver)</span></li>
+      <li><span class="com-num">3</span><span style="flex:1">Endereço completo da empresa</span></li>
+      <li><span class="com-num">4</span><span style="flex:1">Descrição das atividades que a empresa irá desenvolver</span></li>
+      <li><span class="com-num">5</span><span style="flex:1">Valor do Capital Social em Reais</span></li>
+      <li><span class="com-num">6</span><span style="flex:1">Percentual de participação de cada sócio no Capital Social</span></li>
+      <li><span class="com-num">7</span><span style="flex:1">Definição de quem será o sócio administrador, ou se todos os sócios serão</span></li>
+      <li><span class="com-num">8</span><span style="flex:1">Cláusulas específicas de interesse dos sócios no contrato social (se houver)</span></li>
+    </ol>
+
+    <!-- Contatos -->
+    <div class="com-contact">
+      <h2>Dúvidas? Fale conosco</h2>
+      <p class="com-contact-sub">Nossa equipe está à disposição</p>
+      <div class="com-cards">
+        <div class="com-card">
+          <span class="com-card-label">Atendimento</span>
+          <a href="tel:4733820601">(47) 3382-0601</a>
+          <a href="tel:4733820767">(47) 3382-0767</a>
+          <span class="com-card-sublabel">WhatsApp</span>
+          <a href="https://wa.me/5547984321322">(47) 98432-1322</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- RODAPÉ -->
+  <div class="com-footer">
+    <a href="https://maps.app.goo.gl/BLgMuJf6wUEH9B5c6" target="_blank" rel="noopener">Av. Nereu Ramos, 64 · Timbó-SC</a><br>
+    © 2026 Kluke Serviços Contábeis e Econômicos Ltda
+  </div>
+
+  <!-- RODAPÉ DE IMPRESSÃO -->
+  <div class="com-print-footer">
+    Kluke Serviços Contábeis e Econômicos Ltda &nbsp;·&nbsp; Av. Nereu Ramos, 64 · Timbó-SC<br>
+    (47) 3382-0601 &nbsp;·&nbsp; (47) 3382-0767 &nbsp;·&nbsp; WhatsApp (47) 98432-1322
+  </div>
+
+</div>
+<button class="btn-print" onclick="window.print()">🖨️ Imprimir</button>
+</body>
+</html>
