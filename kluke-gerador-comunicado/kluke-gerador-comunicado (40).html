@@ -1,0 +1,2484 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gerador de Comunicados — Kluke</title>
+<link rel="icon" type="image/png" href="https://link.kluke.com.br/96x96-5d0a63a33117b.png">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0d1f3c;
+    --gold: #c8a84b;
+    --gold-light: #e8c97a;
+    --cream: #f8f4ee;
+    --text: #2a2a2a;
+    --muted: #6b6b6b;
+    --line: #ddd5c4;
+    --red: #8b2626;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #e8e4de;
+    color: var(--text);
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 15px;
+    min-height: 100vh;
+  }
+
+  .topbar {
+    background: var(--cream);
+    padding: 12px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 1px 0 var(--line), 0 2px 12px rgba(0,0,0,0.07);
+  }
+
+  .topbar-brand { display: flex; align-items: center; gap: 14px; }
+  .topbar-brand img { height: 34px; }
+  .topbar-divider { width: 1px; height: 28px; background: var(--line); }
+
+  .topbar-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    color: var(--navy);
+    line-height: 1.2;
+  }
+
+  .topbar-title span {
+    display: block;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 11px;
+    font-weight: 300;
+    color: var(--muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  .topbar-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; justify-content: flex-end; }
+
+  .version-tag {
+    font-size: 10px;
+    color: #bbb;
+    letter-spacing: 0.08em;
+    font-weight: 300;
+    margin-right: 4px;
+    user-select: none;
+  }
+
+  .btn {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 6px;
+    padding: 9px 18px;
+    cursor: pointer;
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    transition: opacity 0.15s;
+    white-space: nowrap;
+  }
+
+  .btn:hover { opacity: 0.85; }
+  .btn:active { opacity: 0.7; }
+  .btn-gold    { background: var(--gold); color: var(--navy); }
+  .btn-outline { background: transparent; color: var(--navy); border: 1px solid var(--line); }
+
+  .tip-wrap { position: relative; display: inline-flex; }
+
+  .tip-box {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--navy);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.5;
+    padding: 8px 12px;
+    border-radius: 6px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.18);
+    z-index: 200;
+  }
+
+  .tip-box::after {
+    content: '';
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-bottom-color: var(--navy);
+  }
+
+  .tip-wrap:hover .tip-box { opacity: 1; }
+
+  .tip-box-right { left: auto; right: 0; transform: none; }
+  .tip-box-right::after { left: auto; right: 14px; transform: none; }
+
+  .workspace {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 32px 20px 80px;
+  }
+
+  .canvas {
+    background: var(--cream);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 32px rgba(0,0,0,0.15);
+  }
+
+  .com-header-top {
+    background: #f0e9da;
+    border-bottom: 1px solid var(--line);
+    padding: 18px 28px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .com-header-vdivider { width: 1px; align-self: stretch; background: var(--line); flex-shrink: 0; }
+  .com-header-info { display: flex; flex-direction: column; justify-content: center; }
+
+  .com-firm-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 14px;
+    color: var(--navy);
+    line-height: 1.3;
+  }
+
+  .com-firm-meta { font-size: 11px; color: var(--muted); line-height: 1.85; margin-top: 4px; }
+  .com-firm-meta a { color: var(--muted); text-decoration: none; }
+
+  .com-header-titles-block {
+    background: var(--cream);
+    padding: 20px 28px 22px;
+    text-align: center;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .editable-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    color: var(--navy);
+    line-height: 1.3;
+    outline: none;
+    border-radius: 4px;
+    padding: 4px 8px;
+    min-height: 1.3em;
+    transition: background 0.15s;
+  }
+
+  .editable-subtitle {
+    font-size: 12px;
+    font-weight: 300;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: 6px;
+    outline: none;
+    border-radius: 4px;
+    padding: 4px 8px;
+    min-height: 1em;
+    transition: background 0.15s;
+  }
+
+  .editable-title:hover, .editable-subtitle:hover,
+  .editable-title:focus, .editable-subtitle:focus {
+    background: rgba(200,168,75,0.12);
+  }
+
+  .editable-title:empty::before {
+    content: attr(data-placeholder);
+    color: rgba(13,31,60,0.3);
+  }
+
+  .editable-subtitle:empty::before {
+    content: attr(data-placeholder);
+    color: rgba(107,107,107,0.5);
+  }
+
+  .com-gold-bar { height: 3px; background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold)); }
+
+  .com-main { background: var(--cream); padding: 28px 28px 8px; }
+
+  .blocks-empty {
+    text-align: center;
+    padding: 50px 20px;
+    color: rgba(0,0,0,0.25);
+    font-size: 14px;
+    line-height: 1.8;
+  }
+
+  .blocks-empty .icon { font-size: 36px; display: block; margin-bottom: 12px; opacity: 0.4; }
+
+  .block-wrap {
+    position: relative;
+    margin-bottom: 18px;
+    border-radius: 8px;
+    transition: box-shadow 0.15s;
+  }
+
+  .block-wrap.dragging { opacity: 0.4; }
+
+  .block-wrap.drag-over-top::before,
+  .block-wrap.drag-over-bottom::after {
+    content: '';
+    position: absolute;
+    left: 0; right: 0;
+    height: 3px;
+    background: var(--gold);
+    border-radius: 2px;
+    z-index: 5;
+  }
+
+  .block-wrap.drag-over-top::before { top: -10px; }
+  .block-wrap.drag-over-bottom::after { bottom: -10px; }
+
+  .block-controls {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    display: flex;
+    gap: 4px;
+    opacity: 0;
+    transition: opacity 0.15s;
+    z-index: 10;
+  }
+
+  .block-wrap:hover .block-controls { opacity: 1; }
+
+  .block-btn {
+    width: 26px; height: 26px;
+    background: rgba(13,31,60,0.85);
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s;
+  }
+
+  .block-btn:hover { background: var(--navy); }
+  .block-btn.danger:hover { background: var(--red); }
+
+  .block-drag-handle {
+    cursor: grab;
+    background: rgba(13,31,60,0.5);
+  }
+
+  .block-drag-handle:active { cursor: grabbing; }
+
+  .block-text {
+    background: transparent;
+    padding: 4px 0;
+  }
+
+  .editable-text {
+    font-size: 15px;
+    line-height: 1.75;
+    color: var(--text);
+    outline: none;
+    white-space: pre-wrap;
+    min-height: 1.5em;
+    padding: 8px 10px;
+    border-radius: 6px;
+    transition: background 0.15s;
+  }
+
+  .editable-text:hover, .editable-text:focus { background: rgba(200,168,75,0.08); }
+
+  .editable-text:empty::before {
+    content: attr(data-placeholder);
+    color: rgba(0,0,0,0.3);
+  }
+
+  .block-text.is-intro .editable-text {
+    background: #fff;
+    border-left: 3px solid var(--gold);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.65;
+  }
+
+  .block-text.is-intro .editable-text:hover,
+  .block-text.is-intro .editable-text:focus { background: #fffdf7; }
+
+  .block-type-toggle {
+    display: inline-flex;
+    gap: 6px;
+    margin-bottom: 6px;
+    opacity: 0;
+    transition: opacity 0.15s;
+  }
+
+  .block-wrap:hover .block-type-toggle { opacity: 1; }
+
+  /* ── TOOLBAR FLUTUANTE DE FORMATAÇÃO (aparece ao selecionar texto) ── */
+  .format-toolbar {
+    position: fixed;
+    display: none;
+    align-items: center;
+    gap: 2px;
+    background: var(--navy);
+    border-radius: 8px;
+    padding: 5px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    z-index: 500;
+  }
+
+  .format-toolbar.visible { display: flex; }
+
+  .format-toolbar::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-top-color: var(--navy);
+  }
+
+  .format-btn {
+    width: 30px; height: 30px;
+    background: transparent;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.12s;
+  }
+
+  .format-btn:hover { background: rgba(255,255,255,0.15); }
+  .format-btn.active { background: var(--gold); color: var(--navy); }
+  .format-btn.b { font-weight: 700; }
+  .format-btn.i { font-style: italic; }
+  .format-btn.u { text-decoration: underline; }
+
+  .block-type-btn {
+    font-size: 10px;
+    padding: 3px 9px;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    background: #fff;
+    color: var(--muted);
+    cursor: pointer;
+    font-family: 'Source Sans 3', sans-serif;
+    letter-spacing: 0.04em;
+  }
+
+  .block-type-btn.active { background: var(--gold); color: var(--navy); border-color: var(--gold); font-weight: 600; }
+
+  .block-alert {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: #fff7e6;
+    border: 1px solid var(--gold);
+    border-radius: 8px;
+    padding: 14px 18px;
+  }
+
+  .block-alert-icon-picker {
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .block-alert-icon-btn {
+    width: 32px; height: 32px;
+    background: #fff;
+    border: 1px solid var(--gold);
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .block-alert-icon-menu {
+    display: none;
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    padding: 8px;
+    z-index: 60;
+    width: 220px;
+  }
+
+  .block-alert-icon-menu.open { display: block; }
+
+  .icon-menu-group-label {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin: 6px 4px 3px;
+  }
+
+  .icon-menu-group-label:first-child { margin-top: 0; }
+
+  .icon-menu-grid { display: flex; flex-wrap: wrap; gap: 2px; }
+
+  .icon-menu-item {
+    width: 30px; height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+  }
+
+  .icon-menu-item:hover { background: #f5f0e6; }
+  .icon-menu-item.selected { background: #fbf3e3; outline: 1.5px solid var(--gold); }
+
+  .icon-menu-none {
+    font-size: 11px;
+    padding: 6px 8px;
+    border-radius: 5px;
+    cursor: pointer;
+    color: var(--muted);
+    border: none;
+    background: transparent;
+    width: 100%;
+    text-align: left;
+  }
+
+  .icon-menu-none:hover { background: #f5f0e6; }
+
+  .block-alert .editable-text {
+    flex: 1;
+    font-size: 14px;
+    color: #7a5500;
+    padding: 4px 6px;
+  }
+
+  .block-alert .editable-text:empty::before { content: attr(data-placeholder); color: rgba(122,85,0,0.4); }
+
+  .block-obs {
+    background: #fbf3e3;
+    border: 1.5px solid var(--gold);
+    border-radius: 8px;
+    padding: 14px 22px;
+  }
+
+  .editable-obs-label {
+    font-family: 'Playfair Display', serif;
+    color: #8a6d1f;
+    font-size: 13px;
+    line-height: 1.2;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    outline: none;
+    display: inline-block;
+    margin-bottom: 6px;
+    border-radius: 4px;
+    padding: 2px 6px;
+  }
+
+  .editable-obs-label:hover, .editable-obs-label:focus { background: rgba(200,168,75,0.15); }
+  .editable-obs-label:empty::before { content: attr(data-placeholder); color: rgba(138,109,31,0.4); }
+
+  .block-obs .editable-text {
+    font-size: 13px;
+    color: #4a4a4a;
+    padding: 4px 6px;
+  }
+
+  .block-list { }
+
+  .editable-list-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    color: var(--navy);
+    margin-bottom: 10px;
+    padding: 4px 8px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--line);
+    outline: none;
+    border-radius: 4px 4px 0 0;
+  }
+
+  .editable-list-title:hover, .editable-list-title:focus { background: rgba(200,168,75,0.08); }
+  .editable-list-title:empty::before { content: attr(data-placeholder); color: rgba(13,31,60,0.3); }
+
+  .numstyle-mini-select {
+    font-size: 11px;
+    padding: 4px 8px;
+    border-radius: 5px;
+    border: 1px solid var(--line);
+    background: #fff;
+    color: var(--muted);
+    cursor: pointer;
+    margin-bottom: 10px;
+  }
+
+  ol.com-list { list-style: none; display: flex; flex-direction: column; gap: 4px; margin-bottom: 8px; }
+
+  ol.com-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    background: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 13.5px;
+    line-height: 1.5;
+    border: 1px solid var(--line);
+    position: relative;
+  }
+
+  ol.com-list li .editable-item {
+    flex: 1;
+    outline: none;
+    padding: 2px 4px;
+    border-radius: 4px;
+  }
+
+  ol.com-list li .editable-item:hover, ol.com-list li .editable-item:focus { background: rgba(200,168,75,0.08); }
+  ol.com-list li .editable-item:empty::before { content: 'Digite o item...'; color: rgba(0,0,0,0.25); }
+
+  .com-num {
+    flex-shrink: 0;
+    font-family: 'Playfair Display', serif;
+    margin-top: 1px;
+  }
+
+  .com-num-circle { width: 20px; height: 20px; background: var(--gold); color: var(--cream); font-size: 11px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+  .com-num-outline { width: 20px; height: 20px; background: transparent; border: 1.5px solid var(--gold); color: var(--gold); font-size: 11px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+  .com-num-plain { font-size: 17px; color: var(--gold); line-height: 1; }
+  .com-num-dot { font-family: 'Source Sans 3', sans-serif; font-weight: 600; font-size: 12px; color: var(--gold); min-width: 16px; }
+  .com-num-pill { min-width: 20px; height: 17px; padding: 0 7px; background: var(--gold); color: var(--cream); font-size: 10px; border-radius: 9px; display: flex; align-items: center; justify-content: center; }
+  .com-num-square { width: 20px; height: 20px; background: var(--gold); color: var(--cream); font-size: 11px; border-radius: 5px; display: flex; align-items: center; justify-content: center; }
+
+  .item-del-btn {
+    background: none;
+    border: none;
+    color: #ccc;
+    cursor: pointer;
+    font-size: 15px;
+    padding: 0 2px;
+    flex-shrink: 0;
+    opacity: 0;
+    transition: opacity 0.15s, color 0.15s;
+  }
+
+  li:hover .item-del-btn { opacity: 1; }
+  .item-del-btn:hover { color: var(--red); }
+
+  .add-item-row { display: flex; gap: 8px; margin-top: 4px; align-items: center; }
+
+  .btn-add-item-inline {
+    background: none;
+    border: 1px dashed #bbb;
+    border-radius: 6px;
+    padding: 8px 14px;
+    color: var(--muted);
+    font-size: 12px;
+    cursor: pointer;
+    font-family: 'Source Sans 3', sans-serif;
+    flex: 1;
+  }
+
+  .btn-add-item-inline:hover { border-color: var(--gold); color: var(--gold); }
+
+  .bulk-add-mini {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 0 4px 0 8px;
+    flex-shrink: 0;
+  }
+
+  .bulk-add-mini input {
+    width: 32px;
+    border: none;
+    text-align: center;
+    padding: 6px 0;
+    font-size: 12px;
+  }
+
+  .bulk-add-mini button {
+    background: var(--gold);
+    color: var(--navy);
+    border: none;
+    border-radius: 4px;
+    padding: 5px 8px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .add-block-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    padding: 16px 0 28px;
+    border-top: 1px dashed var(--line);
+    margin-top: 8px;
+  }
+
+  .add-block-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--navy);
+    cursor: pointer;
+    font-family: 'Source Sans 3', sans-serif;
+    transition: border-color 0.15s, background 0.15s;
+  }
+
+  .add-block-btn:hover { border-color: var(--gold); background: #fffdf7; }
+
+  .com-contact {
+    margin-top: 8px;
+    padding: 28px 0 8px;
+    border-top: 1px solid var(--line);
+    text-align: center;
+  }
+
+  .com-contact h2 { font-family: 'Playfair Display', serif; font-size: 18px; color: var(--navy); margin-bottom: 4px; }
+  .com-contact-sub { font-size: 13px; color: var(--muted); margin-bottom: 20px; }
+  .com-cards { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+
+  .com-card {
+    background: white;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 14px 18px;
+    min-width: 190px;
+    text-align: left;
+  }
+
+  .com-card-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--gold); font-weight: 600; display: block; margin-bottom: 8px; }
+  .com-card-sublabel { font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--gold); font-weight: 600; display: block; margin-bottom: 6px; margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--line); }
+  .com-card-person { margin-bottom: 6px; display: flex; align-items: center; gap: 4px; }
+  .com-card a { display: block; font-size: 13px; color: var(--muted); text-decoration: none; line-height: 1.7; }
+
+  .resp-name-input, .resp-email-input {
+    border: none;
+    background: transparent;
+    outline: none;
+    padding: 1px 3px;
+    border-radius: 3px;
+    font-family: 'Source Sans 3', sans-serif;
+  }
+
+  .resp-name-input { font-weight: 600; font-size: 13px; color: var(--navy); width: 100%; }
+  .resp-email-input { font-size: 12px; color: var(--muted); width: 100%; }
+  .resp-name-input:hover, .resp-name-input:focus,
+  .resp-email-input:hover, .resp-email-input:focus { background: rgba(200,168,75,0.1); }
+  .resp-name-input::placeholder { color: rgba(13,31,60,0.3); }
+  .resp-email-input::placeholder { color: rgba(107,107,107,0.4); }
+
+  .resp-del-btn {
+    background: none;
+    border: none;
+    color: #ccc;
+    cursor: pointer;
+    font-size: 13px;
+    padding: 0 2px;
+    opacity: 0;
+    transition: opacity 0.15s;
+  }
+
+  .com-card-person:hover .resp-del-btn { opacity: 1; }
+  .resp-del-btn:hover { color: var(--red); }
+
+  .add-resp-btn {
+    background: none;
+    border: 1px dashed #bbb;
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-size: 11px;
+    color: var(--muted);
+    cursor: pointer;
+    margin-top: 6px;
+    font-family: 'Source Sans 3', sans-serif;
+    width: 100%;
+  }
+
+  .add-resp-btn:hover { border-color: var(--gold); color: var(--gold); }
+
+  .com-footer {
+    background: var(--navy);
+    text-align: center;
+    padding: 16px 20px;
+    font-size: 12px;
+    color: rgba(255,255,255,0.3);
+    letter-spacing: 0.04em;
+    line-height: 1.9;
+  }
+
+  .com-footer a { color: rgba(255,255,255,0.4); text-decoration: none; }
+  .com-print-footer { display: none; text-align: center; padding: 16px 20px 8px; font-size: 11px; color: #999; border-top: 1px solid #ddd; letter-spacing: 0.03em; }
+
+  .config-bar {
+    background: #f2efea;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 14px 20px;
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .config-bar label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .config-bar input {
+    flex: 1;
+    min-width: 160px;
+    background: #fff;
+    border: 1px solid #ccc8c0;
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 13px;
+    outline: none;
+  }
+
+  .config-bar input:focus { border-color: var(--gold); }
+
+  .link-preview-inline {
+    font-size: 11px;
+    color: var(--gold);
+    font-family: monospace;
+    white-space: nowrap;
+  }
+
+  .welcome-overlay {
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(13, 31, 60, 0.55);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 1000; padding: 20px;
+  }
+
+  .welcome-overlay.hidden { display: none; }
+
+  .welcome-modal {
+    background: var(--cream);
+    border-radius: 12px;
+    max-width: 720px;
+    width: 100%;
+    max-height: 85vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  }
+
+  .welcome-header {
+    background: #f0e9da;
+    border-bottom: 1px solid var(--line);
+    padding: 24px 28px 20px;
+    text-align: center;
+  }
+
+  .welcome-header h2 { font-family: 'Playfair Display', serif; font-size: 21px; color: var(--navy); margin: 0 0 8px; }
+  .welcome-header p { font-size: 13px; color: var(--muted); line-height: 1.6; margin: 0; }
+
+  .welcome-body { padding: 24px 28px 8px; }
+  .welcome-body h3 { font-family: 'Playfair Display', serif; font-size: 14px; color: var(--navy); margin: 0 0 14px; }
+
+  .welcome-step { display: flex; gap: 12px; margin-bottom: 16px; align-items: flex-start; }
+
+  .welcome-step-num {
+    flex-shrink: 0; width: 24px; height: 24px;
+    background: var(--gold); color: var(--cream);
+    border-radius: 50%; font-family: 'Playfair Display', serif; font-size: 12px;
+    display: flex; align-items: center; justify-content: center; margin-top: 1px;
+  }
+
+  .welcome-step-text { font-size: 13px; line-height: 1.65; color: var(--text); }
+  .welcome-step-text strong { color: var(--navy); }
+
+  .welcome-actions-list { margin: 8px 0 0; padding-left: 0; list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .welcome-actions-list li { font-size: 13px; line-height: 1.6; color: var(--text); padding-left: 4px; }
+  .welcome-actions-list strong { color: var(--navy); }
+
+  .welcome-tip {
+    background: #fbf3e3; border: 1.5px solid var(--gold); border-radius: 8px;
+    padding: 14px 18px; margin: 18px 0 4px; font-size: 13px; line-height: 1.6; color: #4a4a4a;
+  }
+
+  .welcome-tip strong { color: #8a6d1f; }
+
+  .welcome-footer { padding: 18px 28px 24px; text-align: center; }
+
+  .welcome-close-btn {
+    background: var(--gold); color: var(--navy); border: none; border-radius: 6px;
+    padding: 11px 28px; font-family: 'Source Sans 3', sans-serif; font-size: 14px; font-weight: 600;
+    cursor: pointer; transition: opacity 0.15s;
+  }
+
+  .welcome-close-btn:hover { opacity: 0.85; }
+
+  .welcome-checkbox {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    margin-bottom: 16px; font-size: 13px; color: var(--muted); cursor: pointer; user-select: none;
+  }
+
+  .welcome-checkbox input { width: 15px; height: 15px; cursor: pointer; accent-color: var(--gold); }
+
+  .help-fab {
+    position: fixed; bottom: 24px; right: 24px;
+    width: 40px; height: 40px; background: var(--navy); color: var(--gold);
+    border: none; border-radius: 50%; font-size: 16px; font-weight: 600; cursor: pointer;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.2); z-index: 90; transition: transform 0.15s;
+  }
+
+  .help-fab:hover { transform: scale(1.08); }
+
+  /* ── POPUP DE CONFIRMAÇÃO ── */
+  .confirm-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(13, 31, 60, 0.55);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    padding: 20px;
+  }
+
+  .confirm-overlay.visible { display: flex; }
+
+  .confirm-modal {
+    background: var(--cream);
+    border-radius: 12px;
+    max-width: 380px;
+    width: 100%;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+    overflow: hidden;
+  }
+
+  .confirm-modal-body { padding: 26px 26px 20px; text-align: center; }
+
+  .confirm-icon {
+    font-size: 32px;
+    margin-bottom: 12px;
+  }
+
+  .confirm-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    color: var(--navy);
+    margin-bottom: 8px;
+  }
+
+  .confirm-message {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .confirm-actions {
+    display: flex;
+    gap: 10px;
+    padding: 0 26px 26px;
+  }
+
+  .confirm-btn {
+    flex: 1;
+    padding: 11px;
+    border-radius: 6px;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: opacity 0.15s;
+  }
+
+  .confirm-btn:hover { opacity: 0.85; }
+
+  .confirm-btn-cancel {
+    background: transparent;
+    color: var(--muted);
+    border: 1px solid var(--line);
+  }
+
+  .confirm-btn-danger {
+    background: var(--red);
+    color: #fff;
+  }
+
+  /* ── TOAST DE DESFAZER ── */
+  .undo-toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--navy);
+    color: #fff;
+    padding: 12px 16px 12px 20px;
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    z-index: 1500;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s, transform 0.25s;
+    font-size: 13px;
+  }
+
+  .undo-toast.visible {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  .undo-toast-btn {
+    background: var(--gold);
+    color: var(--navy);
+    border: none;
+    border-radius: 6px;
+    padding: 7px 14px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  .undo-toast-btn:hover { opacity: 0.85; }
+
+  .print-redirect-notice { display: none; }
+
+  @media print {
+    body * { display: none !important; }
+    .print-redirect-notice,
+    .print-redirect-notice .icon,
+    .print-redirect-notice h2,
+    .print-redirect-notice p { display: block !important; }
+    .print-redirect-notice { text-align: center; padding: 120px 40px; font-family: 'Source Sans 3', sans-serif; }
+    .print-redirect-notice .icon { font-size: 48px; margin-bottom: 20px; }
+    .print-redirect-notice h2 { font-family: 'Playfair Display', serif; font-size: 22px; color: #0d1f3c; margin-bottom: 12px; }
+    .print-redirect-notice p { font-size: 15px; color: #555; line-height: 1.6; }
+  }
+
+  @media (max-width: 720px) {
+    .topbar { flex-direction: column; align-items: stretch; padding: 12px 14px; gap: 10px; }
+    .topbar-brand { justify-content: center; }
+    .topbar-title { font-size: 14px; }
+    .topbar-actions { justify-content: center; gap: 8px; }
+    .topbar-actions .btn { font-size: 12px; padding: 8px 12px; }
+    .version-tag { width: 100%; text-align: center; margin: 0 0 4px; }
+    .workspace { padding: 16px 10px 60px; }
+    .com-main { padding: 20px 16px 8px; }
+    .tip-box, .tip-box-right { left: 50% !important; right: auto !important; transform: translateX(-50%) !important; max-width: 90vw; white-space: normal !important; }
+    .tip-box::after, .tip-box-right::after { left: 50% !important; right: auto !important; transform: translateX(-50%) !important; }
+    input[type="text"], textarea, select { font-size: 16px; }
+    .block-controls, .block-type-toggle { opacity: 1; }
+    .item-del-btn, .resp-del-btn { opacity: 1; }
+  }
+
+  @media (max-width: 480px) {
+    .com-header-top { flex-direction: column; text-align: center; padding: 16px 18px; }
+    .com-header-vdivider { display: none; }
+    .com-header-info { align-items: center; text-align: center; }
+    .com-cards { flex-direction: column; align-items: stretch; }
+    .config-bar { flex-direction: column; align-items: stretch; }
+  }
+
+  @media (max-width: 600px) {
+    .welcome-overlay { padding: 12px; }
+    .welcome-header { padding: 20px 18px 16px; }
+    .welcome-header h2 { font-size: 18px; }
+    .welcome-body { padding: 18px 18px 4px; }
+    .welcome-footer { padding: 16px 18px 20px; }
+    .welcome-close-btn { width: 100%; padding: 13px; }
+    .help-fab { bottom: 16px; right: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="print-redirect-notice">
+  <div class="icon">🖨️</div>
+  <h2>Use o botão Imprimir</h2>
+  <p>Para imprimir o comunicado, cancele esta janela e clique<br>no botão 🖨️ Imprimir na barra superior do gerador.</p>
+</div>
+
+<div class="welcome-overlay" id="welcome-overlay">
+  <div class="welcome-modal">
+    <div class="welcome-header">
+      <h2>👋 Bem-vindo ao Gerador de Comunicados</h2>
+      <p>Esta ferramenta cria comunicados padronizados para os clientes da Kluke, com a identidade visual da empresa já pronta — você só precisa escrever o conteúdo. O resultado pode ser impresso/PDF para uso interno, ou disponibilizado como uma página na internet para o cliente acessar pelo link.</p>
+    </div>
+    <div class="welcome-body">
+      <h3>Como funciona</h3>
+
+      <div class="welcome-step">
+        <span class="welcome-step-num">1</span>
+        <span class="welcome-step-text"><strong>Edite direto no documento</strong> — clique em qualquer texto (título, parágrafos, itens de lista) para editar ali mesmo. O que você vê já é o resultado final.</span>
+      </div>
+
+      <div class="welcome-step">
+        <span class="welcome-step-num">2</span>
+        <span class="welcome-step-text"><strong>Monte com blocos</strong> — use os botões no final do documento para adicionar quantos parágrafos, listas, alertas ou observações precisar, na ordem que quiser. Arraste pelo ícone <strong>⠿</strong> para reordenar.</span>
+      </div>
+
+      <div class="welcome-step">
+        <span class="welcome-step-num">3</span>
+        <span class="welcome-step-text">
+          <strong>Escolha como usar:</strong>
+          <ul class="welcome-actions-list">
+            <li>📂 <strong>Carregar HTML</strong> — abre um comunicado já gerado por esta ferramenta para editar e fazer pequenos ajustes, sem precisar digitar tudo de novo.</li>
+            <li>🖨️ <strong>Imprimir</strong> — gera uma versão simplificada para imprimir ou salvar como PDF, padronizando os documentos da empresa. Salve o HTML antes, caso queira editar depois.</li>
+            <li>⬇ <strong>Salvar HTML</strong> — salva o arquivo do comunicado. Envie para o responsável publicar na internet e compartilhar o link com o cliente por WhatsApp ou e-mail. <em>Dando dois cliques no arquivo salvo, ele já abre direto, sem precisar deste gerador.</em></li>
+            <li>↺ <strong>Limpar</strong> — apaga tudo e começa um novo comunicado do zero.</li>
+          </ul>
+        </span>
+      </div>
+
+      <div class="welcome-tip">
+        <strong>Dica:</strong> pode usar sem medo — nada aqui é salvo automaticamente nem enviado para lugar nenhum, tudo fica só no seu computador. Use o <strong>Salvar HTML</strong> para guardar o progresso e o <strong>Carregar HTML</strong> para retomar depois.
+      </div>
+    </div>
+    <div class="welcome-footer">
+      <label class="welcome-checkbox">
+        <input type="checkbox" id="welcome-dont-show">
+        <span>Não mostrar este manual novamente</span>
+      </label>
+      <button class="welcome-close-btn" onclick="closeWelcomeModal()">Entendi, vamos começar</button>
+    </div>
+  </div>
+</div>
+
+<button class="help-fab" onclick="openWelcomeModal()" title="Ver manual">?</button>
+
+<div class="format-toolbar" id="format-toolbar">
+  <button class="format-btn b" onmousedown="event.preventDefault(); applyFormat('bold')" title="Negrito (Ctrl+B)">B</button>
+  <button class="format-btn i" onmousedown="event.preventDefault(); applyFormat('italic')" title="Itálico (Ctrl+I)">I</button>
+  <button class="format-btn u" onmousedown="event.preventDefault(); applyFormat('underline')" title="Sublinhado (Ctrl+U)">U</button>
+</div>
+
+<div class="confirm-overlay" id="confirm-overlay">
+  <div class="confirm-modal">
+    <div class="confirm-modal-body">
+      <div class="confirm-icon" id="confirm-icon">⚠️</div>
+      <div class="confirm-title" id="confirm-title">Tem certeza?</div>
+      <div class="confirm-message" id="confirm-message">Esta ação não poderá ser desfeita.</div>
+    </div>
+    <div class="confirm-actions">
+      <button class="confirm-btn confirm-btn-cancel" onclick="closeConfirm()">Cancelar</button>
+      <button class="confirm-btn confirm-btn-danger" id="confirm-btn-ok">Confirmar</button>
+    </div>
+  </div>
+</div>
+
+<div class="undo-toast" id="undo-toast">
+  <span id="undo-toast-message">Comunicado limpo.</span>
+  <button class="undo-toast-btn" onclick="undoLastClear()">Desfazer</button>
+</div>
+
+<div class="topbar">
+  <div class="topbar-brand">
+    <img src="https://link.kluke.com.br/original-5b2bf023264c2-K.png" alt="Kluke">
+    <div class="topbar-divider"></div>
+    <div class="topbar-title">
+      Gerador de Comunicados
+      <span>Kluke Serviços Contábeis</span>
+    </div>
+  </div>
+  <div class="topbar-actions">
+    <span class="version-tag">v2.5</span>
+    <span class="tip-wrap">
+      <button class="btn btn-outline" onclick="document.getElementById('load-html-input').click()">📂 Carregar HTML</button>
+      <span class="tip-box">Editar um comunicado já gerado</span>
+    </span>
+    <input type="file" id="load-html-input" accept=".html" style="display:none;" onchange="loadHTMLFile(event)">
+    <span class="tip-wrap">
+      <button class="btn btn-outline" onclick="printComunicado()">🖨️ Imprimir</button>
+      <span class="tip-box" style="white-space:normal;width:220px;text-align:left;">Imprimir ou selecione 'Salvar como PDF' na lista de impressoras</span>
+    </span>
+    <span class="tip-wrap">
+      <button class="btn btn-gold" onclick="downloadHTML()">⬇ Salvar HTML</button>
+      <span class="tip-box tip-box-right" style="white-space:normal;width:260px;text-align:left;">Salva o arquivo do comunicado. Envie para o responsável publicar na internet e compartilhar o link com o cliente.</span>
+    </span>
+    <span class="tip-wrap">
+      <button class="btn btn-outline" onclick="resetForm()">↺ Limpar</button>
+      <span class="tip-box tip-box-right">Apaga tudo e começa do zero</span>
+    </span>
+  </div>
+</div>
+
+<div class="workspace">
+  <div class="canvas" id="canvas">
+    <!-- Conteúdo montado via JS -->
+  </div>
+
+  <div class="config-bar">
+    <label for="f-filename">Nome do arquivo</label>
+    <input type="text" id="f-filename" placeholder="comunicado-exemplo" oninput="updateLinkPreview(); saveAutosave();">
+    <span class="link-preview-inline" id="link-preview">link.kluke.com.br/comunicado-exemplo</span>
+  </div>
+</div>
+
+<script>
+  /* ══════════════════════════════════════════════
+     CONSTANTES FIXAS
+  ══════════════════════════════════════════════ */
+  const CURRENT_YEAR = new Date().getFullYear();
+  const PHONES_FIXED = ['(47) 3382-0601', '(47) 3382-0767'];
+  const WA_FIXED     = { num: '(47) 98432-1322', href: 'https://wa.me/5547984321322' };
+  const MAPS_URL     = 'https://maps.app.goo.gl/BLgMuJf6wUEH9B5c6';
+
+  const FIRM = {
+    name:    'Kluke Serviços Contábeis e Econômicos Ltda',
+    cnpj:    '76.860.386/0001-73',
+    crc:     'CRC-SC 1081/O-8',
+    site:    'www.kluke.com.br',
+    url:     'https://www.kluke.com.br',
+    address: 'Av. Nereu Ramos, 64 · Timbó-SC',
+    logo:    'https://link.kluke.com.br/original-5b2bf023264c2-K.png',
+  };
+
+  const NUM_STYLES = [
+    { value: 'circle',  label: 'Círculo',  char: '1'  },
+    { value: 'outline', label: 'Contorno', char: '1'  },
+    { value: 'plain',   label: 'Grande',   char: '1'  },
+    { value: 'dot',     label: 'Numeral',  char: '1.' },
+    { value: 'pill',    label: 'Pílula',   char: '1'  },
+    { value: 'square',  label: 'Quadrado', char: '1'  },
+  ];
+
+  const ALERT_ICONS = [
+    { group: 'Atenção', items: [
+      { v: '⚠️', l: 'Atenção' }, { v: '❗', l: 'Importante' }, { v: '🔴', l: 'Urgente' }, { v: '❌', l: 'Erro' }
+    ]},
+    { group: 'Informação', items: [
+      { v: 'ℹ️', l: 'Info' }, { v: '📢', l: 'Aviso' }, { v: '📣', l: 'Anúncio' }, { v: '🔔', l: 'Notificação' }
+    ]},
+    { group: 'Prazo / Data', items: [
+      { v: '⏰', l: 'Prazo' }, { v: '📅', l: 'Data' }, { v: '🗓️', l: 'Agenda' }, { v: '⌛', l: 'Tempo' }
+    ]},
+    { group: 'Documentos', items: [
+      { v: '📄', l: 'Documento' }, { v: '📝', l: 'Observação' }, { v: '📌', l: 'Destaque' }, { v: '📎', l: 'Anexo' }
+    ]},
+    { group: 'Positivo', items: [
+      { v: '✅', l: 'Confirmado' }, { v: '✔️', l: 'OK' }, { v: '🎉', l: 'Novidade' }, { v: '💡', l: 'Dica' }
+    ]},
+  ];
+
+  /* ══════════════════════════════════════════════
+     STATE
+  ══════════════════════════════════════════════ */
+  let comState = {
+    title: '',
+    subtitle: '',
+    blocks: [],
+    resps: [],
+  };
+
+  let blockIdCounter = 1;
+  let dragBlockId = null;
+
+  function newBlockId() { return 'b' + (blockIdCounter++) + '_' + Date.now().toString(36); }
+  function newId() { return Date.now() + Math.random(); }
+
+  /* ══════════════════════════════════════════════
+     UTILS
+  ══════════════════════════════════════════════ */
+  function escHtml(str) {
+    return String(str || '')
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  function titleCase(str) {
+    return str.replace(/\S+/g, w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase());
+  }
+
+  function linkify(text) {
+    return escHtml(text).replace(/(https?:\/\/[^\s&]+)/g,
+      url => `<a href="${url}" target="_blank" rel="noopener" style="color:var(--gold);word-break:break-all;">${url}</a>`);
+  }
+
+  /* Para textos vindos de campos formatáveis (já contém HTML sanitizado
+     com apenas <b><i><u><br>, sem escape). Aplica linkify preservando
+     essas tags, e converte quebras de linha em <br> explícito. */
+  function linkifyRich(html) {
+    const withBreaks = String(html || '').replace(/\n/g, '<br>');
+    return withBreaks.replace(/(https?:\/\/[^\s&<]+)/g,
+      url => `<a href="${url}" target="_blank" rel="noopener" style="color:var(--gold);word-break:break-all;">${url}</a>`);
+  }
+
+  function slugify(str) {
+    return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase().trim()
+      .replace(/[^a-z0-9\s-]/g, '')
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-')
+      .substring(0, 50);
+  }
+
+  function isValidEmail(value) {
+    if (!value.trim()) return true;
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
+  }
+
+  /* Para campos "single-line" (título, itens, etc.) extrai só o texto puro.
+     Para campos formatáveis (.editable-text), extrai o HTML mas sanitizado,
+     permitindo apenas negrito/itálico/sublinhado — remove qualquer outra
+     tag ou atributo que possa ter vindo de alguma forma inesperada. */
+  function getEditableText(el) {
+    if (!el) return '';
+    if (isFormattableField(el)) {
+      return sanitizeRichText(el.innerHTML);
+    }
+    return el.innerText.replace(/\r\n/g, '\n');
+  }
+
+  const ALLOWED_RICH_TAGS = new Set(['B', 'STRONG', 'I', 'EM', 'U', 'BR', 'DIV']);
+
+  function sanitizeRichText(html) {
+    const temp = document.createElement('div');
+    temp.innerHTML = html;
+    sanitizeNode(temp);
+    /* innerText normaliza <div> em quebras de linha ao exibir depois via
+       innerHTML, então convertemos <div> para quebra de linha explícita. */
+    return temp.innerHTML
+      .replace(/<div><br\s*\/?><\/div>/gi, '\n')
+      .replace(/<div>/gi, '\n')
+      .replace(/<\/div>/gi, '')
+      .replace(/^\n+/, '');
+  }
+
+  function sanitizeNode(node) {
+    Array.from(node.childNodes).forEach(child => {
+      if (child.nodeType === 1) { // Element
+        if (!ALLOWED_RICH_TAGS.has(child.tagName)) {
+          /* Tag não permitida: substitui pelo próprio conteúdo (unwrap) */
+          const parent = child.parentNode;
+          while (child.firstChild) parent.insertBefore(child.firstChild, child);
+          parent.removeChild(child);
+        } else {
+          /* Remove todos os atributos (style, class, etc.) das tags permitidas */
+          while (child.attributes.length > 0) {
+            child.removeAttribute(child.attributes[0].name);
+          }
+          sanitizeNode(child);
+        }
+      }
+    });
+  }
+
+  /* Antes de qualquer ação que vá reconstruir o canvas (adicionar bloco, item,
+     responsável, remover, arrastar...), varre o DOM atual e garante que tudo
+     que está digitado nos campos já foi salvo no comState. Sem isso, um clique
+     em botão pode disparar o re-render antes do 'oninput' do campo focado
+     terminar de processar, perdendo o que foi digitado por último. */
+  function syncDomToState() {
+    const canvas = document.getElementById('canvas');
+    if (!canvas) return;
+
+    const titleEl = canvas.querySelector('.editable-title');
+    if (titleEl) comState.title = getEditableText(titleEl);
+
+    const subtitleEl = canvas.querySelector('.editable-subtitle');
+    if (subtitleEl) comState.subtitle = getEditableText(subtitleEl);
+
+    canvas.querySelectorAll('.block-wrap').forEach(wrapEl => {
+      const blockId = wrapEl.getAttribute('data-block-id');
+      const block = comState.blocks.find(b => b.id === blockId);
+      if (!block) return;
+
+      if (block.type === 'text' || block.type === 'alert' || block.type === 'obs') {
+        const textEl = wrapEl.querySelector('.editable-text');
+        if (textEl) block.text = getEditableText(textEl);
+      }
+      if (block.type === 'obs') {
+        const labelEl = wrapEl.querySelector('.editable-obs-label');
+        if (labelEl) block.label = getEditableText(labelEl);
+      }
+      if (block.type === 'list') {
+        const titleEl2 = wrapEl.querySelector('.editable-list-title');
+        if (titleEl2) block.title = getEditableText(titleEl2);
+        wrapEl.querySelectorAll('li[data-item-id]').forEach(liEl => {
+          const itemId = liEl.getAttribute('data-item-id');
+          const item = block.items.find(i => String(i.id) === itemId);
+          const itemEl = liEl.querySelector('.editable-item');
+          if (item && itemEl) item.text = getEditableText(itemEl);
+        });
+      }
+    });
+
+    canvas.querySelectorAll('[data-resp-id]').forEach(respEl => {
+      const respId = respEl.getAttribute('data-resp-id');
+      const resp = comState.resps.find(r => String(r.id) === respId);
+      if (!resp) return;
+      const nameEl = respEl.querySelector('.resp-name-input');
+      const emailEl = respEl.querySelector('.resp-email-input');
+      if (nameEl) resp.name = nameEl.value;
+      if (emailEl) resp.email = emailEl.value;
+    });
+
+    const filenameEl = document.getElementById('f-filename');
+    if (filenameEl) filenameEl._syncedValue = filenameEl.value;
+  }
+
+  /* Força colar como texto puro em qualquer campo contenteditable,
+     removendo formatação vinda do Word, e-mails, outros sites, etc.
+     Em campos "single-line" (título, item de lista, etc.), remove também
+     quebras de linha do texto colado. */
+  function handlePlainTextPaste(ev) {
+    const target = ev.target;
+    if (!target || target.getAttribute('contenteditable') !== 'true') return;
+    ev.preventDefault();
+
+    let text = (ev.clipboardData || window.clipboardData).getData('text/plain');
+
+    if (target.classList.contains('single-line')) {
+      text = text.replace(/[\r\n]+/g, ' ').trim();
+    }
+
+    insertPlainText(text);
+  }
+
+  function insertPlainText(text) {
+    if (document.queryCommandSupported && document.queryCommandSupported('insertText')) {
+      document.execCommand('insertText', false, text);
+      return;
+    }
+
+    const sel = window.getSelection();
+    if (!sel || sel.rangeCount === 0) return;
+    const range = sel.getRangeAt(0);
+    range.deleteContents();
+    const textNode = document.createTextNode(text);
+    range.insertNode(textNode);
+    range.setStartAfter(textNode);
+    range.setEndAfter(textNode);
+    sel.removeAllRanges();
+    sel.addRange(range);
+
+    const active = document.activeElement;
+    if (active) active.dispatchEvent(new Event('input', { bubbles: true }));
+  }
+
+  /* Impede Enter (quebra de linha) em campos single-line */
+  function handleSingleLineEnter(ev) {
+    if (ev.key !== 'Enter') return;
+    const target = ev.target;
+    if (!target || target.getAttribute('contenteditable') !== 'true') return;
+    if (target.classList.contains('single-line')) {
+      ev.preventDefault();
+    }
+  }
+
+  document.addEventListener('paste', handlePlainTextPaste, true);
+  document.addEventListener('keydown', handleSingleLineEnter, true);
+
+  /* ══════════════════════════════════════════════
+     TOOLBAR DE FORMATAÇÃO (negrito, itálico, sublinhado)
+     Aparece ao selecionar texto dentro de campos editáveis multi-linha
+     (texto, alerta, observação). Campos single-line (título, itens de
+     lista) não recebem formatação rica, para manter o layout previsível.
+  ══════════════════════════════════════════════ */
+  function isFormattableField(el) {
+    if (!el) return false;
+    if (el.getAttribute('contenteditable') !== 'true') return false;
+    if (el.classList.contains('single-line')) return false;
+    return el.classList.contains('editable-text');
+  }
+
+  function updateFormatToolbar() {
+    const toolbar = document.getElementById('format-toolbar');
+    const sel = window.getSelection();
+
+    if (!sel || sel.rangeCount === 0 || sel.isCollapsed) {
+      toolbar.classList.remove('visible');
+      return;
+    }
+
+    const anchorNode = sel.anchorNode;
+    const el = anchorNode && anchorNode.nodeType === 3 ? anchorNode.parentElement : anchorNode;
+    const editableEl = el && el.closest ? el.closest('[contenteditable]') : null;
+
+    if (!isFormattableField(editableEl)) {
+      toolbar.classList.remove('visible');
+      return;
+    }
+
+    const range = sel.getRangeAt(0);
+    const rect = range.getBoundingClientRect();
+    if (rect.width === 0 && rect.height === 0) {
+      toolbar.classList.remove('visible');
+      return;
+    }
+
+    toolbar.style.left = `${rect.left + rect.width / 2}px`;
+    toolbar.style.top = `${rect.top - 44}px`;
+    toolbar.style.transform = 'translateX(-50%)';
+    toolbar.classList.add('visible');
+
+    /* Marca botões ativos conforme formatação já aplicada na seleção */
+    toolbar.querySelector('.b').classList.toggle('active', document.queryCommandState('bold'));
+    toolbar.querySelector('.i').classList.toggle('active', document.queryCommandState('italic'));
+    toolbar.querySelector('.u').classList.toggle('active', document.queryCommandState('underline'));
+  }
+
+  function applyFormat(command) {
+    document.execCommand(command, false, null);
+    updateFormatToolbar();
+
+    /* Sincroniza o comState do campo que acabou de ser formatado */
+    const sel = window.getSelection();
+    if (!sel || sel.rangeCount === 0) return;
+    const anchorNode = sel.anchorNode;
+    const el = anchorNode && anchorNode.nodeType === 3 ? anchorNode.parentElement : anchorNode;
+    const editableEl = el && el.closest ? el.closest('[contenteditable]') : null;
+    if (editableEl) editableEl.dispatchEvent(new Event('input', { bubbles: true }));
+  }
+
+  document.addEventListener('selectionchange', () => {
+    /* Debounce leve para não recalcular a cada micro-mudança */
+    clearTimeout(window._formatToolbarTimer);
+    window._formatToolbarTimer = setTimeout(updateFormatToolbar, 60);
+  });
+
+  document.addEventListener('scroll', () => {
+    document.getElementById('format-toolbar').classList.remove('visible');
+  }, true);
+
+  /* Atalhos de teclado Ctrl+B / Ctrl+I / Ctrl+U dentro de campos formatáveis */
+  document.addEventListener('keydown', (ev) => {
+    if (!(ev.ctrlKey || ev.metaKey)) return;
+    const active = document.activeElement;
+    if (!isFormattableField(active)) return;
+
+    const key = ev.key.toLowerCase();
+    if (key === 'b') { ev.preventDefault(); applyFormat('bold'); }
+    else if (key === 'i') { ev.preventDefault(); applyFormat('italic'); }
+    else if (key === 'u') { ev.preventDefault(); applyFormat('underline'); }
+  });
+
+  /* ══════════════════════════════════════════════
+     BLOCOS — CRIAÇÃO
+  ══════════════════════════════════════════════ */
+  function addBlock(type, insertAfterId) {
+    syncDomToState();
+
+    let block;
+    if (type === 'text') {
+      block = { id: newBlockId(), type: 'text', variant: 'body', text: '' };
+    } else if (type === 'list') {
+      block = { id: newBlockId(), type: 'list', title: '', numStyle: 'circle', items: [{ id: newId(), text: '' }] };
+    } else if (type === 'alert') {
+      block = { id: newBlockId(), type: 'alert', icon: '⚠️', text: '' };
+    } else if (type === 'obs') {
+      block = { id: newBlockId(), type: 'obs', label: '', text: '' };
+    }
+
+    if (insertAfterId) {
+      const idx = comState.blocks.findIndex(b => b.id === insertAfterId);
+      comState.blocks.splice(idx + 1, 0, block);
+    } else {
+      comState.blocks.push(block);
+    }
+
+    renderCanvas();
+    setTimeout(() => {
+      const el = document.querySelector(`[data-block-id="${block.id}"] [contenteditable], [data-block-id="${block.id}"] input`);
+      if (el) el.focus();
+    }, 30);
+  }
+
+  function removeBlock(id) {
+    syncDomToState();
+    comState.blocks = comState.blocks.filter(b => b.id !== id);
+    renderCanvas();
+  }
+
+  /* ══════════════════════════════════════════════
+     DRAG AND DROP
+  ══════════════════════════════════════════════ */
+  function onBlockDragStart(ev, id) {
+    dragBlockId = id;
+    ev.dataTransfer.effectAllowed = 'move';
+    setTimeout(() => {
+      const el = document.querySelector(`[data-block-id="${id}"]`);
+      if (el) el.classList.add('dragging');
+    }, 0);
+  }
+
+  function onBlockDragEnd(ev) {
+    document.querySelectorAll('.block-wrap').forEach(el => {
+      el.classList.remove('dragging', 'drag-over-top', 'drag-over-bottom');
+    });
+    dragBlockId = null;
+  }
+
+  function onBlockDragOver(ev, id) {
+    ev.preventDefault();
+    if (id === dragBlockId) return;
+    const el = document.querySelector(`[data-block-id="${id}"]`);
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const midpoint = rect.top + rect.height / 2;
+    document.querySelectorAll('.block-wrap').forEach(e => e.classList.remove('drag-over-top', 'drag-over-bottom'));
+    if (ev.clientY < midpoint) {
+      el.classList.add('drag-over-top');
+    } else {
+      el.classList.add('drag-over-bottom');
+    }
+  }
+
+  function onBlockDrop(ev, targetId) {
+    ev.preventDefault();
+    if (!dragBlockId || dragBlockId === targetId) return;
+    syncDomToState();
+
+    const el = document.querySelector(`[data-block-id="${targetId}"]`);
+    const rect = el.getBoundingClientRect();
+    const midpoint = rect.top + rect.height / 2;
+    const insertBefore = ev.clientY < midpoint;
+
+    const fromIdx = comState.blocks.findIndex(b => b.id === dragBlockId);
+    const [item] = comState.blocks.splice(fromIdx, 1);
+
+    let toIdx = comState.blocks.findIndex(b => b.id === targetId);
+    if (!insertBefore) toIdx += 1;
+    comState.blocks.splice(toIdx, 0, item);
+
+    renderCanvas();
+  }
+
+  /* ══════════════════════════════════════════════
+     UPDATE HANDLERS
+  ══════════════════════════════════════════════ */
+  function updateBlockText(id, el) {
+    const block = comState.blocks.find(b => b.id === id);
+    if (block) block.text = getEditableText(el);
+    saveAutosave();
+  }
+
+  function updateBlockListTitle(id, el) {
+    const block = comState.blocks.find(b => b.id === id);
+    if (block) block.title = getEditableText(el);
+    saveAutosave();
+  }
+
+  function updateBlockObsLabel(id, el) {
+    const block = comState.blocks.find(b => b.id === id);
+    if (block) block.label = getEditableText(el);
+    saveAutosave();
+  }
+
+  function updateListItem(blockId, itemId, el) {
+    const block = comState.blocks.find(b => b.id === blockId);
+    if (!block) return;
+    const item = block.items.find(i => String(i.id) === String(itemId));
+    if (item) item.text = getEditableText(el);
+    saveAutosave();
+  }
+
+  function addListItem(blockId) {
+    syncDomToState();
+    const block = comState.blocks.find(b => b.id === blockId);
+    if (!block) return;
+    const item = { id: newId(), text: '' };
+    block.items.push(item);
+    renderCanvas();
+    setTimeout(() => {
+      const el = document.querySelector(`[data-item-id="${item.id}"] .editable-item`);
+      if (el) el.focus();
+    }, 30);
+  }
+
+  function addBulkListItems(blockId) {
+    syncDomToState();
+    const block = comState.blocks.find(b => b.id === blockId);
+    if (!block) return;
+    const input = document.getElementById(`bulk-qty-${blockId}`);
+    let qty = parseInt(input?.value, 10);
+    if (isNaN(qty) || qty < 1) qty = 1;
+    if (qty > 50) qty = 50;
+    for (let i = 0; i < qty; i++) {
+      block.items.push({ id: newId(), text: '' });
+    }
+    renderCanvas();
+  }
+
+  function removeListItem(blockId, itemId) {
+    syncDomToState();
+    const block = comState.blocks.find(b => b.id === blockId);
+    if (!block) return;
+    block.items = block.items.filter(i => String(i.id) !== String(itemId));
+    renderCanvas();
+  }
+
+  function setListNumStyle(blockId, style) {
+    syncDomToState();
+    const block = comState.blocks.find(b => b.id === blockId);
+    if (block) block.numStyle = style;
+    renderCanvas();
+  }
+
+  function setAlertIcon(blockId, icon) {
+    syncDomToState();
+    const block = comState.blocks.find(b => b.id === blockId);
+    if (block) block.icon = icon;
+    renderCanvas();
+    closeAllIconMenus();
+  }
+
+  function toggleAlertIconMenu(blockId) {
+    const menu = document.getElementById(`icon-menu-${blockId}`);
+    const isOpen = menu.classList.contains('open');
+    closeAllIconMenus();
+    if (!isOpen) menu.classList.add('open');
+  }
+
+  function closeAllIconMenus() {
+    document.querySelectorAll('.block-alert-icon-menu').forEach(m => m.classList.remove('open'));
+  }
+
+  document.addEventListener('click', (ev) => {
+    if (!ev.target.closest('.block-alert-icon-picker')) closeAllIconMenus();
+  });
+
+  /* ══════════════════════════════════════════════
+     RESPONSÁVEIS
+  ══════════════════════════════════════════════ */
+  function addResp() {
+    syncDomToState();
+    const r = { id: newId(), name: '', email: '' };
+    comState.resps.push(r);
+    renderCanvas();
+    setTimeout(() => {
+      const el = document.querySelector(`[data-resp-id="${r.id}"] .resp-name-input`);
+      if (el) el.focus();
+    }, 30);
+  }
+
+  function removeResp(id) {
+    syncDomToState();
+    comState.resps = comState.resps.filter(r => String(r.id) !== String(id));
+    renderCanvas();
+  }
+
+  function updateRespField(id, field, value) {
+    const r = comState.resps.find(r => String(r.id) === String(id));
+    if (r) r[field] = value;
+    saveAutosave();
+  }
+
+  function checkRespEmailInline(id, inputEl) {
+    const valid = isValidEmail(inputEl.value);
+    inputEl.style.color = valid ? '' : 'var(--red)';
+  }
+
+  /* ══════════════════════════════════════════════
+     RENDER — MONTA O CANVAS EDITÁVEL
+  ══════════════════════════════════════════════ */
+  function renderCanvas() {
+    const canvas = document.getElementById('canvas');
+
+    let html = '';
+
+    html += `<div class="com-header-top">
+      <a href="${FIRM.url}" target="_blank" rel="noopener" style="display:flex;align-items:center;flex-shrink:0;">
+        <img src="${FIRM.logo}" alt="Kluke" style="height:50px;display:block;">
+      </a>
+      <div class="com-header-vdivider"></div>
+      <div class="com-header-info">
+        <div class="com-firm-name">${escHtml(FIRM.name)}</div>
+        <div class="com-firm-meta">
+          CNPJ ${escHtml(FIRM.cnpj)}<br>
+          ${escHtml(FIRM.crc)}
+        </div>
+      </div>
+    </div>`;
+
+    html += `<div class="com-header-titles-block">
+      <div class="editable-title single-line" contenteditable="true" data-placeholder="Clique para digitar o título do comunicado"
+        oninput="comState.title = getEditableText(this)" onblur="renderLinkPreviewOnly()">${escHtml(comState.title)}</div>
+      <div class="editable-subtitle single-line" contenteditable="true" data-placeholder="Subtítulo (opcional) — ex.: Ano-base 2025"
+        oninput="comState.subtitle = getEditableText(this)">${escHtml(comState.subtitle)}</div>
+    </div>`;
+
+    html += `<div class="com-gold-bar"></div>`;
+
+    html += `<div class="com-main">`;
+
+    if (comState.blocks.length === 0) {
+      html += `<div class="blocks-empty"><span class="icon">📄</span>Use os botões abaixo para começar<br>a montar o conteúdo do comunicado.</div>`;
+    } else {
+      comState.blocks.forEach(block => {
+        html += renderBlockWrapper(block);
+      });
+    }
+
+    html += `<div class="add-block-bar">
+      <button class="add-block-btn" onclick="addBlock('text')">✏️ Texto</button>
+      <button class="add-block-btn" onclick="addBlock('list')">📋 Lista</button>
+      <button class="add-block-btn" onclick="addBlock('alert')">⚠️ Alerta</button>
+      <button class="add-block-btn" onclick="addBlock('obs')">📌 Observação</button>
+    </div>`;
+
+    html += renderContactSection();
+
+    html += `</div>`;
+
+    html += `<div class="com-footer">
+      <a href="${MAPS_URL}" target="_blank" rel="noopener">${escHtml(FIRM.address)}</a><br>
+      © ${CURRENT_YEAR} ${escHtml(FIRM.name)}
+    </div>
+    <div class="com-print-footer">
+      ${escHtml(FIRM.name)} &nbsp;·&nbsp; ${escHtml(FIRM.address)}<br>
+      ${PHONES_FIXED.map(escHtml).join(' &nbsp;·&nbsp; ')} &nbsp;·&nbsp; WhatsApp ${escHtml(WA_FIXED.num)}
+    </div>`;
+
+    canvas.innerHTML = html;
+    updateLinkPreview();
+    saveAutosave();
+  }
+
+  function renderLinkPreviewOnly() {
+    updateLinkPreview();
+    saveAutosave();
+  }
+
+  function renderBlockWrapper(block) {
+    let inner = '';
+    if (block.type === 'text') inner = renderTextBlock(block);
+    else if (block.type === 'list') inner = renderListBlock(block);
+    else if (block.type === 'alert') inner = renderAlertBlock(block);
+    else if (block.type === 'obs') inner = renderObsBlock(block);
+
+    return `<div class="block-wrap" data-block-id="${block.id}"
+        ondragover="onBlockDragOver(event,'${block.id}')"
+        ondrop="onBlockDrop(event,'${block.id}')">
+      <div class="block-controls">
+        <button class="block-btn block-drag-handle" draggable="true"
+          ondragstart="onBlockDragStart(event,'${block.id}')" ondragend="onBlockDragEnd(event)"
+          title="Arrastar para reordenar">⠿</button>
+        <button class="block-btn danger" onclick="confirmRemoveBlock('${block.id}')" title="Remover bloco">✕</button>
+      </div>
+      ${inner}
+    </div>`;
+  }
+
+  function renderTextBlock(block) {
+    const isIntro = block.variant === 'intro';
+    return `<div class="block-text${isIntro ? ' is-intro' : ''}">
+      <div class="block-type-toggle">
+        <button class="block-type-btn${!isIntro ? ' active' : ''}" onclick="setTextVariant('${block.id}','body')">Normal</button>
+        <button class="block-type-btn${isIntro ? ' active' : ''}" onclick="setTextVariant('${block.id}','intro')">Destaque</button>
+      </div>
+      <div class="editable-text" contenteditable="true" data-placeholder="Digite o texto aqui. Use Enter para parágrafos. Selecione texto para formatar."
+        oninput="updateBlockText('${block.id}', this)">${block.text}</div>
+    </div>`;
+  }
+
+  function renderAlertBlock(block) {
+    const iconMenuHtml = ALERT_ICONS.map(group => `
+      <div class="icon-menu-group-label">${group.group}</div>
+      <div class="icon-menu-grid">
+        ${group.items.map(it => `
+          <button class="icon-menu-item${block.icon === it.v ? ' selected' : ''}" title="${it.l}" onclick="setAlertIcon('${block.id}','${it.v}')">${it.v}</button>
+        `).join('')}
+      </div>
+    `).join('');
+
+    return `<div class="block-alert">
+      <div class="block-alert-icon-picker">
+        <button class="block-alert-icon-btn" onclick="toggleAlertIconMenu('${block.id}')">${block.icon || '＋'}</button>
+        <div class="block-alert-icon-menu" id="icon-menu-${block.id}">
+          <button class="icon-menu-none" onclick="setAlertIcon('${block.id}','')">— Sem emoji —</button>
+          ${iconMenuHtml}
+        </div>
+      </div>
+      <div class="editable-text" contenteditable="true" data-placeholder="Texto do alerta..."
+        oninput="updateBlockText('${block.id}', this)">${block.text}</div>
+    </div>`;
+  }
+
+  function renderObsBlock(block) {
+    return `<div class="block-obs">
+      <div class="editable-obs-label single-line" contenteditable="true" data-placeholder="Observação importante"
+        oninput="updateBlockObsLabel('${block.id}', this)">${escHtml(block.label)}</div>
+      <div class="editable-text" contenteditable="true" data-placeholder="Texto da observação..."
+        oninput="updateBlockText('${block.id}', this)">${block.text}</div>
+    </div>`;
+  }
+
+  function renderListBlock(block) {
+    const styleOptions = NUM_STYLES.map(s =>
+      `<option value="${s.value}"${block.numStyle === s.value ? ' selected' : ''}>${s.label}</option>`
+    ).join('');
+
+    const itemsHtml = block.items.map((item, idx) => {
+      const label = block.numStyle === 'dot' ? `${idx+1}.` : `${idx+1}`;
+      return `<li data-item-id="${item.id}">
+        <span class="com-num com-num-${block.numStyle}">${label}</span>
+        <span class="editable-item single-line" contenteditable="true"
+          oninput="updateListItem('${block.id}','${item.id}', this)">${escHtml(item.text)}</span>
+        <button class="item-del-btn" onclick="confirmRemoveListItem('${block.id}','${item.id}')" title="Remover item">✕</button>
+      </li>`;
+    }).join('');
+
+    return `<div class="block-list">
+      <div class="editable-list-title single-line" contenteditable="true" data-placeholder="Título da lista (opcional) — ex.: Documentos"
+        oninput="updateBlockListTitle('${block.id}', this)">${escHtml(block.title)}</div>
+      <select class="numstyle-mini-select" onchange="setListNumStyle('${block.id}', this.value)">${styleOptions}</select>
+      <ol class="com-list">${itemsHtml}</ol>
+      <div class="add-item-row">
+        <button class="btn-add-item-inline" onclick="addListItem('${block.id}')">+ Adicionar item</button>
+        <div class="bulk-add-mini">
+          <span style="font-size:11px;color:var(--muted);">+</span>
+          <input type="number" id="bulk-qty-${block.id}" value="5" min="1" max="50">
+          <button onclick="addBulkListItems('${block.id}')">Add</button>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  function setTextVariant(blockId, variant) {
+    syncDomToState();
+    const block = comState.blocks.find(b => b.id === blockId);
+    if (block) block.variant = variant;
+    renderCanvas();
+  }
+
+  function renderContactSection() {
+    let cardsHtml = '';
+
+    if (comState.resps.length > 0) {
+      const label = comState.resps.length === 1 ? 'Responsável' : 'Responsáveis';
+      cardsHtml += `<div class="com-card">
+        <span class="com-card-label">${label}</span>`;
+      comState.resps.forEach(r => {
+        cardsHtml += `<div class="com-card-person" data-resp-id="${r.id}">
+          <div style="flex:1;">
+            <input type="text" class="resp-name-input" placeholder="Nome" value="${escHtml(r.name)}"
+              oninput="updateRespField('${r.id}','name',this.value)" style="display:block;">
+            <input type="text" class="resp-email-input" placeholder="email@kluke.com.br" value="${escHtml(r.email)}"
+              oninput="updateRespField('${r.id}','email',this.value)" onblur="checkRespEmailInline('${r.id}', this)" style="display:block;">
+          </div>
+          <button class="resp-del-btn" onclick="confirmRemoveResp('${r.id}')" title="Remover">✕</button>
+        </div>`;
+      });
+      cardsHtml += `<button class="add-resp-btn" onclick="addResp()">+ Adicionar responsável</button>
+      </div>`;
+    } else {
+      cardsHtml += `<div class="com-card">
+        <span class="com-card-label">Responsável</span>
+        <button class="add-resp-btn" onclick="addResp()">+ Adicionar responsável</button>
+      </div>`;
+    }
+
+    cardsHtml += `<div class="com-card">
+      <span class="com-card-label">Atendimento</span>
+      ${PHONES_FIXED.map(p => `<a href="tel:${p.replace(/\D/g,'')}">${escHtml(p)}</a>`).join('')}
+      <span class="com-card-sublabel">WhatsApp</span>
+      <a href="${WA_FIXED.href}" target="_blank">${escHtml(WA_FIXED.num)}</a>
+    </div>`;
+
+    return `<div class="com-contact">
+      <h2>Dúvidas? Fale conosco</h2>
+      <p class="com-contact-sub">Nossa equipe está à disposição</p>
+      <div class="com-cards">${cardsHtml}</div>
+    </div>`;
+  }
+
+  /* ══════════════════════════════════════════════
+     LINK PREVIEW / FILENAME
+  ══════════════════════════════════════════════ */
+  function updateLinkPreview() {
+    const raw = (document.getElementById('f-filename')?.value || '').trim();
+    const fallback = comState.title ? slugify(comState.title) : 'comunicado-exemplo';
+    const slug = raw.replace(/[^a-z0-9\-_]/gi, '') || fallback;
+    const el = document.getElementById('link-preview');
+    if (el) el.textContent = `link.kluke.com.br/${slug}`;
+  }
+
+  /* ══════════════════════════════════════════════
+     BUILD DO HTML FINAL (standalone / impressão)
+  ══════════════════════════════════════════════ */
+  function buildHeaderHTML(logoHeight) {
+    return `<div class="com-header-top">
+      <a href="${FIRM.url}" target="_blank" rel="noopener" style="display:flex;align-items:center;flex-shrink:0;">
+        <img src="${FIRM.logo}" alt="Kluke" style="height:${logoHeight}px;display:block;">
+      </a>
+      <div class="com-header-vdivider"></div>
+      <div class="com-header-info">
+        <div class="com-firm-name">${escHtml(FIRM.name)}</div>
+        <div class="com-firm-meta">
+          CNPJ ${escHtml(FIRM.cnpj)}<br>
+          ${escHtml(FIRM.crc)}
+        </div>
+      </div>
+    </div>`;
+  }
+
+  function buildTitlesHTML() {
+    if (!comState.title && !comState.subtitle) return '';
+    return `<div class="com-header-titles-block">
+      ${comState.title    ? `<div class="com-title">${escHtml(comState.title)}</div>`       : ''}
+      ${comState.subtitle ? `<div class="com-subtitle">${escHtml(comState.subtitle)}</div>` : ''}
+    </div>`;
+  }
+
+  function buildBlocksHTML() {
+    let html = '';
+    comState.blocks.forEach(block => {
+      if (block.type === 'text') {
+        if (!block.text.trim()) return;
+        const cls = block.variant === 'intro' ? 'com-intro' : 'com-body';
+        html += `<div class="${cls}">${linkifyRich(block.text)}</div>`;
+      } else if (block.type === 'alert') {
+        if (!block.text.trim()) return;
+        const iconSpan = block.icon ? `<span style="font-size:20px;flex-shrink:0;margin-top:1px">${block.icon}</span>` : '';
+        html += `<div class="com-alert">${iconSpan}<span>${linkifyRich(block.text)}</span></div>`;
+      } else if (block.type === 'obs') {
+        if (!block.text.trim()) return;
+        const label = block.label.trim() || 'Observação importante';
+        html += `<div class="com-obs"><span class="com-obs-label">${escHtml(label)}</span><span class="com-obs-text">${linkifyRich(block.text)}</span></div>`;
+      } else if (block.type === 'list') {
+        const validItems = block.items.filter(i => i.text.trim());
+        if (validItems.length === 0) return;
+        if (block.title.trim()) {
+          html += `<div class="com-section-title">${escHtml(block.title)}</div>`;
+        }
+        html += `<ol class="com-list">`;
+        validItems.forEach((item, idx) => {
+          const label = block.numStyle === 'dot' ? `${idx+1}.` : `${idx+1}`;
+          html += `<li><span class="com-num com-num-${block.numStyle}">${label}</span><span style="flex:1">${linkify(item.text)}</span></li>`;
+        });
+        html += `</ol>`;
+      }
+    });
+    return html;
+  }
+
+  function buildContactCardsHTML() {
+    const validResps = comState.resps.filter(r => r.name.trim() || r.email.trim());
+    let html = `<div class="com-cards">`;
+
+    if (validResps.length > 0) {
+      const label = validResps.length === 1 ? 'Responsável' : 'Responsáveis';
+      html += `<div class="com-card"><span class="com-card-label">${label}</span>`;
+      validResps.forEach(r => {
+        const nome  = titleCase(r.name.trim());
+        const email = r.email.trim().toLowerCase();
+        html += `<div class="com-card-person">
+          ${nome  ? `<span class="com-card-name">${escHtml(nome)}</span>` : ''}
+          ${email ? `<a href="mailto:${escHtml(email)}">${escHtml(email)}</a>` : ''}
+        </div>`;
+      });
+      html += `</div>`;
+    }
+
+    html += `<div class="com-card">
+      <span class="com-card-label">Atendimento</span>
+      ${PHONES_FIXED.map(p => `<a href="tel:${p.replace(/\D/g,'')}">${escHtml(p)}</a>`).join('')}
+      <span class="com-card-sublabel">WhatsApp</span>
+      <a href="${WA_FIXED.href}" target="_blank">${escHtml(WA_FIXED.num)}</a>
+    </div>`;
+
+    html += `</div>`;
+    return html;
+  }
+
+  function buildFooterHTML(includeResp) {
+    const validResps = comState.resps.filter(r => r.name.trim() || r.email.trim());
+
+    let respLine = '';
+    if (includeResp && validResps.length > 0) {
+      const label = validResps.length === 1 ? 'Responsável' : 'Responsáveis';
+      const names = validResps.map(r => {
+        const nome  = titleCase(r.name.trim());
+        const email = r.email.trim().toLowerCase();
+        if (nome && email) return `${escHtml(nome)} (${escHtml(email)})`;
+        if (nome) return escHtml(nome);
+        return escHtml(email);
+      }).join(' · ');
+      respLine = `<br>${label}: ${names}`;
+    }
+
+    return `<div class="com-footer">
+      <a href="${MAPS_URL}" target="_blank" rel="noopener">${escHtml(FIRM.address)}</a><br>
+      © ${CURRENT_YEAR} ${escHtml(FIRM.name)}
+    </div>
+    <div class="com-print-footer">
+      ${escHtml(FIRM.name)} &nbsp;·&nbsp; ${escHtml(FIRM.address)}<br>
+      ${PHONES_FIXED.map(escHtml).join(' &nbsp;·&nbsp; ')} &nbsp;·&nbsp; WhatsApp ${escHtml(WA_FIXED.num)}${respLine}
+    </div>`;
+  }
+
+  function buildFullBodyHTML(includeResp) {
+    let html = `<div class="com-main">`;
+    html += buildBlocksHTML();
+    html += `<div class="com-contact">
+      <h2>Dúvidas? Fale conosco</h2>
+      <p class="com-contact-sub">Nossa equipe está à disposição</p>
+      ${buildContactCardsHTML()}
+    </div>`;
+    html += `</div>`;
+    return html;
+  }
+
+  /* ══════════════════════════════════════════════
+     CSS PARA O ARQUIVO FINAL (standalone)
+  ══════════════════════════════════════════════ */
+  function buildStandaloneCSS() {
+    return `<style>
+:root{--navy:#0d1f3c;--gold:#c8a84b;--gold-light:#e8c97a;--cream:#f8f4ee;--text:#2a2a2a;--muted:#6b6b6b;--line:#ddd5c4}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#e8e4de;font-family:'Source Sans 3',sans-serif;min-height:100vh}
+.com-wrapper{max-width:700px;margin:0 auto;background:var(--cream);box-shadow:0 4px 32px rgba(0,0,0,0.15)}
+.com-header-top{background:#f0e9da;border-bottom:1px solid var(--line);padding:18px 28px;display:flex;align-items:center;gap:20px}
+.com-header-vdivider{width:1px;align-self:stretch;background:var(--line);flex-shrink:0}
+.com-header-info{display:flex;flex-direction:column;justify-content:center}
+.com-firm-name{font-family:'Playfair Display',serif;font-size:14px;color:var(--navy);line-height:1.3}
+.com-firm-meta{font-size:11px;color:var(--muted);line-height:1.85;margin-top:4px}
+.com-header-titles-block{background:var(--cream);padding:20px 28px 22px;text-align:center;border-bottom:1px solid var(--line)}
+.com-title{font-family:'Playfair Display',serif;font-size:22px;color:var(--navy);line-height:1.3}
+.com-subtitle{font-size:12px;font-weight:300;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-top:5px}
+.com-gold-bar{height:3px;background:linear-gradient(90deg,var(--gold),var(--gold-light),var(--gold))}
+.com-main{padding:32px 28px 48px}
+.com-alert{display:flex;align-items:flex-start;gap:12px;background:#fff7e6;border:1px solid var(--gold);border-radius:8px;padding:16px 20px;margin-bottom:22px;font-size:14px;color:#7a5500;line-height:1.5}
+.com-intro{background:#fff;border-left:3px solid var(--gold);border-radius:0 8px 8px 0;padding:16px 20px;margin-bottom:24px;font-size:14px;color:var(--muted);line-height:1.65;white-space:pre-wrap}
+.com-body{font-size:15px;line-height:1.75;color:var(--text);white-space:pre-wrap;margin-bottom:24px}
+.com-section-title{font-family:'Playfair Display',serif;font-size:16px;color:var(--navy);margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+ol.com-list{list-style:none;display:flex;flex-direction:column;gap:2px;margin-bottom:24px}
+ol.com-list li{display:flex;align-items:flex-start;gap:12px;background:#fff;padding:10px 16px;border-radius:6px;font-size:14.5px;line-height:1.5;border:1px solid var(--line)}
+.com-num{flex-shrink:0;font-family:'Playfair Display',serif;margin-top:1px}
+.com-num-circle{width:26px;height:26px;background:var(--gold);color:var(--cream);font-size:13px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.com-num-outline{width:26px;height:26px;background:transparent;border:1.5px solid var(--gold);color:var(--gold);font-size:13px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.com-num-plain{font-size:22px;color:var(--gold);line-height:1}
+.com-num-dot{font-family:'Source Sans 3',sans-serif;font-weight:600;font-size:14px;color:var(--gold);min-width:20px}
+.com-num-pill{min-width:26px;height:22px;padding:0 9px;background:var(--gold);color:var(--cream);font-size:12px;border-radius:11px;display:flex;align-items:center;justify-content:center}
+.com-num-square{width:26px;height:26px;background:var(--gold);color:var(--cream);font-size:13px;border-radius:6px;display:flex;align-items:center;justify-content:center}
+.com-obs{background:#fbf3e3;border:1.5px solid var(--gold);color:#4a4a4a;border-radius:8px;padding:14px 22px;font-size:14px;line-height:1.65;margin-bottom:24px}
+.com-obs-label{font-family:'Playfair Display',serif;color:#8a6d1f;font-size:13px;line-height:1.2;letter-spacing:.12em;text-transform:uppercase;display:block;margin-bottom:6px}
+.com-obs-text{display:block;white-space:pre-wrap}
+.com-contact{margin-top:36px;padding-top:28px;border-top:1px solid var(--line);text-align:center}
+.com-contact h2{font-family:'Playfair Display',serif;font-size:18px;color:var(--navy);margin-bottom:4px}
+.com-contact-sub{font-size:13px;color:var(--muted);margin-bottom:20px}
+.com-cards{display:flex;flex-wrap:wrap;gap:12px;justify-content:center}
+.com-card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:16px 20px;min-width:180px;text-align:left}
+.com-card-label{font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--gold);font-weight:600;display:block;margin-bottom:10px}
+.com-card-sublabel{font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--gold);font-weight:600;display:block;margin-bottom:6px;margin-top:10px;padding-top:10px;border-top:1px solid var(--line)}
+.com-card-person{margin-bottom:8px}
+.com-card-name{font-weight:600;font-size:14px;color:var(--navy);display:block;margin-bottom:2px}
+.com-card a{display:block;font-size:13px;color:var(--muted);text-decoration:none;line-height:1.8}
+.com-footer{background:var(--navy);text-align:center;padding:16px 20px;font-size:12px;color:rgba(255,255,255,.3);letter-spacing:.04em;line-height:1.9}
+.com-footer a{color:rgba(255,255,255,.4);text-decoration:none}
+.com-print-footer{display:none;text-align:center;padding:16px 20px 8px;font-size:11px;color:#999;border-top:1px solid #ddd;letter-spacing:.03em}
+.btn-print{position:fixed;bottom:28px;right:28px;background:var(--navy);color:var(--gold);border:1px solid var(--gold);border-radius:50px;padding:12px 22px;font-family:'Source Sans 3',sans-serif;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px;box-shadow:0 4px 16px rgba(13,31,60,.25);transition:background .2s,color .2s;z-index:999}
+.btn-print:hover{background:var(--gold);color:var(--navy)}
+@media (max-width:480px){
+  .com-header-top{flex-direction:column;text-align:center;padding:18px 20px}
+  .com-header-vdivider{display:none}
+  .com-header-info{align-items:center;text-align:center}
+}
+@media print{
+  body{background:#fff}
+  .btn-print{display:none!important}
+  .com-wrapper{box-shadow:none;max-width:100%}
+  .com-header-top{border-bottom:1px solid #ccc;padding:14px 20px}
+  .com-header-titles-block{border-bottom:none;padding:14px 20px 10px}
+  .com-gold-bar{height:1px;background:var(--gold);-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .com-alert{display:block;background:none!important;border:none!important;padding:0;margin-bottom:14px;color:#000!important;font-weight:600;font-size:13px;line-height:1.6}
+  .com-alert span{display:inline!important}
+  .com-intro{display:block;background:none!important;border:none!important;border-radius:0;padding:0;margin-bottom:14px;color:#333!important;font-style:italic;font-size:13px}
+  .com-section-title{border-bottom-color:#ccc}
+  ol.com-list{display:block;margin-bottom:12px}
+  ol.com-list li{display:block;background:none!important;border:none!important;padding:0;margin-bottom:6px;font-size:13px;line-height:1.6}
+  .com-num-circle,.com-num-outline,.com-num-pill,.com-num-square{display:inline!important;width:auto!important;height:auto!important;background:none!important;border:none!important;color:#000!important;border-radius:0!important;padding:0;font-family:'Source Sans 3',sans-serif!important;font-size:13px!important;font-weight:600}
+  .com-num-circle::after,.com-num-outline::after,.com-num-pill::after,.com-num-square::after{content:'. '}
+  .com-num-plain,.com-num-dot{display:inline!important;color:#000!important;font-size:13px!important;font-family:'Source Sans 3',sans-serif!important;font-weight:600}
+  .com-num-plain::after{content:'. '}
+  .com-num-dot::after{content:' '}
+  .com-obs{display:block;background:none!important;border:none!important;padding:0;margin-top:0;margin-bottom:14px;color:#000!important;font-size:13px}
+  .com-obs-label{color:#000!important;font-weight:700;font-family:'Source Sans 3',sans-serif!important;letter-spacing:normal;text-transform:none;font-size:13px;margin-bottom:4px}
+  .com-obs-text{display:inline}
+  .com-contact{display:none!important}
+  .com-footer{display:none!important}
+  .com-print-footer{display:block!important}
+}
+</style>`;
+  }
+
+  /* ══════════════════════════════════════════════
+     SERIALIZAÇÃO PARA CARREGAR/SALVAR
+  ══════════════════════════════════════════════ */
+  function buildEditorStateJSON() {
+    const data = {
+      title: comState.title,
+      subtitle: comState.subtitle,
+      blocks: comState.blocks,
+      resps: comState.resps,
+      filename: (document.getElementById('f-filename')?.value || '').trim(),
+    };
+    return JSON.stringify(data).replace(/<\/script/gi, '<\\/script');
+  }
+
+  function buildStandaloneHTML() {
+    const title = comState.title || 'Comunicado';
+
+    return `<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>${escHtml(title)} — Kluke Serviços Contábeis</title>
+<link rel="icon" type="image/png" href="https://link.kluke.com.br/96x96-5d0a63a33117b.png">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet">
+${buildStandaloneCSS()}
+</head>
+<body>
+<script type="application/json" id="kluke-comm-data">${buildEditorStateJSON()}<\/script>
+<div class="com-wrapper">
+${buildHeaderHTML(50)}
+${buildTitlesHTML()}
+<div class="com-gold-bar"></div>
+${buildFullBodyHTML(false)}
+${buildFooterHTML(false)}
+</div>
+<button class="btn-print" onclick="window.print()">🖨️ Imprimir</button>
+</body>
+</html>`;
+  }
+
+  /* ══════════════════════════════════════════════
+     AÇÕES: IMPRIMIR / SALVAR / CARREGAR / LIMPAR
+  ══════════════════════════════════════════════ */
+  function printComunicado() {
+    const title = comState.title || 'Comunicado';
+
+    const win = window.open('', '_blank');
+    win.document.write(`<!DOCTYPE html><html lang="pt-BR"><head>
+<meta charset="UTF-8">
+<title>${escHtml(title)} — Kluke</title>
+<link rel="icon" type="image/png" href="https://link.kluke.com.br/96x96-5d0a63a33117b.png">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet">
+${buildStandaloneCSS()}
+</head><body>
+<div class="com-wrapper">
+${buildHeaderHTML(50)}
+${buildTitlesHTML()}
+<div class="com-gold-bar"></div>
+${buildFullBodyHTML(true)}
+${buildFooterHTML(true)}
+</div>
+</body></html>`);
+    win.document.close();
+    win.onload = () => { win.focus(); win.print(); };
+  }
+
+  function downloadHTML() {
+    const raw = (document.getElementById('f-filename')?.value || '').trim();
+    const fallback = comState.title ? slugify(comState.title) : 'comunicado-kluke';
+    const filename = (raw.replace(/[^a-z0-9\-_]/gi,'') || fallback) + '.html';
+    const blob = new Blob([buildStandaloneHTML()], { type: 'text/html;charset=utf-8' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = filename;
+    a.click();
+  }
+
+  function loadHTMLFile(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const content = e.target.result;
+      const match = content.match(/<script type="application\/json" id="kluke-comm-data">([\s\S]*?)<\/script>/);
+
+      if (!match) {
+        alert('Não foi possível carregar este arquivo. Ele não foi gerado por este gerador de comunicados, ou os dados internos foram removidos.');
+        event.target.value = '';
+        return;
+      }
+
+      let data;
+      try {
+        data = JSON.parse(match[1].replace(/<\\\/script/gi, '<\/script'));
+      } catch (err) {
+        alert('Não foi possível ler os dados deste arquivo. O conteúdo pode estar corrompido.');
+        event.target.value = '';
+        return;
+      }
+
+      applyLoadedData(data);
+      event.target.value = '';
+    };
+    reader.onerror = function() {
+      alert('Não foi possível abrir o arquivo selecionado.');
+    };
+    reader.readAsText(file);
+  }
+
+  function applyLoadedData(data) {
+    comState.title = data.title || '';
+    comState.subtitle = data.subtitle || '';
+    comState.blocks = Array.isArray(data.blocks) ? data.blocks : [];
+    comState.resps = Array.isArray(data.resps) ? data.resps : [];
+
+    renderCanvas();
+
+    const filenameInput = document.getElementById('f-filename');
+    if (filenameInput) filenameInput.value = data.filename || '';
+    updateLinkPreview();
+  }
+
+  function resetForm() {
+    const filenameInput = document.getElementById('f-filename');
+    const filenameValue = filenameInput ? filenameInput.value : '';
+    const hasContent = comState.title || comState.subtitle || comState.blocks.length > 0 || comState.resps.length > 0;
+
+    if (!hasContent) return; /* nada pra limpar, não incomoda com popup */
+
+    showConfirm({
+      icon: '🗑️',
+      title: 'Limpar tudo?',
+      message: 'Isso vai apagar o título, todo o conteúdo e os responsáveis deste comunicado.',
+      onConfirm: () => {
+        /* guarda backup temporário pra permitir desfazer */
+        lastClearedState = {
+          comState: JSON.parse(JSON.stringify(comState)),
+          filename: filenameValue,
+        };
+        clearTimeout(undoTimer);
+        undoTimer = setTimeout(() => { lastClearedState = null; hideUndoToast(); }, UNDO_WINDOW_MS);
+
+        comState = { title: '', subtitle: '', blocks: [], resps: [] };
+        if (filenameInput) filenameInput.value = '';
+        renderCanvas();
+        updateLinkPreview();
+        saveAutosave();
+
+        showUndoToast('Comunicado limpo.');
+      }
+    });
+  }
+
+  /* ══════════════════════════════════════════════
+     POPUP DE CONFIRMAÇÃO (genérico)
+  ══════════════════════════════════════════════ */
+  let pendingConfirmAction = null;
+
+  function showConfirm({ icon, title, message, onConfirm }) {
+    document.getElementById('confirm-icon').textContent = icon || '⚠️';
+    document.getElementById('confirm-title').textContent = title || 'Tem certeza?';
+    document.getElementById('confirm-message').textContent = message || 'Esta ação não poderá ser desfeita.';
+    pendingConfirmAction = onConfirm;
+
+    const okBtn = document.getElementById('confirm-btn-ok');
+    okBtn.onclick = () => {
+      closeConfirm();
+      if (pendingConfirmAction) pendingConfirmAction();
+      pendingConfirmAction = null;
+    };
+
+    document.getElementById('confirm-overlay').classList.add('visible');
+  }
+
+  function closeConfirm() {
+    document.getElementById('confirm-overlay').classList.remove('visible');
+    pendingConfirmAction = null;
+  }
+
+  /* ══════════════════════════════════════════════
+     TOAST DE DESFAZER (após Limpar)
+  ══════════════════════════════════════════════ */
+  const UNDO_WINDOW_MS = 5 * 60 * 1000; /* 5 minutos */
+  let lastClearedState = null;
+  let undoTimer = null;
+
+  function showUndoToast(message) {
+    document.getElementById('undo-toast-message').textContent = message;
+    document.getElementById('undo-toast').classList.add('visible');
+  }
+
+  function hideUndoToast() {
+    document.getElementById('undo-toast').classList.remove('visible');
+  }
+
+  function undoLastClear() {
+    if (!lastClearedState) { hideUndoToast(); return; }
+    clearTimeout(undoTimer);
+    comState = lastClearedState.comState;
+    const filenameInput = document.getElementById('f-filename');
+    if (filenameInput) filenameInput.value = lastClearedState.filename || '';
+    lastClearedState = null;
+    renderCanvas();
+    updateLinkPreview();
+    saveAutosave();
+    hideUndoToast();
+  }
+
+  /* ══════════════════════════════════════════════
+     REMOÇÃO COM CONFIRMAÇÃO (blocos, itens, responsáveis)
+  ══════════════════════════════════════════════ */
+  function confirmRemoveBlock(id) {
+    const block = comState.blocks.find(b => b.id === id);
+    if (!block) return;
+    const typeLabels = { text: 'este texto', list: 'esta lista', alert: 'este alerta', obs: 'esta observação' };
+    showConfirm({
+      icon: '🗑️',
+      title: 'Remover bloco?',
+      message: `Tem certeza que deseja remover ${typeLabels[block.type] || 'este bloco'}?`,
+      onConfirm: () => removeBlock(id)
+    });
+  }
+
+  function confirmRemoveListItem(blockId, itemId) {
+    showConfirm({
+      icon: '🗑️',
+      title: 'Remover item?',
+      message: 'Tem certeza que deseja remover este item da lista?',
+      onConfirm: () => removeListItem(blockId, itemId)
+    });
+  }
+
+  function confirmRemoveResp(id) {
+    showConfirm({
+      icon: '🗑️',
+      title: 'Remover responsável?',
+      message: 'Tem certeza que deseja remover este responsável?',
+      onConfirm: () => removeResp(id)
+    });
+  }
+
+  /* ══════════════════════════════════════════════
+     AUTOSAVE (pré-salvamento automático no navegador)
+  ══════════════════════════════════════════════ */
+  const AUTOSAVE_KEY = 'kluke-comunicados-autosave';
+  let autosaveTimer = null;
+
+  function saveAutosave() {
+    clearTimeout(autosaveTimer);
+    autosaveTimer = setTimeout(() => {
+      try {
+        const filenameInput = document.getElementById('f-filename');
+        const data = {
+          title: comState.title,
+          subtitle: comState.subtitle,
+          blocks: comState.blocks,
+          resps: comState.resps,
+          filename: filenameInput ? filenameInput.value : '',
+          savedAt: Date.now(),
+        };
+        localStorage.setItem(AUTOSAVE_KEY, JSON.stringify(data));
+      } catch (e) { /* localStorage indisponível — ignora silenciosamente */ }
+    }, 400); /* pequeno debounce pra não gravar a cada tecla */
+  }
+
+  function loadAutosave() {
+    try {
+      const raw = localStorage.getItem(AUTOSAVE_KEY);
+      if (!raw) return;
+      const data = JSON.parse(raw);
+      if (!data) return;
+
+      const hasContent = data.title || data.subtitle ||
+        (Array.isArray(data.blocks) && data.blocks.length > 0) ||
+        (Array.isArray(data.resps) && data.resps.length > 0);
+      if (!hasContent) return;
+
+      comState.title = data.title || '';
+      comState.subtitle = data.subtitle || '';
+      comState.blocks = Array.isArray(data.blocks) ? data.blocks : [];
+      comState.resps = Array.isArray(data.resps) ? data.resps : [];
+
+      const filenameInput = document.getElementById('f-filename');
+      if (filenameInput) filenameInput.value = data.filename || '';
+    } catch (e) { /* dado corrompido ou indisponível — segue com tela em branco */ }
+  }
+
+  function clearAutosave() {
+    try { localStorage.removeItem(AUTOSAVE_KEY); } catch (e) {}
+  }
+
+  /* ══════════════════════════════════════════════
+     MODAL DE BOAS-VINDAS
+  ══════════════════════════════════════════════ */
+  const WELCOME_KEY = 'kluke-comunicados-welcome-seen';
+
+  function openWelcomeModal() {
+    let alreadySeen = false;
+    try { alreadySeen = localStorage.getItem(WELCOME_KEY) === '1'; } catch (e) {}
+    const checkbox = document.getElementById('welcome-dont-show');
+    if (checkbox) checkbox.checked = alreadySeen;
+    document.getElementById('welcome-overlay').classList.remove('hidden');
+  }
+
+  function closeWelcomeModal() {
+    document.getElementById('welcome-overlay').classList.add('hidden');
+    const dontShow = document.getElementById('welcome-dont-show')?.checked;
+    try {
+      if (dontShow) localStorage.setItem(WELCOME_KEY, '1');
+      else localStorage.removeItem(WELCOME_KEY);
+    } catch (e) {}
+  }
+
+  (function initWelcomeModal() {
+    let alreadySeen = false;
+    try { alreadySeen = localStorage.getItem(WELCOME_KEY) === '1'; } catch (e) {}
+    if (alreadySeen) document.getElementById('welcome-overlay').classList.add('hidden');
+  })();
+
+  /* ══════════════════════════════════════════════
+     INIT
+  ══════════════════════════════════════════════ */
+  loadAutosave();
+  renderCanvas();
+  updateLinkPreview();
+</script>
+</body>
+</html>
