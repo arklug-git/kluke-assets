@@ -167,32 +167,6 @@
   .com-firm-meta a { color: var(--muted); text-decoration: none; }
   .com-firm-meta a:hover { color: var(--gold); }
 
-  .com-eyebrow {
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.32em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 6px;
-  }
-
-  .editable-eyebrow {
-    outline: none;
-    border-radius: 4px;
-    padding: 2px 8px;
-    display: inline-block;
-    min-width: 40px;
-    transition: background 0.15s;
-  }
-
-  .editable-eyebrow:hover, .editable-eyebrow:focus { background: rgba(200,168,75,0.12); }
-  .editable-eyebrow:empty::before {
-    content: attr(data-placeholder);
-    color: rgba(138,109,31,0.35);
-    letter-spacing: 0.08em;
-    font-weight: 400;
-  }
-
   .com-header-titles-block {
     background: var(--cream);
     padding: 20px 28px 22px;
@@ -1204,7 +1178,7 @@
 
       <div class="welcome-step">
         <span class="welcome-step-num">1</span>
-        <span class="welcome-step-text"><strong>Edite direto no documento</strong> — clique em qualquer texto (título, parágrafos, itens de lista) para editar ali mesmo. O que você vê já é o resultado final. O rótulo acima do título ("Comunicado") também é editável — troque por Aviso, Circular, Informativo... ou apague para não exibir.</span>
+        <span class="welcome-step-text"><strong>Edite direto no documento</strong> — clique em qualquer texto (título, parágrafos, itens de lista) para editar ali mesmo. O que você vê já é o resultado final.</span>
       </div>
 
       <div class="welcome-step">
@@ -1276,7 +1250,7 @@
     </div>
   </div>
   <div class="topbar-actions">
-    <span class="version-tag">v2.9</span>
+    <span class="version-tag">v2.10</span>
     <span class="tip-wrap">
       <button class="btn btn-outline" onclick="document.getElementById('load-html-input').click()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>Carregar HTML</button>
       <span class="tip-box">Editar um comunicado já gerado</span>
@@ -1393,7 +1367,6 @@
      STATE
   ══════════════════════════════════════════════ */
   let comState = {
-    eyebrow: 'Comunicado',
     title: '',
     subtitle: '',
     blocks: [],
@@ -1501,10 +1474,6 @@
   function syncDomToState() {
     const canvas = document.getElementById('canvas');
     if (!canvas) return;
-
-    /* textContent (não innerText): innerText capturaria o uppercase visual do CSS */
-    const eyebrowEl = canvas.querySelector('.editable-eyebrow');
-    if (eyebrowEl) comState.eyebrow = (eyebrowEl.textContent || '').trim();
 
     const titleEl = canvas.querySelector('.editable-title');
     if (titleEl) comState.title = getEditableText(titleEl);
@@ -2001,9 +1970,36 @@
     renderCanvas();
   }
 
-  function updateRespField(id, field, value) {
+  /* Nome próprio em title case, mantendo conectivos em minúsculas (Maria da Silva) */
+  function titleCaseName(s) {
+    const keepLower = new Set(['da', 'de', 'do', 'das', 'dos', 'e']);
+    return s.toLowerCase().split(' ').map((w, i) => {
+      if (i > 0 && keepLower.has(w)) return w;
+      return w.split('-').map(p => p ? p.charAt(0).toUpperCase() + p.slice(1) : p).join('-');
+    }).join(' ');
+  }
+
+  function normalizeResps(resps) {
+    return (Array.isArray(resps) ? resps : []).map(r => ({
+      ...r,
+      name: titleCaseName(r.name || ''),
+      email: (r.email || '').toLowerCase(),
+    }));
+  }
+
+  function updateRespField(id, field, inputEl) {
     const r = comState.resps.find(r => String(r.id) === String(id));
-    if (r) r[field] = value;
+    if (!r) return;
+    let value = inputEl.value;
+    if (field === 'name') value = titleCaseName(value);
+    else if (field === 'email') value = value.toLowerCase();
+    /* As transformações preservam o comprimento, então dá pra reescrever o campo sem perder o cursor */
+    if (inputEl.value !== value) {
+      const pos = inputEl.selectionStart;
+      inputEl.value = value;
+      inputEl.setSelectionRange(pos, pos);
+    }
+    r[field] = value;
     saveAutosave();
   }
 
@@ -2035,8 +2031,6 @@
     </div>`;
 
     html += `<div class="com-header-titles-block">
-      <div class="com-eyebrow editable-eyebrow single-line" contenteditable="true" data-placeholder="Tipo do documento (opcional) — ex.: Comunicado"
-        oninput="comState.eyebrow = (this.textContent || '').trim(); saveAutosave();">${escHtml(comState.eyebrow)}</div>
       <div class="editable-title single-line" contenteditable="true" data-placeholder="Clique para digitar o título do comunicado"
         oninput="comState.title = getEditableText(this); saveAutosave();" onblur="renderLinkPreviewOnly()">${escHtml(comState.title)}</div>
       <div class="editable-subtitle single-line" contenteditable="true" data-placeholder="Subtítulo (opcional) — ex.: Ano-base 2025"
@@ -2245,9 +2239,9 @@
         cardsHtml += `<div class="com-card-person" data-resp-id="${r.id}">
           <div style="flex:1;">
             <input type="text" class="resp-name-input" placeholder="Nome" value="${escHtml(r.name)}"
-              oninput="updateRespField('${r.id}','name',this.value)" style="display:block;">
+              oninput="updateRespField('${r.id}','name',this)" style="display:block;">
             <input type="text" class="resp-email-input" placeholder="email@kluke.com.br" value="${escHtml(r.email)}"
-              oninput="updateRespField('${r.id}','email',this.value)" onblur="checkRespEmailInline('${r.id}', this)" style="display:block;">
+              oninput="updateRespField('${r.id}','email',this)" onblur="checkRespEmailInline('${r.id}', this)" style="display:block;">
           </div>
           <button class="resp-del-btn" onclick="confirmRemoveResp('${r.id}')" title="Remover">✕</button>
         </div>`;
@@ -2306,10 +2300,8 @@
   }
 
   function buildTitlesHTML() {
-    const eyebrow = (comState.eyebrow || '').trim();
-    if (!comState.title && !comState.subtitle && !eyebrow) return '';
+    if (!comState.title && !comState.subtitle) return '';
     return `<div class="com-header-titles-block">
-      ${eyebrow            ? `<div class="com-eyebrow">${escHtml(eyebrow)}</div>`            : ''}
       ${comState.title    ? `<div class="com-title">${escHtml(comState.title)}</div>`       : ''}
       ${comState.subtitle ? `<div class="com-subtitle">${escHtml(comState.subtitle)}</div>` : ''}
     </div>`;
@@ -2436,7 +2428,6 @@ body{background:#e8e4de;font-family:'Source Sans 3',sans-serif;min-height:100vh}
 .com-firm-meta{font-size:11px;color:var(--muted);line-height:1.85;margin-top:4px}
 .com-firm-meta a{color:var(--muted);text-decoration:none}
 .com-firm-meta a:hover{color:var(--gold)}
-.com-eyebrow{font-size:10px;font-weight:600;letter-spacing:.32em;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
 .com-header-titles-block{background:var(--cream);padding:20px 28px 22px;text-align:center;border-bottom:1px solid var(--line)}
 .com-title{font-family:'Playfair Display',serif;font-size:22px;color:var(--navy);line-height:1.3}
 .com-subtitle{font-size:12px;font-weight:300;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-top:5px}
@@ -2488,7 +2479,6 @@ ol.com-list li{display:flex;align-items:flex-start;gap:12px;background:#fff;padd
   .com-wrapper{box-shadow:none;max-width:100%}
   .com-header-top{border-bottom:1px solid #ccc;padding:14px 20px}
   .com-header-titles-block{border-bottom:none;padding:14px 20px 10px}
-  .com-eyebrow{color:#8a6d1f}
   .com-gold-bar{height:1px;background:var(--gold);-webkit-print-color-adjust:exact;print-color-adjust:exact}
   .com-alert{display:block;background:none!important;border:none!important;padding:0;margin-bottom:14px;color:#000!important;font-weight:600;font-size:13px;line-height:1.6}
   .com-alert span{display:inline!important}
@@ -2517,7 +2507,6 @@ ol.com-list li{display:flex;align-items:flex-start;gap:12px;background:#fff;padd
   ══════════════════════════════════════════════ */
   function buildEditorStateJSON() {
     const data = {
-      eyebrow: comState.eyebrow,
       title: comState.title,
       subtitle: comState.subtitle,
       blocks: comState.blocks,
@@ -2639,12 +2628,10 @@ ${buildFooterHTML(true)}
   }
 
   function applyLoadedData(data) {
-    /* Arquivos antigos não têm o campo eyebrow — carregam vazio, sem injetar rótulo */
-    comState.eyebrow = typeof data.eyebrow === 'string' ? data.eyebrow : '';
     comState.title = data.title || '';
     comState.subtitle = data.subtitle || '';
     comState.blocks = Array.isArray(data.blocks) ? data.blocks : [];
-    comState.resps = Array.isArray(data.resps) ? data.resps : [];
+    comState.resps = normalizeResps(data.resps);
 
     renderCanvas();
 
@@ -2673,7 +2660,7 @@ ${buildFooterHTML(true)}
         clearTimeout(undoTimer);
         undoTimer = setTimeout(() => { lastClearedState = null; hideUndoToast(); }, UNDO_WINDOW_MS);
 
-        comState = { eyebrow: 'Comunicado', title: '', subtitle: '', blocks: [], resps: [] };
+        comState = { title: '', subtitle: '', blocks: [], resps: [] };
         if (filenameInput) filenameInput.value = '';
         renderCanvas();
         updateLinkPreview();
@@ -2785,7 +2772,6 @@ ${buildFooterHTML(true)}
       try {
         const filenameInput = document.getElementById('f-filename');
         const data = {
-          eyebrow: comState.eyebrow,
           title: comState.title,
           subtitle: comState.subtitle,
           blocks: comState.blocks,
@@ -2832,11 +2818,10 @@ ${buildFooterHTML(true)}
         (Array.isArray(data.resps) && data.resps.length > 0);
       if (!hasContent) return;
 
-      comState.eyebrow = typeof data.eyebrow === 'string' ? data.eyebrow : 'Comunicado';
       comState.title = data.title || '';
       comState.subtitle = data.subtitle || '';
       comState.blocks = Array.isArray(data.blocks) ? data.blocks : [];
-      comState.resps = Array.isArray(data.resps) ? data.resps : [];
+      comState.resps = normalizeResps(data.resps);
 
       const filenameInput = document.getElementById('f-filename');
       if (filenameInput) filenameInput.value = data.filename || '';
