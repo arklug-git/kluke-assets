@@ -425,12 +425,82 @@
   .block-type-toggle {
     display: inline-flex;
     gap: 6px;
-    margin-bottom: 6px;
     opacity: 0;
     transition: opacity 0.15s;
   }
 
-  .block-wrap:hover .block-type-toggle { opacity: 1; }
+  .block-wrap:hover .block-type-toggle,
+  .block-wrap:focus-within .block-type-toggle { opacity: 1; }
+
+  .block-toolbar-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 6px;
+    min-height: 24px;
+  }
+
+  /* Barra fixa de formatação: Negrito, Itálico, Sublinhado e Link */
+  .fmt-inline {
+    display: inline-flex;
+    gap: 3px;
+    opacity: 0;
+    transition: opacity 0.15s;
+  }
+
+  .block-wrap:hover .fmt-inline,
+  .block-wrap:focus-within .fmt-inline { opacity: 1; }
+
+  .fmt-inline-btn {
+    width: 24px; height: 24px;
+    border: 1px solid var(--line);
+    background: #fff;
+    border-radius: 5px;
+    font-size: 12px;
+    color: var(--navy);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Source Sans 3', sans-serif;
+    padding: 0;
+  }
+
+  .fmt-inline-btn:hover { border-color: var(--gold); background: #fffdf7; }
+  .fmt-inline-btn svg { width: 13px; height: 13px; color: var(--navy); }
+
+  .fmt-inline-btn.active { background: var(--gold); border-color: var(--gold); color: var(--navy); }
+  .fmt-inline-btn.active svg { color: var(--navy); }
+
+  /* Toolbar dentro do alerta (flex): ocupa a primeira linha inteira */
+  .block-alert { flex-wrap: wrap; }
+  .block-alert .fmt-inline { flex-basis: 100%; margin: -2px 0 -4px; }
+  .block-obs .fmt-inline { margin-bottom: 4px; }
+
+  /* Links dentro dos campos editáveis */
+  .editable-text a { color: var(--gold); text-decoration: underline; }
+
+  .prompt-input {
+    width: 100%;
+    margin-top: 12px;
+    padding: 9px 12px;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    font-size: 14px;
+    font-family: 'Source Sans 3', sans-serif;
+    color: var(--text);
+    outline: none;
+  }
+
+  .prompt-input:focus { border-color: var(--gold); }
+
+  .confirm-btn-primary {
+    background: var(--gold);
+    color: var(--navy);
+    border: none;
+  }
+
+  .confirm-btn-primary:hover { background: var(--gold-light); }
 
   /* ── TOOLBAR FLUTUANTE DE FORMATAÇÃO (aparece ao selecionar texto) ── */
   .format-toolbar {
@@ -1178,7 +1248,7 @@
 
       <div class="welcome-step">
         <span class="welcome-step-num">1</span>
-        <span class="welcome-step-text"><strong>Edite direto no documento</strong> — clique em qualquer texto (título, parágrafos, itens de lista) para editar ali mesmo. O que você vê já é o resultado final.</span>
+        <span class="welcome-step-text"><strong>Edite direto no documento</strong> — clique em qualquer texto (título, parágrafos, itens de lista) para editar ali mesmo. Nos blocos de texto, alerta e observação, use a barrinha <strong>N</strong> <strong><em>I</em></strong> <strong><u>S</u></strong> 🔗 para negrito, itálico, sublinhado e links. O que você vê já é o resultado final.</span>
       </div>
 
       <div class="welcome-step">
@@ -1193,14 +1263,14 @@
           <ul class="welcome-actions-list">
             <li><strong>Carregar HTML</strong> — abre um comunicado já gerado por esta ferramenta para editar e fazer pequenos ajustes, sem precisar digitar tudo de novo.</li>
             <li><strong>Imprimir</strong> — gera uma versão simplificada para imprimir ou salvar como PDF, padronizando os documentos da empresa. Salve o HTML antes, caso queira editar depois.</li>
-            <li><strong>Salvar HTML</strong> — salva o arquivo do comunicado (atalho: Ctrl+S). Envie para o responsável publicar na internet e compartilhar o link com o cliente por WhatsApp ou e-mail. <em>Dando dois cliques no arquivo salvo, ele já abre direto, sem precisar deste gerador.</em></li>
+            <li><strong>Salvar HTML</strong> — salva o arquivo do comunicado (atalho: Ctrl+S, com o cursor fora dos textos). Envie para o responsável publicar na internet e compartilhar o link com o cliente por WhatsApp ou e-mail. <em>Dando dois cliques no arquivo salvo, ele já abre direto, sem precisar deste gerador.</em></li>
             <li><strong>Limpar</strong> — apaga tudo e começa um novo comunicado do zero.</li>
           </ul>
         </span>
       </div>
 
       <div class="welcome-tip">
-        <strong>Dica:</strong> pode usar sem medo — nada é enviado para lugar nenhum, tudo fica só no seu computador. Um rascunho é salvo automaticamente neste navegador enquanto você digita (se fechar a página sem querer, ele volta). Para guardar o arquivo definitivo ou continuar em outro computador, use o <strong>Salvar HTML</strong> (ou <strong>Ctrl+S</strong>) e depois o <strong>Carregar HTML</strong>.
+        <strong>Dica:</strong> pode usar sem medo — nada é enviado para lugar nenhum, tudo fica só no seu computador. Um rascunho é salvo automaticamente neste navegador enquanto você digita (se fechar a página sem querer, ele volta). Para guardar o arquivo definitivo ou continuar em outro computador, use o <strong>Salvar HTML</strong> (ou <strong>Ctrl+S</strong>, com o cursor fora dos textos) e depois o <strong>Carregar HTML</strong>.
       </div>
     </div>
     <div class="welcome-footer">
@@ -1216,9 +1286,10 @@
 <button class="help-fab" onclick="openWelcomeModal()" title="Ver manual">?</button>
 
 <div class="format-toolbar" id="format-toolbar">
-  <button class="format-btn b" onmousedown="event.preventDefault(); applyFormat('bold')" title="Negrito (Ctrl+B)">B</button>
+  <button class="format-btn b" onmousedown="event.preventDefault(); applyFormat('bold')" title="Negrito (Ctrl+N)">N</button>
   <button class="format-btn i" onmousedown="event.preventDefault(); applyFormat('italic')" title="Itálico (Ctrl+I)">I</button>
-  <button class="format-btn u" onmousedown="event.preventDefault(); applyFormat('underline')" title="Sublinhado (Ctrl+U)">U</button>
+  <button class="format-btn u" onmousedown="event.preventDefault(); applyFormat('underline')" title="Sublinhado (Ctrl+S)">S</button>
+  <button class="format-btn lk" onmousedown="event.preventDefault(); applyLink()" title="Adicionar ou remover link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px;vertical-align:-2px"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></button>
 </div>
 
 <div class="confirm-overlay" id="confirm-overlay">
@@ -1231,6 +1302,20 @@
     <div class="confirm-actions">
       <button class="confirm-btn confirm-btn-cancel" onclick="closeConfirm()">Cancelar</button>
       <button class="confirm-btn confirm-btn-danger" id="confirm-btn-ok">Confirmar</button>
+    </div>
+  </div>
+</div>
+
+<div class="confirm-overlay" id="prompt-overlay">
+  <div class="confirm-modal">
+    <div class="confirm-modal-body">
+      <div class="confirm-title" id="prompt-title">Adicionar link</div>
+      <div class="confirm-message" id="prompt-message"></div>
+      <input type="text" class="prompt-input" id="prompt-input" placeholder="https://exemplo.com.br">
+    </div>
+    <div class="confirm-actions">
+      <button class="confirm-btn confirm-btn-cancel" onclick="closePrompt()">Cancelar</button>
+      <button class="confirm-btn confirm-btn-primary" id="prompt-btn-ok">Adicionar</button>
     </div>
   </div>
 </div>
@@ -1250,7 +1335,7 @@
     </div>
   </div>
   <div class="topbar-actions">
-    <span class="version-tag">v2.10</span>
+    <span class="version-tag">v2.13</span>
     <span class="tip-wrap">
       <button class="btn btn-outline" onclick="document.getElementById('load-html-input').click()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>Carregar HTML</button>
       <span class="tip-box">Editar um comunicado já gerado</span>
@@ -1262,7 +1347,7 @@
     </span>
     <span class="tip-wrap">
       <button class="btn btn-gold" onclick="downloadHTML()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Salvar HTML</button>
-      <span class="tip-box tip-box-right" style="white-space:normal;width:260px;text-align:left;">Salva o arquivo do comunicado (atalho: Ctrl+S). Envie para o responsável publicar na internet e compartilhar o link com o cliente.</span>
+      <span class="tip-box tip-box-right" style="white-space:normal;width:260px;text-align:left;">Salva o arquivo do comunicado (atalho: Ctrl+S, com o cursor fora dos textos). Envie para o responsável publicar na internet e compartilhar o link com o cliente.</span>
     </span>
     <span class="tip-wrap">
       <button class="btn btn-outline" onclick="resetForm()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>Limpar</button>
@@ -1332,6 +1417,7 @@
     printer:   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>',
     download:  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>',
     reset:     '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>',
+    link:      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>',
   };
 
   /* Retorna o markup do ícone de alerta: SVG (chave "svg:nome") ou emoji */
@@ -1400,10 +1486,43 @@
   /* Para textos vindos de campos formatáveis (já contém HTML sanitizado
      com apenas <b><i><u><br>, sem escape). Aplica linkify preservando
      essas tags, e converte quebras de linha em <br> explícito. */
+  /* Converte URLs soltas em links e decora todas as âncoras (inclusive as
+     criadas pelo botão de link). Baseado em DOM para nunca tocar em URLs
+     que já estão dentro de um href. */
   function linkifyRich(html) {
-    const withBreaks = String(html || '').replace(/\n/g, '<br>');
-    return withBreaks.replace(/(https?:\/\/[^\s&<]+)/g,
-      url => `<a href="${url}" target="_blank" rel="noopener" style="color:var(--gold);word-break:break-all;">${url}</a>`);
+    const temp = document.createElement('div');
+    temp.innerHTML = String(html || '').replace(/\n/g, '<br>');
+    linkifyTextNodes(temp);
+    temp.querySelectorAll('a').forEach(a => {
+      a.setAttribute('target', '_blank');
+      a.setAttribute('rel', 'noopener');
+      a.setAttribute('style', 'color:var(--gold);word-break:break-all;');
+    });
+    return temp.innerHTML;
+  }
+
+  function linkifyTextNodes(node) {
+    Array.from(node.childNodes).forEach(child => {
+      if (child.nodeType === 3) {
+        const text = child.nodeValue;
+        if (!/https?:\/\//i.test(text)) return;
+        const frag = document.createDocumentFragment();
+        let last = 0;
+        text.replace(/(https?:\/\/[^\s<>"']+)/gi, (m, url, off) => {
+          frag.appendChild(document.createTextNode(text.slice(last, off)));
+          const a = document.createElement('a');
+          a.setAttribute('href', url);
+          a.textContent = url;
+          frag.appendChild(a);
+          last = off + m.length;
+          return m;
+        });
+        frag.appendChild(document.createTextNode(text.slice(last)));
+        child.parentNode.replaceChild(frag, child);
+      } else if (child.nodeType === 1 && child.tagName !== 'A') {
+        linkifyTextNodes(child);
+      }
+    });
   }
 
   function slugify(str) {
@@ -1432,7 +1551,7 @@
     return el.innerText.replace(/\r\n/g, '\n');
   }
 
-  const ALLOWED_RICH_TAGS = new Set(['B', 'STRONG', 'I', 'EM', 'U', 'BR', 'DIV']);
+  const ALLOWED_RICH_TAGS = new Set(['B', 'STRONG', 'I', 'EM', 'U', 'BR', 'DIV', 'A']);
 
   function sanitizeRichText(html) {
     const temp = document.createElement('div');
@@ -1450,7 +1569,14 @@
   function sanitizeNode(node) {
     Array.from(node.childNodes).forEach(child => {
       if (child.nodeType === 1) { // Element
-        if (!ALLOWED_RICH_TAGS.has(child.tagName)) {
+        let allowed = ALLOWED_RICH_TAGS.has(child.tagName);
+        let keepHref = '';
+        if (allowed && child.tagName === 'A') {
+          const href = (child.getAttribute('href') || '').trim();
+          if (/^(https?:|mailto:)/i.test(href)) keepHref = href;
+          else allowed = false; /* link sem href seguro vira texto puro */
+        }
+        if (!allowed) {
           /* Tag não permitida: substitui pelo próprio conteúdo (unwrap) */
           const parent = child.parentNode;
           while (child.firstChild) parent.insertBefore(child.firstChild, child);
@@ -1460,6 +1586,7 @@
           while (child.attributes.length > 0) {
             child.removeAttribute(child.attributes[0].name);
           }
+          if (keepHref) child.setAttribute('href', keepHref);
           sanitizeNode(child);
         }
       }
@@ -1667,11 +1794,41 @@
     toolbar.querySelector('.b').classList.toggle('active', document.queryCommandState('bold'));
     toolbar.querySelector('.i').classList.toggle('active', document.queryCommandState('italic'));
     toolbar.querySelector('.u').classList.toggle('active', document.queryCommandState('underline'));
+    toolbar.querySelector('.lk').classList.toggle('active', !!(el && el.closest && el.closest('a')));
+  }
+
+  /* Marca N/I/S/link como ativos na barra fixa do bloco onde está a seleção,
+     espelhando a formatação sob o cursor (mesma lógica da barra flutuante). */
+  function updateFmtInlineStates() {
+    document.querySelectorAll('.fmt-inline-btn.active').forEach(b => b.classList.remove('active'));
+
+    const sel = window.getSelection();
+    if (!sel || sel.rangeCount === 0) return;
+    const anchorNode = sel.anchorNode;
+    const el = anchorNode && anchorNode.nodeType === 3 ? anchorNode.parentElement : anchorNode;
+    const editableEl = el && el.closest ? el.closest('[contenteditable]') : null;
+    if (!isFormattableField(editableEl)) return;
+
+    const container = editableEl.closest('.block-text, .block-alert, .block-obs');
+    const bar = container ? container.querySelector('.fmt-inline') : null;
+    if (!bar) return;
+
+    const states = {
+      bold: document.queryCommandState('bold'),
+      italic: document.queryCommandState('italic'),
+      underline: document.queryCommandState('underline'),
+      link: !!(el && el.closest && el.closest('a')),
+    };
+    Object.keys(states).forEach(cmd => {
+      const btn = bar.querySelector(`[data-cmd="${cmd}"]`);
+      if (btn) btn.classList.toggle('active', states[cmd]);
+    });
   }
 
   function applyFormat(command) {
     document.execCommand(command, false, null);
     updateFormatToolbar();
+    updateFmtInlineStates();
 
     /* Sincroniza o comState do campo que acabou de ser formatado */
     const sel = window.getSelection();
@@ -1682,33 +1839,121 @@
     if (editableEl) editableEl.dispatchEvent(new Event('input', { bubbles: true }));
   }
 
+  /* Aceita URL com ou sem https://; e-mail vira mailto: */
+  function normalizeUrl(u) {
+    u = (u || '').trim();
+    if (!u) return '';
+    if (/^(https?:\/\/|mailto:)/i.test(u)) return u;
+    if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(u)) return 'mailto:' + u;
+    return 'https://' + u.replace(/^\/+/, '');
+  }
+
+  function applyLink() {
+    const sel = window.getSelection();
+    if (!sel || sel.rangeCount === 0) return;
+    const anchorNode = sel.anchorNode;
+    const el = anchorNode && anchorNode.nodeType === 3 ? anchorNode.parentElement : anchorNode;
+    const editableEl = el && el.closest ? el.closest('[contenteditable]') : null;
+    if (!isFormattableField(editableEl)) return;
+
+    /* Cursor dentro de um link existente: remove o link */
+    const existing = el && el.closest ? el.closest('a') : null;
+    if (existing) {
+      const r = document.createRange();
+      r.selectNodeContents(existing);
+      sel.removeAllRanges();
+      sel.addRange(r);
+      document.execCommand('unlink', false, null);
+      editableEl.dispatchEvent(new Event('input', { bubbles: true }));
+      updateFmtInlineStates();
+      return;
+    }
+
+    /* Guarda a seleção: abrir o modal rouba o foco e a perderia */
+    const savedRange = sel.getRangeAt(0).cloneRange();
+    const selectedText = sel.toString().trim();
+    const preview = selectedText.length > 40 ? selectedText.slice(0, 40) + '…' : selectedText;
+
+    showPrompt({
+      title: 'Adicionar link',
+      message: selectedText
+        ? `O texto selecionado ("${preview}") vai virar link. Informe o endereço:`
+        : 'Nenhum texto selecionado: o endereço será inserido como link no ponto do cursor.',
+      onConfirm: (raw) => {
+        const url = normalizeUrl(raw);
+        if (!url) return;
+        editableEl.focus();
+        const s = window.getSelection();
+        s.removeAllRanges();
+        s.addRange(savedRange);
+        if (savedRange.collapsed) {
+          document.execCommand('insertHTML', false, `<a href="${escHtml(url)}">${escHtml(url)}</a>&nbsp;`);
+        } else {
+          document.execCommand('createLink', false, url);
+        }
+        editableEl.dispatchEvent(new Event('input', { bubbles: true }));
+        updateFmtInlineStates();
+      },
+    });
+  }
+
+  function showPrompt({ title, message, onConfirm }) {
+    document.getElementById('prompt-title').textContent = title || '';
+    document.getElementById('prompt-message').textContent = message || '';
+    const input = document.getElementById('prompt-input');
+    input.value = '';
+
+    const confirm = () => {
+      const value = input.value;
+      closePrompt();
+      if (onConfirm) onConfirm(value);
+    };
+
+    document.getElementById('prompt-btn-ok').onclick = confirm;
+    input.onkeydown = (ev) => {
+      if (ev.key === 'Enter') { ev.preventDefault(); confirm(); }
+      else if (ev.key === 'Escape') { closePrompt(); }
+    };
+
+    document.getElementById('prompt-overlay').classList.add('visible');
+    setTimeout(() => input.focus(), 60);
+  }
+
+  function closePrompt() {
+    document.getElementById('prompt-overlay').classList.remove('visible');
+  }
+
   document.addEventListener('selectionchange', () => {
     /* Debounce leve para não recalcular a cada micro-mudança */
     clearTimeout(window._formatToolbarTimer);
-    window._formatToolbarTimer = setTimeout(updateFormatToolbar, 60);
+    window._formatToolbarTimer = setTimeout(() => { updateFormatToolbar(); updateFmtInlineStates(); }, 60);
   });
 
   document.addEventListener('scroll', () => {
     document.getElementById('format-toolbar').classList.remove('visible');
   }, true);
 
-  /* Atalhos de teclado Ctrl+B / Ctrl+I / Ctrl+U dentro de campos formatáveis */
+  /* Atalhos de formatação em campos formatáveis: Ctrl+N (Negrito), Ctrl+I
+     (Itálico), Ctrl+S (Sublinhado). Ctrl+B e Ctrl+U seguem funcionando como
+     legado — e Ctrl+B é a garantia para o negrito, já que Chrome/Edge
+     reservam Ctrl+N para "nova janela" e não deixam a página interceptar. */
   document.addEventListener('keydown', (ev) => {
     if (!(ev.ctrlKey || ev.metaKey)) return;
     const active = document.activeElement;
     if (!isFormattableField(active)) return;
 
     const key = ev.key.toLowerCase();
-    if (key === 'b') { ev.preventDefault(); applyFormat('bold'); }
+    if (key === 'n' || key === 'b') { ev.preventDefault(); applyFormat('bold'); }
     else if (key === 'i') { ev.preventDefault(); applyFormat('italic'); }
-    else if (key === 'u') { ev.preventDefault(); applyFormat('underline'); }
+    else if (key === 's' || key === 'u') { ev.preventDefault(); applyFormat('underline'); }
   });
 
-  /* Ctrl+S / Cmd+S salva o HTML do comunicado (em vez de abrir o "Salvar página" do navegador) */
+  /* Ctrl+S / Cmd+S fora da edição de texto salva o HTML do comunicado
+     (dentro de um campo formatável, Ctrl+S é Sublinhado — tratado acima) */
   document.addEventListener('keydown', (ev) => {
     if ((ev.ctrlKey || ev.metaKey) && ev.key.toLowerCase() === 's') {
       ev.preventDefault();
-      downloadHTML();
+      if (!isFormattableField(document.activeElement)) downloadHTML();
     }
   });
 
@@ -2146,14 +2391,28 @@
     if (!ev.target.closest('.block-inserter')) closeAllInserters();
   });
 
+  /* Barra fixa: Negrito, Itálico, Sublinhado e Adicionar link.
+     onmousedown com preventDefault mantém a seleção/foco do campo editável. */
+  function renderFmtToolbar() {
+    return `<div class="fmt-inline">
+      <button class="fmt-inline-btn" data-cmd="bold" onmousedown="event.preventDefault()" onclick="applyFormat('bold')" title="Negrito (Ctrl+N)"><b>N</b></button>
+      <button class="fmt-inline-btn" data-cmd="italic" onmousedown="event.preventDefault()" onclick="applyFormat('italic')" title="Itálico (Ctrl+I)"><i>I</i></button>
+      <button class="fmt-inline-btn" data-cmd="underline" onmousedown="event.preventDefault()" onclick="applyFormat('underline')" title="Sublinhado (Ctrl+S)"><u>S</u></button>
+      <button class="fmt-inline-btn" data-cmd="link" onmousedown="event.preventDefault()" onclick="applyLink()" title="Adicionar ou remover link">${SVG_ICONS.link}</button>
+    </div>`;
+  }
+
   function renderTextBlock(block) {
     const isIntro = block.variant === 'intro';
     return `<div class="block-text${isIntro ? ' is-intro' : ''}">
-      <div class="block-type-toggle">
-        <button class="block-type-btn${!isIntro ? ' active' : ''}" onclick="setTextVariant('${block.id}','body')">Normal</button>
-        <button class="block-type-btn${isIntro ? ' active' : ''}" onclick="setTextVariant('${block.id}','intro')">Destaque</button>
+      <div class="block-toolbar-row">
+        <div class="block-type-toggle">
+          <button class="block-type-btn${!isIntro ? ' active' : ''}" onclick="setTextVariant('${block.id}','body')">Normal</button>
+          <button class="block-type-btn${isIntro ? ' active' : ''}" onclick="setTextVariant('${block.id}','intro')">Destaque</button>
+        </div>
+        ${renderFmtToolbar()}
       </div>
-      <div class="editable-text" contenteditable="true" data-placeholder="Digite o texto aqui. Use Enter para parágrafos. Selecione texto para formatar."
+      <div class="editable-text" contenteditable="true" data-placeholder="Digite o texto aqui. Use Enter para parágrafos. Formate com os botões acima ou selecionando o texto."
         oninput="updateBlockText('${block.id}', this)">${block.text}</div>
     </div>`;
   }
@@ -2169,6 +2428,7 @@
     `).join('');
 
     return `<div class="block-alert">
+      ${renderFmtToolbar()}
       <div class="block-alert-icon-picker">
         <button class="block-alert-icon-btn" onclick="toggleAlertIconMenu('${block.id}')" title="Trocar ícone">${alertIconMarkup(block.icon) || '＋'}</button>
         <div class="block-alert-icon-menu" id="icon-menu-${block.id}">
@@ -2183,6 +2443,7 @@
 
   function renderObsBlock(block) {
     return `<div class="block-obs">
+      ${renderFmtToolbar()}
       <div class="editable-obs-label single-line" contenteditable="true" data-placeholder="Observação importante"
         oninput="updateBlockObsLabel('${block.id}', this)">${escHtml(block.label)}</div>
       <div class="editable-text" contenteditable="true" data-placeholder="Texto da observação..."
