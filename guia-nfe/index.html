@@ -89,6 +89,8 @@ ol.com-list li{display:flex;align-items:flex-start;gap:12px;background:#fff;padd
 <style>
 .com-wrapper{max-width:900px}
 .doc-main{padding:32px 32px 48px}
+.vigencia-badge{display:table;margin:0 auto 20px;background:var(--navy);color:var(--gold-light);font-size:12px;letter-spacing:.04em;padding:8px 18px;border-radius:20px}
+.vigencia-badge strong{color:#fff}
 .doc-table-section{margin-bottom:26px}
 .doc-table-caption{background:var(--navy);color:#fff;font-family:'Playfair Display',serif;font-size:14px;letter-spacing:.03em;padding:10px 16px;border-radius:8px 8px 0 0}
 .doc-table-wrap{overflow-x:auto;border:1px solid var(--line);border-top:none;border-radius:0 0 8px 8px;background:#fff}
@@ -135,6 +137,8 @@ table.doc-table td.tax-no{background:#fbe8e8;color:#a83232;font-weight:700}
   .com-subtitle{font-size:9px;margin-top:2px}
   .com-gold-bar{height:2px}
   .doc-main{padding:8px 0 0}
+  .vigencia-badge{padding:3px 12px;font-size:9.5px;margin-bottom:8px;color:#333;background:none;border:1px solid var(--gold)}
+  .vigencia-badge strong{color:#000}
   .com-intro{font-size:11px;line-height:1.35;padding:6px 10px;margin-bottom:8px}
   .doc-table-section{margin-bottom:8px}
   .doc-table-caption{font-size:11px;padding:4px 10px}
@@ -154,6 +158,7 @@ table.doc-table td.tax-no{background:#fbe8e8;color:#a83232;font-weight:700}
   .legend-line{font-size:9px}
   .com-footer{display:block!important;background:none!important;color:#666!important;padding:6px 0 0;font-size:8.5px;border-top:1px solid #ccc}
   .com-footer a{color:#666!important}
+  .com-print-footer{display:none!important}
 }
 </style>
 </head>
@@ -179,9 +184,9 @@ table.doc-table td.tax-no{background:#fbe8e8;color:#a83232;font-weight:700}
 <div class="com-gold-bar"></div>
 <div class="doc-main">
 
-  <div class="com-intro">
-    Informamos uma atualização importante no preenchimento das Notas Fiscais Eletrônicas (NF-e) de Crédito (finalidade 5) e de Débito (finalidade 6). Com base nos Ajustes SINIEF nº 49/2025 e nº 20/2026 (NT 2025.002 RTC v.1.50), a regra fiscal B25-80 passou a controlar quais grupos tributários podem ser informados no XML de cada nota, de acordo com a situação declarada.
-  </div>
+  <div class="vigencia-badge">Vigência a partir de <strong>03/08/2026</strong></div>
+
+  <div class="com-intro">Informamos uma atualização importante no preenchimento das Notas Fiscais Eletrônicas (NF-e) de Crédito (finalidade 5) e de Débito (finalidade 6). Com base nos Ajustes SINIEF nº 49/2025 e nº 20/2026 (NT 2025.002 RTC v.1.50), a regra fiscal B25-80 passou a controlar quais grupos tributários podem ser informados no XML de cada nota, de acordo com a situação declarada.</div>
 
   <div class="doc-table-section">
     <div class="doc-table-caption">NOTA DE CRÉDITO &nbsp;|&nbsp; Finalidade da NF-e = 5</div>
