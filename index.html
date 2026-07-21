@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="color-scheme" content="light only">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gerador de Assinatura — Kluke Contabilidade</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Source+Sans+3:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --teal: #c8a84b; --dark: #0d1f3c; --surface: #e8e4de;
+    --border: #ddd5c4; --muted: #6b6b6b; --radius: 10px;
+  }
+  body {
+    font-family: 'Source Sans 3', sans-serif; background: var(--surface);
+    color: var(--dark); min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center;
+    padding: 0 20px 60px;
+  }
+
+  .topbar {
+    width: 100%;
+    background: #f8f4ee;
+    border-bottom: 1px solid var(--border);
+    padding: 14px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 1px 0 var(--border), 0 2px 12px rgba(0,0,0,0.04);
+    margin-bottom: 40px;
+  }
+  .topbar-brand { display: flex; align-items: center; gap: 14px; }
+  .topbar-divider { width: 1px; height: 30px; background: var(--border); }
+  .topbar-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px; font-weight: 700;
+    letter-spacing: normal; text-transform: none;
+    color: var(--dark); line-height: 1.3;
+  }
+  .topbar-title span {
+    display: block; font-size: 10px; font-weight: 400;
+    color: var(--muted); letter-spacing: 1px;
+    text-transform: uppercase; margin-top: 3px;
+  }
+  .topbar-version {
+    font-size: 10px; color: #bbb; letter-spacing: 1px;
+    font-weight: 400; margin-left: 8px; user-select: none;
+  }
+
+  header { text-align: center; margin-bottom: 0; }
+  .logo-wrapper { display: flex; align-items: center; justify-content: center; gap: 0; margin-bottom: 8px; }
+  h1 { font-size: 13px; font-weight: 500; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-top: 28px; }
+
+  .container { width: 100%; max-width: 860px; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  @media (max-width: 620px) { .container { grid-template-columns: 1fr; } }
+
+  .card { background: #f8f4ee; border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; }
+  .card h2 { font-family:'Playfair Display',serif; font-size: 15px; font-weight: 700; letter-spacing: 0.5px; text-transform: none; color: var(--dark); margin-bottom: 20px; }
+  .field { margin-bottom: 18px; }
+  label { display: block; font-size: 12px; font-weight: 500; color: var(--muted); letter-spacing: 0.5px; margin-bottom: 6px; text-transform: uppercase; }
+  input:not([type="checkbox"]), select {
+    width: 100%; padding: 10px 14px; border: 1px solid var(--border);
+    border-radius: 6px; font-family: 'DM Sans', sans-serif; font-size: 14px;
+    color: var(--dark); background: var(--surface); outline: none;
+    transition: border-color 0.2s; appearance: none; -webkit-appearance: none;
+  }
+  input:focus, select:focus { border-color: var(--teal); background: #fff; }
+  input.invalid { border-color: #c0392b; }
+  .field-error {
+    display: none; margin-top: 6px; font-size: 11px; color: #c0392b;
+  }
+  .field-error.visible { display: block; }
+  .select-wrap { position: relative; }
+  .select-wrap::after { content: '▾'; position: absolute; right: 14px; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; font-size: 13px; }
+
+  .preview-card { grid-column: 1 / -1; }
+
+  /* Dois previews lado a lado */
+  .previews-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 32px;
+    align-items: start;
+  }
+  @media (max-width: 700px) {
+    .previews-row { grid-template-columns: 1fr; align-items: center; justify-items: center; }
+  }
+
+  .preview-label {
+    font-size: 11px; font-weight: 600; letter-spacing: 1px;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 10px;
+    display: flex; align-items: center; gap: 6px;
+  }
+
+  /* Desktop */
+  .preview-desktop-wrap { width: 100%; }
+  .preview-desktop {
+    border: 1px solid var(--border); border-radius: 8px;
+    background: #fff; padding: 20px 24px;
+  }
+
+  /* Phone */
+  .phone-wrap { display: flex; flex-direction: column; align-items: center; }
+  .phone {
+    width: 220px;
+    border: 3px solid #1a1a1a;
+    border-radius: 28px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+  }
+  .phone-notch {
+    background: #1a1a1a; height: 22px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .phone-notch-pill { width: 60px; height: 8px; background: #333; border-radius: 10px; }
+  .phone-statusbar {
+    background: #f8f8f8; padding: 4px 12px;
+    display: flex; justify-content: space-between; align-items: center;
+    border-bottom: 1px solid #eee;
+  }
+  .phone-statusbar span { font-size: 9px; color: #888; font-family: 'DM Sans', sans-serif; }
+  .phone-sig {
+    padding: 12px 10px 16px;
+    background: #fff;
+  }
+  .phone-sig-inner {
+    transform: scale(0.42);
+    transform-origin: top left;
+    width: 238%;
+  }
+
+  .html-code-wrap {
+    margin-top: 20px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .html-code-label {
+    background: var(--dark); color: #fff;
+    font-size: 11px; font-weight: 600; letter-spacing: 1px;
+    text-transform: uppercase; padding: 10px 14px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .html-textarea {
+    width: 100%; height: 160px;
+    padding: 14px; border: none; outline: none; resize: vertical;
+    font-family: 'DM Mono', 'Courier New', monospace; font-size: 11px;
+    color: #333; background: #f9f9f7; line-height: 1.5;
+    cursor: text;
+  }
+  .html-textarea:focus { background: #fff; }
+
+  .btn-copy {
+    margin-top: 20px; width: 100%; padding: 13px;
+    background: var(--teal); color: var(--dark); border: none; border-radius: 6px;
+    font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600;
+    letter-spacing: 1px; text-transform: uppercase; cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .btn-copy:hover { background: #2e2e2e; }
+  .btn-copy:active { transform: scale(0.98); }
+  .btn-copy.copied { background: var(--teal); }
+
+  .tip {
+    margin-top: 14px; font-size: 12px; color: var(--muted); line-height: 1.6;
+    padding: 12px 14px; background: var(--surface); border-radius: 6px;
+    border-left: 3px solid var(--teal);
+  }
+  .tip strong { color: var(--dark); }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-brand">
+    <img src="https://link.kluke.com.br/original-5b2bf023264c2-K.png" alt="Kluke" style="height:34px;">
+    <div class="topbar-divider"></div>
+    <div class="topbar-title">
+      Gerador de Assinatura
+      <span>Kluke Contabilidade</span>
+    </div>
+  </div>
+  <span class="topbar-version">v4.5</span>
+</div>
+
+<div class="container">
+
+  <div class="card">
+    <h2>Dados</h2>
+    <div class="field">
+      <label for="nome">Nome completo</label>
+      <input type="text" id="nome" placeholder="Ex.: João da Silva" oninput="atualizar()">
+    </div>
+    <div class="field">
+      <label for="email">E-mail</label>
+      <input type="email" id="email" placeholder="Ex.: joao@kluke.com.br" oninput="atualizar()">
+      <div class="field-error" id="email-error">Formato de e-mail inválido.</div>
+    </div>
+    <div class="field" style="display:flex;align-items:center;gap:10px;margin-bottom:18px;">
+      <input type="checkbox" id="show-email" onchange="atualizar()" style="width:16px;height:16px;accent-color:var(--teal);cursor:pointer;background:var(--surface);border:1px solid var(--border);">
+      <label for="show-email" style="margin:0;cursor:pointer;font-size:12px;font-weight:500;color:var(--muted);letter-spacing:0.5px;text-transform:uppercase;">Exibir e-mail na assinatura</label>
+    </div>
+
+    <div class="field">
+      <label for="dept">Departamento</label>
+      <div class="select-wrap">
+        <select id="dept" onchange="atualizar()">
+          <option value="">— Sem departamento —</option>
+          <option value="Administrativo">Administrativo</option>
+          <option value="Contábil">Contábil</option>
+          <option value="Fiscal">Fiscal</option>
+          <option value="Pessoal">Pessoal</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Como usar no Thunderbird</h2>
+    <div class="tip">
+      <strong>1.</strong> Clique em <strong>Copiar assinatura</strong>.<br><br>
+      <strong>2.</strong> No Thunderbird, vá em<br>
+      <em>Ferramentas → Configurações de conta</em>.<br><br>
+      <strong>3.</strong> Marque <strong>"Usar HTML"</strong> na assinatura.<br><br>
+      <strong>4.</strong> Cole com <strong>Ctrl+V</strong> no campo de assinatura e salve.
+    </div>
+  </div>
+
+  <!-- Preview -->
+  <div class="card preview-card">
+    <h2>Pré-visualização</h2>
+
+    <div class="previews-row">
+
+      <!-- Desktop -->
+      <div class="preview-desktop-wrap">
+        <div class="preview-label">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          Desktop
+        </div>
+        <div class="preview-desktop">
+          <div id="sig-desktop"></div>
+        </div>
+      </div>
+
+      <!-- Mobile -->
+      <div class="phone-wrap">
+        <div class="preview-label">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+          Mobile
+        </div>
+        <div class="phone">
+          <div class="phone-notch"><div class="phone-notch-pill"></div></div>
+          <div class="phone-statusbar">
+            <span>9:41</span><span>●●●</span>
+          </div>
+          <div class="phone-sig">
+            <div class="phone-sig-inner" id="sig-mobile"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="html-code-wrap">
+      <div class="html-code-label">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        Código HTML — cole no Thunderbird/Gmail
+        <button onclick="copiarCodigo()" id="btn-copy" style="margin-left:auto;background:var(--teal);color:var(--dark);border:none;border-radius:5px;padding:4px 14px;font-family:DM Sans,sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;cursor:pointer;text-transform:uppercase;">Copiar assinatura</button>
+      </div>
+      <textarea id="html-output" class="html-textarea" readonly onclick="this.select()"></textarea>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function escapeHTML(str) {
+    return str.replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
+  }
+
+  // Partículas de nome que ficam em minúscula quando não são a primeira palavra.
+  const PARTICULAS_NOME = new Set(['da', 'de', 'do', 'das', 'dos', 'e']);
+
+  function formatarNome(raw) {
+    return raw.trim().replace(/\S+/gu, (palavra, offset) => {
+      const lower = palavra.toLowerCase();
+      if (offset > 0 && PARTICULAS_NOME.has(lower)) return lower;
+      return palavra.charAt(0).toUpperCase() + palavra.slice(1).toLowerCase();
+    });
+  }
+
+  function buildSignatureHTML(nome, email, dept) {
+    const nomeDisplay = escapeHTML(nome || 'Seu Nome');
+    const emailDisplay = escapeHTML(email || '');
+    const nomeHTML = emailDisplay
+      ? `<a href="mailto:${emailDisplay}" style="font-family:Arial,Helvetica,sans-serif;font-size:13px;font-weight:600;color:#1a1a1a !important;text-decoration:none;line-height:1.3;">${nomeDisplay}</a>`
+      : `<span style="font-family:Arial,Helvetica,sans-serif;font-size:13px;font-weight:600;color:#1a1a1a !important;line-height:1.3;">${nomeDisplay}</span>`;
+
+    const deptRow = dept
+      ? `<p style="margin:4px 0 0 0;font-family:Arial,Helvetica,sans-serif;font-size:10px;color:#a3813a !important;text-transform:uppercase;letter-spacing:1px;font-weight:700;">${escapeHTML(dept)}</p>`
+      : '';
+
+    const showEmail = document.getElementById('show-email').checked;
+    const emailRow = (showEmail && emailDisplay)
+      ? `<p style="margin:8px 0 0 0;font-family:Arial,Helvetica,sans-serif;font-size:10px;color:#888888 !important;line-height:1.5;"><a href="mailto:${emailDisplay}" style="font-family:Arial,Helvetica,sans-serif;font-size:10px;color:#888888 !important;text-decoration:none;">${emailDisplay}</a></p>`
+      : '';
+
+    return `<table cellpadding="0" cellspacing="0" border="0" width="100%" style="font-family:Arial,Helvetica,sans-serif;background-color:#ffffff !important;width:100%;border-top:2px solid #c8a84b;">
+  <tr>
+    <td style="padding:8px 0 16px 0;background-color:#ffffff !important;">
+      <table cellpadding="0" cellspacing="0" border="0" width="100%" style="font-family:Arial,Helvetica,sans-serif;width:100%;">
+        <tr>
+          <td colspan="2" style="padding:0 16px 8px 16px;background-color:#ffffff !important;">
+            <span style="font-family:Arial Black,Arial,Helvetica,sans-serif;font-size:24px;font-weight:900;color:#1a1a1a !important;letter-spacing:2px;">KLUKE</span><span style="font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#777777 !important;letter-spacing:3px;"> Contabilidade</span>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2" style="padding:0;background-color:#ffffff !important;"><div style="border-top:1px solid #e0e0dc;font-size:0;line-height:0;">&nbsp;</div></td>
+        </tr>
+        <tr>
+          <td colspan="2" style="padding:8px 16px 8px 16px;background-color:#ffffff !important;">
+            <table cellpadding="0" cellspacing="0" border="0" width="500" style="font-family:Arial,Helvetica,sans-serif;width:500px;max-width:500px;">
+              <tr>
+                <td width="58%" valign="middle" style="padding:0 16px 0 0;background-color:#ffffff !important;border-right:1px solid #e0e0dc;">
+                  <p style="margin:0;background-color:#ffffff !important;">${nomeHTML}</p>
+                  ${deptRow}
+                  ${emailRow}
+                </td>
+                <td width="42%" valign="middle" style="padding:0 0 0 16px;background-color:#ffffff !important;">
+                  <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#555555 !important;line-height:1.4;background-color:#ffffff !important;">
+                    <a href="tel:+554733820601" style="font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#555555 !important;text-decoration:none;">(47) 3382-0601</a><br>
+                    <a href="tel:+554733820767" style="font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#555555 !important;text-decoration:none;">(47) 3382-0767</a><br>
+                    <a href="https://wa.me/5547984321322" style="font-family:Arial,Helvetica,sans-serif;font-size:11px;color:#25d366 !important;text-decoration:none;font-weight:700;white-space:nowrap;">WhatsApp&nbsp;(47)&nbsp;98432-1322</a>
+                  </p>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2" style="padding:0;background-color:#ffffff !important;"><div style="border-top:1px solid #e0e0dc;font-size:0;line-height:0;">&nbsp;</div></td>
+        </tr>
+        <tr>
+          <td colspan="2" style="padding:8px 16px 0 16px;background-color:#ffffff !important;">
+            <p style="margin:0 0 2px 0;font-family:Arial,Helvetica,sans-serif;font-size:9px;color:#888888 !important;line-height:1.5;">Kluke Serviços Contábeis e Econômicos Ltda. &middot; CRC-SC 1081/O-8 &middot; 76.860.386/0001-73</p>
+            <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:9px;color:#888888 !important;line-height:1.5;"><a href="https://maps.app.goo.gl/BLgMuJf6wUEH9B5c6" style="font-family:Arial,Helvetica,sans-serif;font-size:9px;color:#888888 !important;text-decoration:none;">Av. Nereu Ramos, 64 &middot; Timbó-SC</a> &middot; <a href="https://www.kluke.com.br" style="font-family:Arial,Helvetica,sans-serif;font-size:9px;color:#888888 !important;text-decoration:none;">kluke.com.br</a> &middot; <a href="https://instagram.com/klukecontabil" style="font-family:Arial,Helvetica,sans-serif;font-size:9px;color:#888888 !important;text-decoration:none;">@klukecontabil</a></p>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>`;
+  }
+
+    function copiarCodigo() {
+    const btn = document.getElementById('btn-copy');
+    const texto = document.getElementById('html-output').value;
+    navigator.clipboard.writeText(texto).then(() => {
+      btn.textContent = '✓ Copiado!';
+      btn.style.background = '#1a1a1a';
+      btn.style.color = '#fff';
+      setTimeout(() => {
+        btn.textContent = 'Copiar assinatura';
+        btn.style.background = '#c8a84b';
+        btn.style.color = '';
+      }, 2500);
+    }).catch(() => {
+      const ta = document.getElementById('html-output');
+      ta.select();
+      btn.textContent = 'Ctrl+C agora';
+      setTimeout(() => { btn.textContent = 'Copiar assinatura'; }, 2500);
+    });
+  }
+
+  function isValidEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  }
+
+  function atualizar() {
+    const nome  = formatarNome(document.getElementById('nome').value);
+    const emailInput = document.getElementById('email');
+    const email = emailInput.value.trim().toLowerCase();
+    const emailValid = email === '' || isValidEmail(email);
+    emailInput.classList.toggle('invalid', !emailValid);
+    document.getElementById('email-error').classList.toggle('visible', !emailValid);
+    const dept  = document.getElementById('dept').value;
+    const html  = buildSignatureHTML(nome, emailValid ? email : '', dept);
+    document.getElementById('sig-desktop').innerHTML = html;
+    document.getElementById('sig-mobile').innerHTML  = html;
+    document.getElementById('html-output').value = html;
+
+    // Sem nome preenchido, não deixa copiar a assinatura com o placeholder "Seu Nome".
+    const btn = document.getElementById('btn-copy');
+    const semNome = nome === '';
+    btn.disabled = semNome;
+    btn.style.opacity = semNome ? '0.45' : '';
+    btn.style.cursor = semNome ? 'not-allowed' : 'pointer';
+    btn.title = semNome ? 'Preencha o nome para copiar' : '';
+  }
+
+
+
+  atualizar();
+</script>
+</body>
+</html>
