@@ -135,27 +135,6 @@
     width: 238%;
   }
 
-  /* Área de cópia oculta mas selecionável */
-  .copy-area-wrap {
-    margin-top: 16px;
-    border: 1.5px dashed var(--teal);
-    border-radius: 8px;
-    overflow: hidden;
-    display: none;
-  }
-  .copy-area-wrap.visible { display: block; }
-  .copy-area-label {
-    background: #e8f8f8; color: var(--teal);
-    font-size: 11px; font-weight: 600; letter-spacing: 1px;
-    text-transform: uppercase; padding: 7px 14px;
-    display: flex; align-items: center; gap: 6px;
-  }
-  .copy-area {
-    padding: 16px; background: #fff;
-    outline: none; cursor: default;
-    user-select: all; -webkit-user-select: all;
-  }
-
   .html-code-wrap {
     margin-top: 20px;
     border: 1px solid var(--border);
@@ -208,7 +187,7 @@
       <span>Kluke Contabilidade</span>
     </div>
   </div>
-  <span class="topbar-version">v4.4</span>
+  <span class="topbar-version">v4.5</span>
 </div>
 
 <div class="container">
@@ -307,6 +286,17 @@
     return str.replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
   }
 
+  // Partículas de nome que ficam em minúscula quando não são a primeira palavra.
+  const PARTICULAS_NOME = new Set(['da', 'de', 'do', 'das', 'dos', 'e']);
+
+  function formatarNome(raw) {
+    return raw.trim().replace(/\S+/gu, (palavra, offset) => {
+      const lower = palavra.toLowerCase();
+      if (offset > 0 && PARTICULAS_NOME.has(lower)) return lower;
+      return palavra.charAt(0).toUpperCase() + palavra.slice(1).toLowerCase();
+    });
+  }
+
   function buildSignatureHTML(nome, email, dept) {
     const nomeDisplay = escapeHTML(nome || 'Seu Nome');
     const emailDisplay = escapeHTML(email || '');
@@ -395,7 +385,7 @@
   }
 
   function atualizar() {
-    const nome  = document.getElementById('nome').value.trim().replace(/\w\S*/g, t => t.charAt(0).toUpperCase() + t.substr(1).toLowerCase());
+    const nome  = formatarNome(document.getElementById('nome').value);
     const emailInput = document.getElementById('email');
     const email = emailInput.value.trim().toLowerCase();
     const emailValid = email === '' || isValidEmail(email);
@@ -406,6 +396,14 @@
     document.getElementById('sig-desktop').innerHTML = html;
     document.getElementById('sig-mobile').innerHTML  = html;
     document.getElementById('html-output').value = html;
+
+    // Sem nome preenchido, não deixa copiar a assinatura com o placeholder "Seu Nome".
+    const btn = document.getElementById('btn-copy');
+    const semNome = nome === '';
+    btn.disabled = semNome;
+    btn.style.opacity = semNome ? '0.45' : '';
+    btn.style.cursor = semNome ? 'not-allowed' : 'pointer';
+    btn.title = semNome ? 'Preencha o nome para copiar' : '';
   }
 
 
