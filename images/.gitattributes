@@ -1,0 +1,8 @@
+# Imagens - sempre binário, nunca converter line endings
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.svg text eol=lf
+*.ico binary
+*.webp binary
