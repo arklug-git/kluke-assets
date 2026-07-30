@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg"
      version="1.2" baseProfile="tiny"
-     viewBox="0 0 500 500"
+     viewBox="63 132 348 215"
      width="500" height="500">
   <title>Kluke Servicos Contabeis</title>
-  <rect width="500" height="500" fill="none"/>
+  
   <g fill="#1a1a1a" transform="translate(50.0000,450.0000) scale(0.104167,-0.104167)">
     <path d="M343 2850 c-31 -12 -31 -68 0 -152 56 -154 184 -273 336 -313 89 -23
 882 -22 905 1 14 13 16 48 16 229 0 210 0 214 -22 229 -20 14 -94 16 -618 15
