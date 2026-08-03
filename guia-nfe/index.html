@@ -59,6 +59,10 @@ ol.com-list li{display:flex;align-items:flex-start;gap:12px;background:#fff;padd
 .com-print-footer{display:none;text-align:center;padding:16px 20px 8px;font-size:11px;color:#999;border-top:1px solid #ddd;letter-spacing:.03em}
 .btn-print{position:fixed;bottom:28px;right:28px;background:var(--navy);color:var(--gold);border:1px solid var(--gold);border-radius:50px;padding:12px 22px;font-family:'Source Sans 3',sans-serif;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px;box-shadow:0 4px 16px rgba(13,31,60,.25);transition:background .2s,color .2s;z-index:999}
 .btn-print:hover{background:var(--gold);color:var(--navy)}
+.btn-insta{position:fixed;bottom:28px;left:28px;width:46px;height:46px;background:var(--navy);color:var(--gold);border:1px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(13,31,60,.25);transition:background .2s,color .2s;z-index:999}
+.btn-insta svg{width:22px;height:22px;display:block}
+.btn-insta:hover{background:var(--gold);color:var(--navy)}
+
 @media (max-width:480px){
   .com-header-top{flex-direction:column;text-align:center;padding:18px 20px}
   .com-header-vdivider{display:none}
@@ -66,7 +70,7 @@ ol.com-list li{display:flex;align-items:flex-start;gap:12px;background:#fff;padd
 }
 @media print{
   body{background:#fff}
-  .btn-print{display:none!important}
+  .btn-print,.btn-insta{display:none!important}
   .com-wrapper{box-shadow:none;max-width:100%}
   .com-header-top{border-bottom:1px solid #ccc;padding:14px 20px}
   .com-header-titles-block{border-bottom:none;padding:14px 20px 10px}
@@ -253,5 +257,7 @@ table.doc-table td.tax-no{background:#fbe8e8;color:#a83232;font-weight:700}
     </div>
 </div>
 <button class="btn-print" onclick="window.print()">🖨️ Imprimir</button>
+<a class="btn-insta" href="https://www.instagram.com/klukecontabil/" target="_blank" rel="noopener" aria-label="Instagram da Kluke" title="Siga a Kluke no Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><line x1="17.5" y1="6.5" x2="17.5" y2="6.5"/></svg></a>
+
 </body>
 </html>
