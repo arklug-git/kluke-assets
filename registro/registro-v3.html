@@ -111,6 +111,7 @@ td.col-when{width:106px;text-align:right;white-space:nowrap}
 .com-footer-h{font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:7px}
 .com-footer a{color:rgba(255,255,255,.8);text-decoration:none;display:block}
 .com-footer a:hover{color:var(--gold-light)}
+.com-footer .addr-p{display:block}
 .com-footer-social{display:flex;gap:9px;margin-top:8px}
 .com-footer-social a{display:flex;align-items:center;justify-content:center;width:30px;height:30px;border:1px solid rgba(255,255,255,.3);border-radius:50%;color:var(--gold-light)}
 .com-footer-social a:hover{border-color:var(--gold);color:var(--gold)}
@@ -226,7 +227,17 @@ td.col-when{width:106px;text-align:right;white-space:nowrap}
   .com-footer-col{flex:0 0 auto;text-align:center}
   .com-footer-h{color:#888!important;font-size:7px;margin-bottom:2px;letter-spacing:.1em}
   .com-footer a{color:#444!important;display:inline;margin:0 4px}
-  .com-footer-social{display:none!important}
+  /* A coluna de redes sai inteira na impressão: os ícones não são clicáveis
+     no papel, e esconder só eles deixava o rótulo "Acompanhe" órfão.
+     nth-child(3) é seguro porque o rodapé sempre emite as 3 colunas na ordem
+     telefones, endereço, redes. */
+  .com-footer-col:nth-child(3){display:none!important}
+  /* Na impressão o endereço vira uma linha só, para a coluna não ficar mais
+     alta que a dos telefones e esticar o rodapé. */
+  .com-footer .addr-p{display:inline}
+  .com-footer .addr-p+.addr-p::before{content:" · "}
+  /* Sem esta regra a linha fina herda o branco da tela e some no papel. */
+  .com-footer-fine{border-top:none;margin-top:4px;padding-top:0;color:#777!important;font-size:7.5px;line-height:1.45}
 }
 </style>
 </head>
@@ -424,7 +435,7 @@ td.col-when{width:106px;text-align:right;white-space:nowrap}
     </div>
     <div class="com-footer-col">
       <div class="com-footer-h">Endereço</div>
-      <a href="https://maps.app.goo.gl/BLgMuJf6wUEH9B5c6" target="_blank" rel="noopener">Av. Nereu Ramos, 64<br>Timbó — Santa Catarina</a>
+      <a href="https://maps.app.goo.gl/BLgMuJf6wUEH9B5c6" target="_blank" rel="noopener"><span class="addr-p">Av. Nereu Ramos, 64</span><span class="addr-p">Timbó — Santa Catarina</span></a>
     </div>
     <div class="com-footer-col">
       <div class="com-footer-h">Acompanhe</div>
