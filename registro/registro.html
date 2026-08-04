@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Registro de Empresas — Kluke Serviços Contábeis</title>
+<meta name="description" content="Tudo o que você precisa reunir para abrir sua empresa: documentos pessoais dos sócios, dados do imóvel e informações para o contrato social.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Kluke Serviços Contábeis">
+<meta property="og:title" content="Registro de Empresas — o que reunir para abrir sua empresa">
+<meta property="og:description" content="Tudo o que você precisa reunir para abrir sua empresa: documentos pessoais dos sócios, dados do imóvel e informações para o contrato social.">
+<meta property="og:url" content="https://link.kluke.com.br/registro-de-empresas">
+<meta property="og:image" content="https://link.kluke.com.br/original-5b2bf023264c2-K.png">
+<meta property="og:locale" content="pt_BR">
+<meta name="twitter:card" content="summary">
+<link rel="icon" type="image/svg+xml" href="https://link.kluke.com.br/images/kluke_favicon.svg" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/svg+xml" href="https://link.kluke.com.br/images/kluke_favicon_dark.svg" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="https://link.kluke.com.br/images/kluke_favicon_96px.png">
+<link rel="icon" type="image/png" sizes="192x192" href="https://link.kluke.com.br/images/kluke_favicon_192px.png">
+<link rel="icon" type="image/png" sizes="512x512" href="https://link.kluke.com.br/images/kluke_favicon_512px.png">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0d1f3c;--gold:#c8a84b;--gold-light:#e8c97a;--gold-text:#7a6019;--cream:#f8f4ee;--text:#2a2a2a;--muted:#6b6b6b;--line:#ddd5c4}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#e8e4de;font-family:'Source Sans 3',sans-serif;min-height:100vh}
+.com-wrapper{max-width:820px;margin:0 auto;background:var(--cream);box-shadow:0 4px 32px rgba(0,0,0,0.15)}
+/* ─── Cabeçalho: timbrado clássico ───
+   Símbolo centralizado, razão social entre dois filetes dourados de espessuras
+   diferentes, título abaixo. CNPJ e CRC não vêm aqui: vivem no rodapé, para a
+   mesma informação não aparecer duas vezes na página. */
+.com-header{background:var(--cream);padding:22px 28px 20px;text-align:center;border-bottom:1px solid var(--line)}
+.com-header-logo{display:block;height:34px;margin:0 auto}
+.com-header-rules{border-top:2px solid var(--gold);border-bottom:1px solid var(--gold);padding:9px 0;margin:15px 0}
+.com-firm-name{font-family:'Playfair Display',serif;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--navy);line-height:1.4}
+.com-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--navy);line-height:1.3}
+.com-subtitle{font-size:12px;font-weight:300;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-top:5px}
+.com-gold-bar{height:3px;background:linear-gradient(90deg,var(--gold),var(--gold-light),var(--gold))}
+
+.doc-main{padding:30px 30px 44px}
+.com-intro{background:#fff;border-left:3px solid var(--gold);border-radius:0 8px 8px 0;padding:16px 20px;margin-bottom:20px;font-size:14px;color:var(--muted);line-height:1.65}
+
+.legend-bar{display:flex;flex-wrap:wrap;gap:7px 16px;justify-content:center;align-items:center;font-size:11px;color:var(--muted);margin-bottom:24px}
+.legend-item{display:flex;align-items:center;gap:6px;white-space:nowrap}
+.legend-bar .tag{font-size:9.5px;padding:2px 8px}
+
+/* Só a exceção é marcada. O caso obrigatório é 12 dos 16 itens — dar pill a ele
+   invertia a hierarquia: o comum gritava e a exceção sussurrava. Sem marcação
+   significa obrigatório, como diz a legenda. */
+.tag{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:3px 9px;border-radius:20px;white-space:nowrap;line-height:1.4;border:1px solid var(--gold);background:#fff;color:var(--gold-text)}
+
+.cat-section{margin-bottom:20px}
+.cat-caption{background:var(--navy);color:#fff;font-family:'Playfair Display',serif;font-size:14px;font-weight:700;letter-spacing:.03em;padding:10px 16px;border-radius:8px 8px 0 0;display:flex;align-items:center;gap:10px}
+/* O título da categoria é um <h2> por semântica; herda tudo do .cat-caption
+   para não trazer o tamanho e a margem padrão de heading. */
+.cat-caption-text{font:inherit;letter-spacing:inherit;color:inherit}
+.cat-caption .cat-ico{flex-shrink:0;width:17px;height:17px;color:var(--gold-light)}
+.cat-caption .cat-ico svg{width:100%;height:100%;display:block}
+.cat-count{margin-left:auto;font-family:'Source Sans 3',sans-serif;font-size:11px;font-weight:600;color:rgba(255,255,255,.55);letter-spacing:.06em}
+.cat-table-wrap{border:1px solid var(--line);border-top:none;border-radius:0 0 8px 8px;background:#fff;overflow:hidden}
+table.doc-table{width:100%;border-collapse:collapse;font-size:13.5px}
+table.doc-table tbody td{padding:11px 12px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.5}
+table.doc-table tbody tr:last-child td{border-bottom:none}
+table.doc-table tbody tr:nth-child(even){background:#faf8f3}
+td.col-box{width:34px;text-align:center;padding-top:12px}
+.checkbox{display:inline-block;width:15px;height:15px;border:1.5px solid var(--gold);border-radius:3px;background:#fff}
+td.col-doc{color:var(--text)}
+td.col-doc .doc-detail{display:block;font-size:12px;color:var(--muted);line-height:1.45;margin-top:3px}
+td.col-when{width:106px;text-align:right;white-space:nowrap}
+
+.com-obs{background:#fbf3e3;border:1.5px solid var(--gold);color:#4a4a4a;border-radius:8px;padding:15px 22px;font-size:13.5px;line-height:1.65;margin-top:26px}
+.com-obs-label{font-family:'Playfair Display',serif;color:var(--gold-text);font-size:13px;line-height:1.2;letter-spacing:.12em;text-transform:uppercase;display:block;margin-bottom:6px}
+
+/* ─── Rodapé: três colunas ───
+   Único lugar da página com CNPJ, CRC e as redes. Como ele imprime (ver @media
+   print), o antigo .com-print-footer duplicado deixou de existir. */
+.com-footer{background:var(--navy);border-top:2px solid var(--gold);padding:22px 28px;color:rgba(255,255,255,.6);font-size:12px;line-height:1.75}
+.com-footer-cols{display:flex;flex-wrap:wrap;gap:22px}
+.com-footer-col{flex:1 1 160px}
+.com-footer-h{font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:7px}
+.com-footer a{color:rgba(255,255,255,.8);text-decoration:none;display:block}
+.com-footer a:hover{color:var(--gold-light)}
+.com-footer-social{display:flex;gap:9px;margin-top:8px}
+.com-footer-social a{display:flex;align-items:center;justify-content:center;width:30px;height:30px;border:1px solid rgba(255,255,255,.3);border-radius:50%;color:var(--gold-light)}
+.com-footer-social a:hover{border-color:var(--gold);color:var(--gold)}
+.com-footer-social svg{width:15px;height:15px}
+.com-footer-fine{border-top:1px solid rgba(255,255,255,.15);margin-top:18px;padding-top:12px;font-size:11px;color:rgba(255,255,255,.55);text-align:center;line-height:1.7}
+.com-footer .com-footer-fine{font-size:11px;color:rgba(255,255,255,.55)}
+.btn-print{position:fixed;bottom:28px;right:28px;background:var(--navy);color:var(--gold);border:1px solid var(--gold);border-radius:50px;padding:12px 22px;font-family:'Source Sans 3',sans-serif;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px;box-shadow:0 4px 16px rgba(13,31,60,.25);transition:background .2s,color .2s;z-index:999}
+.btn-print:hover{background:var(--gold);color:var(--navy)}
+
+@media (max-width:600px){
+  .doc-main{padding:22px 16px 34px}
+  table.doc-table{font-size:13px}
+  table.doc-table tbody td{padding:10px 8px}
+  /* Em telas estreitas a tag desce para baixo do item, evitando rolagem
+     horizontal na tabela. */
+  td.col-when{display:block;width:auto;text-align:left;padding:0 8px 11px 8px;border-bottom:none}
+  /* Sem a pill "Obrigatório", a maioria das células fica vazia: no celular ela
+     não pode gerar linha em branco sob o item. */
+  td.col-when:empty{display:none}
+  table.doc-table tbody td.col-doc{padding-bottom:6px}
+  td.col-box{padding-bottom:0}
+  table.doc-table tbody tr{display:grid;grid-template-columns:34px 1fr;border-bottom:1px solid var(--line)}
+  table.doc-table tbody tr:last-child{border-bottom:none}
+  table.doc-table tbody td{border-bottom:none}
+  td.col-when{grid-column:2}
+}
+
+@media print{
+  @page{size:A4;margin:10mm 12mm}
+  body{background:#fff}
+  /* Os filetes dourados são bordas, não fundo: sobrevivem à impressão mesmo com
+     "gráficos de plano de fundo" desligado. */
+  .com-header{padding:2px 0 5px;border-bottom:none}
+  .com-header-logo{height:24px!important}
+  .com-header-rules{padding:5px 0;margin:8px 0 9px}
+  .com-firm-name{font-size:9px;letter-spacing:.16em}
+  /* O rodapé agora imprime, em texto escuro sobre branco. */
+  .com-footer{background:none!important;border-top:1px solid #ccc;padding:7px 0 0;color:#444!important;font-size:8.5px;line-height:1.5}
+  .com-footer-cols{gap:0 16px;justify-content:center}
+  .com-footer-col{flex:0 0 auto;text-align:center}
+  .com-footer-h{color:#888!important;font-size:7px;margin-bottom:2px;letter-spacing:.1em}
+  .com-footer a{color:#444!important;display:inline;margin:0 4px}
+  .com-footer-social{display:none!important}
+  .com-footer-fine{border-top:none;margin-top:4px;padding-top:0;color:#777!important;font-size:7.5px;line-height:1.45}
+  .btn-print{display:none!important}
+  .com-wrapper{box-shadow:none;max-width:100%;background:#fff}
+  .com-firm-name{font-size:10.5px}
+  .com-title{font-size:17px}
+  .com-subtitle{font-size:9px;margin-top:2px}
+  .com-gold-bar{height:2px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .doc-main{padding:8px 0 0}
+  .com-intro{background:none;font-size:11px;line-height:1.45;color:#333!important;padding:0 0 0 8px;margin-bottom:9px}
+  .legend-bar{font-size:10px;gap:4px 14px;margin-bottom:10px;color:#555}
+
+  /* Nada aqui pode depender de cor de fundo: a maioria dos navegadores imprime
+     com "gráficos de plano de fundo" desligado por padrão, e aí texto claro
+     sobre fundo navy sairia invisível. A hierarquia da impressão é feita com
+     peso, tamanho e filetes. */
+  .cat-section{margin-bottom:11px;break-inside:avoid;page-break-inside:avoid}
+  .cat-caption{background:none;color:var(--navy)!important;border-bottom:1.5px solid var(--gold);border-radius:0;font-size:12px;padding:0 0 2px;gap:5px;margin-bottom:2px}
+  .cat-caption .cat-ico{width:11px;height:11px;color:var(--navy)}
+  .cat-count{font-size:8.5px;font-weight:400;color:#999}
+  .cat-table-wrap{border:none;border-radius:0}
+
+  table.doc-table{font-size:11px}
+  table.doc-table tbody tr{border-bottom:1px solid #e6e2d8}
+  table.doc-table tbody tr:last-child{border-bottom:none}
+  table.doc-table tbody td{padding:3.5px 4px 3.5px 0;border-bottom:none;line-height:1.32}
+  td.col-box{width:18px;padding:4px 0 0 0;text-align:left}
+  .checkbox{width:10px;height:10px;border:1px solid #777;border-radius:2px}
+  /* Nome do item: o elemento mais forte da linha. */
+  td.col-doc{color:#111!important;font-weight:600}
+  /* Subtítulo escurecido: em cinza-claro não sobrevive à impressão. */
+  td.col-doc .doc-detail{font-size:9.8px;font-weight:400;color:#454545!important;margin-top:1.5px;line-height:1.32}
+  /* Tag vira anotação discreta à direita, sem pílula colorida — é a informação
+     secundária da linha, não a principal. */
+  td.col-when{width:74px;text-align:right;vertical-align:top;padding-top:4px}
+  .tag{background:none!important;border:none!important;border-radius:0;padding:0;font-size:8.5px;font-weight:600;letter-spacing:.07em;color:#777!important;line-height:1.3}
+  .legend-bar .tag{font-size:8.5px}
+
+  .com-obs{background:none;border:none;border-left:2px solid var(--gold);border-radius:0;padding:0 0 0 8px;margin-top:11px;font-size:10px;line-height:1.45;color:#333!important}
+  .com-obs-label{color:#000!important;font-size:10px;margin-bottom:2px}
+}
+</style>
+</head>
+<body>
+<div class="com-wrapper">
+
+<div class="com-header">
+  <a href="https://www.kluke.com.br" target="_blank" rel="noopener">
+    <img class="com-header-logo" src="https://link.kluke.com.br/original-5b2bf023264c2-K.png" alt="Kluke">
+  </a>
+  <div class="com-header-rules">
+    <div class="com-firm-name">Kluke Serviços Contábeis e Econômicos</div>
+  </div>
+  <h1 class="com-title">Registro de Empresas</h1>
+  <div class="com-subtitle">Documentos e informações necessários</div>
+</div>
+<div class="com-gold-bar"></div>
+
+<div class="doc-main">
+
+  <div class="com-intro">Para abrir uma empresa, seja como sociedade ou como empresário individual, separamos abaixo tudo o que você vai precisar. Use esta página como checklist — imprima e vá marcando o que já reuniu.</div>
+
+  <div class="legend-bar">
+    <span class="legend-item">Itens sem marcação são obrigatórios para todos.</span>
+    <span class="legend-item"><span class="tag">Se houver</span> aplica-se só no caso descrito</span>
+  </div>
+
+  <div class="cat-section">
+    <div class="cat-caption">
+      <span class="cat-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
+      <h2 class="cat-caption-text">Documentos pessoais</h2>
+      <span class="cat-count">4 itens</span>
+    </div>
+    <div class="cat-table-wrap">
+      <table class="doc-table">
+        <tbody>
+          <tr>
+            <td class="col-box"><span class="checkbox"></span></td>
+            <td class="col-doc">Cópia simples do RG e do CPF<span class="doc-detail">De cada sócio.</span></td>
+            <td class="col-when"></td>
+          </tr>
+          <tr>
+            <td class="col-box"><span class="checkbox"></span></td>
+            <td class="col-doc">Comprovante de residência atualizado</td>
+            <td class="col-when"></td>
+          </tr>
+          <tr>
+            <td class="col-box"><span class="checkbox"></span></td>
+            <td class="col-doc">Título de eleitor ou declaração do IR<span class="doc-detail">Se for a declaração, a dos últimos 2 anos.</span></td>
+            <td class="col-when"></td>
+          </tr>
+          <tr>
+            <td class="col-box"><span class="checkbox"></span></td>
+            <td class="col-doc">Certidão de casamento<span class="doc-detail">Somente para sócios casados.</span></td>
+            <td class="col-when"><span class="tag">Se houver</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="cat-section">
+    <div class="cat-caption">
+      <span class="cat-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
+      <h2 class="cat-caption-text">Do imóvel</h2>
+      <span class="cat-count">4 itens</span>
+    </div>
+    <div class="cat-table-wrap">
+      <table class="doc-table">
+        <tbody>
+          <tr>
+            <td class="col-box"><span class="checkbox"></span></td>
+            <td class="col-doc">Carnê do IPTU do imóvel<span class="doc-detail">Do endereço onde a empresa será instalada.</span></td>
+            <td class="col-when"></td>
+          </tr>
+          <tr>
+            <td class="col-box"><span class="checkbox"></span></td>
+            <td class="col-doc">Área do imóvel e área total construída<span class="doc-detail">Em metros quadrados.</span></td>
+            <td class="col-when"></td>
+          </tr>
+          <tr>
+            <td class="col-box"><span class="checkbox"></span></td>
+            <td class="col-doc">Contrato de locação<span class="doc-detail">Somente para imóvel alugado. Na falta do contrato, o nome e o CPF do proprietário.</span></td>
+            <td class="col-when"><span class="tag">Se houver</span></td>
+          </tr>
+          <tr>
+            <td class="col-box"><span class="checkbox"></span></td>
+            <td class="col-doc">RE — Registro de Edificação<span class="doc-detail">Somente quando a atividade exigir alvará do Corpo de Bombeiros.</span></td>
+            <td class="col-when"><span class="tag">Se houver</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="cat-section">
+    <div class="cat-caption">
+      <span class="cat-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg></span>
+      <h2 class="cat-caption-text">Dados e informações</h2>
+      <span class="cat-count">8 itens</span>
+    </div>
+    <div class="cat-table-wrap">
+      <table class="doc-table">
+        <tbody>
+          <tr>
+            <td class="col-box"><span class="checkbox"></span></td>
+            <td class="col-doc">Dados completos de cada sócio<span class="doc-detail">Nome completo, CPF, RG e endereço residencial.</span></td>
+            <td class="col-when"></td>
+          </tr>
+          <tr>
+            <td class="col-box"><span class="checkbox"></span></td>
+            <td class="col-doc">Três opções de nome para a empresa<span class="doc-detail">Se o primeiro já estiver registrado, usamos o seguinte. Traga também o nome fantasia do estabelecimento, se houver.</span></td>
+            <td class="col-when"></td>
+          </tr>
+          <tr>
+            <td class="col-box"><span class="checkbox"></span></td>
+            <td class="col-doc">Endereço completo da empresa</td>
+            <td class="col-when"></td>
+          </tr>
+          <tr>
+            <td class="col-box"><span class="checkbox"></span></td>
+            <td class="col-doc">Descrição das atividades<span class="doc-detail">Tudo o que a empresa irá desenvolver — é o que define os códigos de atividade (CNAE).</span></td>
+            <td class="col-when"></td>
+          </tr>
+          <tr>
+            <td class="col-box"><span class="checkbox"></span></td>
+            <td class="col-doc">Valor do capital social<span class="doc-detail">Em reais.</span></td>
+            <td class="col-when"></td>
+          </tr>
+          <tr>
+            <td class="col-box"><span class="checkbox"></span></td>
+            <td class="col-doc">Participação de cada sócio no capital social<span class="doc-detail">Em percentual (%).</span></td>
+            <td class="col-when"></td>
+          </tr>
+          <tr>
+            <td class="col-box"><span class="checkbox"></span></td>
+            <td class="col-doc">Definição do sócio administrador<span class="doc-detail">Quem responderá pela empresa, ou se todos os sócios exercerão a função.</span></td>
+            <td class="col-when"></td>
+          </tr>
+          <tr>
+            <td class="col-box"><span class="checkbox"></span></td>
+            <td class="col-doc">Cláusulas específicas para o contrato social<span class="doc-detail">Regras que os sócios queiram incluir, como divisão de lucros ou entrada e saída de sócios.</span></td>
+            <td class="col-when"><span class="tag">Se houver</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="com-obs">
+    <span class="com-obs-label">Antes de começar</span>
+    Não é preciso ter tudo em mãos para nos procurar. Entre em contato assim que decidir abrir a empresa — orientamos o que falta e conferimos os dados antes de dar entrada no processo.
+  </div>
+
+</div>
+
+<div class="com-footer">
+  <div class="com-footer-cols">
+    <div class="com-footer-col">
+      <div class="com-footer-h">Dúvidas? Fale conosco</div>
+      <a href="tel:4733820601">(47) 3382-0601</a>
+      <a href="tel:4733820767">(47) 3382-0767</a>
+      <a href="https://wa.me/5547984321322" target="_blank" rel="noopener">WhatsApp (47) 98432-1322</a>
+    </div>
+    <div class="com-footer-col">
+      <div class="com-footer-h">Endereço</div>
+      <a href="https://maps.app.goo.gl/BLgMuJf6wUEH9B5c6" target="_blank" rel="noopener">Av. Nereu Ramos, 64<br>Timbó — Santa Catarina</a>
+    </div>
+    <div class="com-footer-col">
+      <div class="com-footer-h">Acompanhe</div>
+      <div class="com-footer-social">
+        <a href="https://www.instagram.com/klukecontabil/" target="_blank" rel="noopener" aria-label="Instagram da Kluke"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><line x1="17.5" y1="6.5" x2="17.5" y2="6.5"/></svg></a>
+        <a href="https://www.facebook.com/klukecontabilidade" target="_blank" rel="noopener" aria-label="Facebook da Kluke"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+        <a href="https://www.kluke.com.br" target="_blank" rel="noopener" aria-label="Site da Kluke"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></a>
+      </div>
+    </div>
+  </div>
+  <div class="com-footer-fine">
+    © 2026 Kluke Serviços Contábeis e Econômicos Ltda &nbsp;·&nbsp; CNPJ 76.860.386/0001-73 &nbsp;·&nbsp; CRC-SC 1081<br>Emitido em 03/08/2026
+  </div>
+</div>
+</div>
+<button class="btn-print" onclick="window.print()"><svg style="width:16px;height:16px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>Imprimir</button>
+</body>
+</html>
