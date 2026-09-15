@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simples Nacional e a Reforma Tributária — Kluke Serviços Contábeis</title>
+<meta name="description" content="A partir de 2027, a empresa do Simples Nacional pode pagar o IBS e a CBS dentro ou fora da guia do Simples: prazos da escolha, quando compensa, sublimite e demais mudanças da Resolução CGSN nº 190/2026.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Kluke Serviços Contábeis">
+<meta property="og:title" content="Simples Nacional e a Reforma Tributária">
+<meta property="og:description" content="A partir de 2027, a empresa do Simples Nacional pode pagar o IBS e a CBS dentro ou fora da guia do Simples: prazos da escolha, quando compensa, sublimite e demais mudanças da Resolução CGSN nº 190/2026.">
+<meta property="og:url" content="https://link.kluke.com.br/ibs-cbs-simples-completo">
+<meta property="og:image" content="https://link.kluke.com.br/images/kluke_og_512px.png">
+<meta property="og:image:width" content="512">
+<meta property="og:image:height" content="512">
+<meta property="og:locale" content="pt_BR">
+<meta name="twitter:card" content="summary">
+<link rel="icon" type="image/svg+xml" href="https://link.kluke.com.br/images/kluke_favicon.svg" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/svg+xml" href="https://link.kluke.com.br/images/kluke_favicon_dark.svg" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="https://link.kluke.com.br/images/kluke_favicon_96px.png">
+<link rel="icon" type="image/png" sizes="192x192" href="https://link.kluke.com.br/images/kluke_favicon_192px.png">
+<link rel="icon" type="image/png" sizes="512x512" href="https://link.kluke.com.br/images/kluke_favicon_512px.png">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0d1f3c;--gold:#c8a84b;--gold-light:#e8c97a;--gold-text:#7a6019;--cream:#f8f4ee;--text:#2a2a2a;--muted:#6b6b6b;--line:#ddd5c4}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#e8e4de;font-family:'Source Sans 3',sans-serif;min-height:100vh}
+.com-wrapper{max-width:820px;margin:0 auto;background:var(--cream);box-shadow:0 4px 32px rgba(0,0,0,0.15)}
+
+.com-header{background:var(--cream);padding:22px 28px 20px;text-align:center;border-bottom:1px solid var(--line)}
+.com-header-logo{display:block;height:42px;width:auto;max-width:100%;margin:0 auto}
+.com-header-rules{border-top:2px solid var(--gold);border-bottom:1px solid var(--gold);padding:9px 0;margin:15px 0}
+.com-firm-name{font-family:'Playfair Display',serif;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--navy);line-height:1.4}
+.com-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--navy);line-height:1.3}
+.com-subtitle{font-size:12px;font-weight:300;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-top:5px}
+.com-gold-bar{height:3px;background:linear-gradient(90deg,var(--gold),var(--gold-light),var(--gold))}
+
+.doc-main{padding:30px 30px 44px}
+.com-intro{background:#fff;border-left:3px solid var(--gold);border-radius:0 8px 8px 0;padding:16px 20px;margin-bottom:26px;font-size:14px;color:var(--muted);line-height:1.65}
+.com-intro strong{color:var(--navy)}
+
+.part{display:flex;align-items:baseline;gap:12px;margin:0 0 6px}
+.part-n{font-family:'Playfair Display',serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-text);white-space:nowrap}
+.part-title{font-family:'Playfair Display',serif;font-size:18px;color:var(--navy);line-height:1.25}
+.part-sub{font-size:12.5px;color:var(--muted);line-height:1.55;margin-bottom:16px}
+.part-rule{height:1px;background:var(--line);margin-bottom:16px}
+
+/* Só a exceção é marcada: o único card com pill é o que descreve o que
+   acontece sozinho, sem o cliente fazer nada. Ver CLAUDE.md. */
+.tag{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:2px 8px;border-radius:20px;white-space:nowrap;line-height:1.4;border:1px solid var(--gold);background:#fff;color:var(--gold-text);margin-left:6px;vertical-align:1px}
+
+/* ─── Aviso-chave ───
+   A dúvida mais comum é "preciso fazer alguma coisa?". A resposta vem antes
+   dos cards, não depois deles. Borda (não fundo) para sobreviver à impressão. */
+.keynote{border:1.5px solid var(--gold);border-radius:8px;background:#fffdf7;padding:13px 18px;margin-bottom:18px;font-size:13px;line-height:1.6;color:var(--text)}
+.keynote strong{color:var(--navy)}
+
+/* ─── Cartões de prazo e de mudança ───
+   Ao contrário dos cards de decisão do registro-v3 (autônomos, ordem
+   indiferente), estes são uma sequência no tempo: setembro → novembro →
+   depois. Grid de 2 colunas obrigava leitura em Z e quebrava essa ordem, e
+   com 3 cards ainda deixava meia linha vazia. Empilhados, a data vira uma
+   coluna que se percorre de cima a baixo — a mesma forma da .range-table
+   logo abaixo (chave em Playfair dourado à esquerda, regra à direita). */
+.mini-h{display:flex;align-items:center;gap:9px;font-family:'Playfair Display',serif;font-size:14px;color:var(--navy);margin-bottom:4px}
+.mini-n{display:flex;align-items:center;justify-content:center;flex-shrink:0;width:21px;height:21px;border-radius:50%;background:var(--navy);color:var(--gold-light);font-size:11.5px;line-height:1}
+.mini-sub{font-size:11.5px;color:var(--muted);line-height:1.5;margin-bottom:11px;padding-left:30px}
+.mini-sub strong{color:var(--navy)}
+.info-cards{display:flex;flex-direction:column;gap:8px;margin-bottom:22px}
+/* baseline alinha a primeira linha da data com a do título, mesmo quando o
+   corpo à direita tem três linhas e a data tem uma. */
+.info-card{display:flex;align-items:baseline;gap:0 18px;background:#fff;border:1px solid var(--line);border-left:3px solid var(--gold);border-radius:0 8px 8px 0;padding:12px 16px}
+.info-card .when{flex:0 0 188px;font-family:'Playfair Display',serif;font-size:14.5px;color:var(--gold-text);line-height:1.25}
+.info-card-main{flex:1 1 auto;min-width:0}
+.info-card-h{font-size:13.5px;font-weight:600;color:var(--navy);line-height:1.4}
+.info-card-body{font-size:12px;color:var(--muted);line-height:1.5;margin-top:4px}
+/* Cards sem data (Parte 2): não há prazo, o próprio título é a chave — então
+   ele assume a coluna da esquerda, no lugar da data. Filho direto de
+   .info-card é justamente o que distingue esses dois casos. */
+.info-card>.info-card-h{flex:0 0 188px}
+.info-card>.info-card-body{flex:1 1 auto;min-width:0;margin-top:0}
+
+.range-table-wrap{border:1px solid var(--line);border-radius:8px;background:#fff;overflow:hidden;margin-bottom:14px}
+table.range-table{width:100%;border-collapse:collapse;font-size:13.5px}
+table.range-table tbody td{padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.5}
+table.range-table tbody tr:last-child td{border-bottom:none}
+table.range-table tbody tr:nth-child(even){background:#faf8f3}
+/* A faixa é a chave de leitura da linha: fica em Playfair, como os demais
+   números de destaque da página (.when dos cards). */
+td.col-range{width:210px;font-family:'Playfair Display',serif;font-size:13px;color:var(--gold-text);white-space:nowrap;line-height:1.35}
+td.col-rule{color:var(--text)}
+/* Botão que não pertence a um card: centralizado sob o bloco que detalha. */
+.btn-row{text-align:center;margin-bottom:6px}
+.btn-row .example-btn{margin-top:0}
+
+.com-obs{background:#fbf3e3;border:1.5px solid var(--gold);color:#4a4a4a;border-radius:8px;padding:15px 22px;font-size:13.5px;line-height:1.65;margin-top:24px}
+.com-obs-label{font-family:'Playfair Display',serif;color:var(--gold-text);font-size:13px;line-height:1.2;letter-spacing:.12em;text-transform:uppercase;display:block;margin-bottom:6px}
+/* O prazo da alíquota é o que trava a conta: sai da corrida do parágrafo e
+   ganha filete próprio. Borda, não fundo, para sobreviver à impressão. */
+.obs-fecho{border-top:1px solid var(--gold);margin-top:13px;padding-top:12px}
+.obs-fecho strong{color:var(--navy)}
+/* Nota de rodapé da alíquota: números de terceiros, com autoria explícita. */
+.nota{display:block;font-size:11px;color:var(--muted);line-height:1.45;margin-top:8px}
+/* O .com-obs final encosta na .src-note e não precisa de folga embaixo; o do
+   meio do documento precisa, senão cola no título da parte seguinte. */
+.com-obs+.part{margin-top:24px}
+.src-note{font-size:11px;color:var(--muted);line-height:1.5;margin-top:14px;text-align:center}
+.src-note a{color:var(--gold-text)}
+
+.com-footer{background:var(--navy);border-top:2px solid var(--gold);padding:22px 28px;color:rgba(255,255,255,.6);font-size:12px;line-height:1.75}
+.com-footer-cols{display:flex;flex-wrap:wrap;gap:22px}
+.com-footer-col{flex:1 1 160px}
+.com-footer-h{font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:7px}
+.com-footer a{color:rgba(255,255,255,.8);text-decoration:none;display:block}
+.com-footer a:hover{color:var(--gold-light)}
+.com-footer .addr-p{display:block}
+.com-footer-social{display:flex;gap:9px;margin-top:8px}
+.com-footer-social a{display:flex;align-items:center;justify-content:center;width:30px;height:30px;border:1px solid rgba(255,255,255,.3);border-radius:50%;color:var(--gold-light)}
+.com-footer-social a:hover{border-color:var(--gold);color:var(--gold)}
+.com-footer-social svg{width:15px;height:15px}
+.com-footer-fine{border-top:1px solid rgba(255,255,255,.15);margin-top:18px;padding-top:12px;font-size:11px;color:rgba(255,255,255,.55);text-align:center;line-height:1.7}
+/* Mesma ideia do .addr-p: bloco na tela, inline com separador no papel — lá
+   a linha fina precisa caber em uma só. */
+.com-footer-fine .emitido{display:block}
+.btn-print{position:fixed;bottom:28px;right:28px;background:var(--navy);color:var(--gold);border:1px solid var(--gold);border-radius:50px;padding:12px 22px;font-family:'Source Sans 3',sans-serif;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px;box-shadow:0 4px 16px rgba(13,31,60,.25);transition:background .2s,color .2s;z-index:999}
+.btn-print:hover{background:var(--gold);color:var(--navy)}
+
+/* ─── Botão "ver exemplo" e modal de detalhamento ───
+   Usa <dialog> nativo: dá backdrop, foco e Esc de graça, sem JS de estado.
+   Fechado, o navegador já não renderiza nada — por isso não precisa de regra
+   extra em @media print além de esconder o próprio botão que o abre. */
+.example-btn{display:inline-flex;align-items:center;gap:4px;margin-top:9px;font-family:inherit;font-size:11px;font-weight:600;color:var(--gold-text);background:#fff;border:1px solid var(--gold);border-radius:20px;padding:4px 11px;cursor:pointer}
+.example-btn:hover{background:var(--gold);color:#fff}
+.example-btn::after{content:'→';font-weight:700}
+
+dialog.modal{border:none;border-radius:10px;padding:0;max-width:480px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,.35)}
+dialog.modal::backdrop{background:rgba(13,31,60,.55)}
+.modal-head{background:var(--navy);color:#fff;padding:15px 20px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.modal-head h3{font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:var(--gold-light);line-height:1.3}
+.modal-close{background:none;border:none;color:rgba(255,255,255,.7);font-size:20px;line-height:1;cursor:pointer;padding:2px 4px;flex-shrink:0}
+.modal-close:hover{color:#fff}
+.modal-body{padding:16px 20px 20px;font-size:13px;line-height:1.6;color:var(--text)}
+.modal-body strong{color:var(--navy)}
+/* Segundo cenário dentro do mesmo modal: separado por filete, não por espaço,
+   para que os dois casos não se leiam como um parágrafo só. */
+.modal-example{border-top:1px solid var(--line);margin-top:12px;padding-top:12px}
+
+/* Estreito demais para a data em coluna: ela volta a ficar sobre o título,
+   mesma quebra que a .range-table faz em 600px. */
+@media (max-width:700px){
+  .info-card{display:block}
+  .info-card .when{margin-bottom:2px}
+  .info-card>.info-card-body{margin-top:4px}
+}
+@media (max-width:600px){
+  .com-header{padding:18px 20px 16px}
+  .com-firm-name{font-size:10.5px;letter-spacing:.14em}
+  .com-footer{padding:20px}
+  .doc-main{padding:22px 16px 34px}
+  .part{flex-direction:column;gap:2px}
+  table.range-table{font-size:13px}
+  table.range-table tbody td{padding:10px 8px}
+  table.range-table tbody tr{display:grid;grid-template-columns:1fr}
+  td.col-range{white-space:normal;padding-bottom:2px}
+}
+
+@media print{
+  @page{size:A4;margin:9mm 11mm}
+  body{background:#fff}
+  .btn-print{display:none!important}
+  .com-wrapper{box-shadow:none;max-width:100%;background:#fff}
+  .com-header{padding:0 0 4px;border-bottom:none}
+  .com-header-logo{height:30px!important}
+  .com-header-rules{padding:5px 0;margin:7px 0 9px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .com-firm-name{font-size:9.5px;letter-spacing:.16em}
+  .com-title{font-size:19px}
+  .com-subtitle{font-size:9.5px;margin-top:3px}
+  .com-gold-bar{height:2px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .doc-main{padding:12px 0 0}
+  .com-intro{background:none;border:none;font-size:12px;line-height:1.55;color:#333!important;padding:0 0 0 9px;border-left:2px solid var(--gold);margin-bottom:18px}
+
+  .part{gap:8px;margin-bottom:3px}
+  .part-n{font-size:9.5px;color:#777!important}
+  .part-title{font-size:16px;color:#000!important}
+  .part-sub{font-size:11px;line-height:1.45;margin-bottom:8px}
+  /* Duas folhas, não uma espremida: a folha 1 traz a escolha (Parte 1), a
+     folha 2 o resto. A quebra no começo de uma parte evita que um pedaço
+     solto de seção fique sozinho no topo da página. */
+  .part-2{break-before:page}
+  .com-obs+.part.part-2{margin-top:0}
+  .part-rule{margin-bottom:12px;background:#ccc}
+
+  /* O aviso-chave é a primeira coisa a ler no papel: mantém a borda (que
+     imprime) e perde só o fundo. */
+  .keynote{background:none!important;border:none;border-left:2px solid var(--gold);border-radius:0;padding:0 0 0 9px;margin-bottom:16px;font-size:11.5px;line-height:1.55;color:#222!important}
+  /* O badge numerado é fundo escuro com texto claro: sairia branco no branco.
+     Vira o número seguido de ponto, sem círculo. */
+  .mini-h{font-size:12px;color:#000!important;margin-bottom:2px;gap:4px}
+  .mini-n{background:none!important;color:#000!important;width:auto;height:auto;font-family:'Playfair Display',serif;font-size:12px}
+  .mini-n::after{content:'.'}
+  .mini-sub{font-size:10.5px;line-height:1.45;margin-bottom:8px;color:#555!important;padding-left:0}
+  .info-cards{gap:10px;margin-bottom:16px}
+  .info-card{background:none!important;border:none!important;border-left:1.5px solid var(--gold)!important;border-radius:0;padding:1px 0 1px 8px;gap:0 12px;break-inside:avoid}
+  /* 1.5px de borda + 8px de recuo + 150px + 12px de gap = 171.5: o texto à
+     direita começa no mesmo x que o de td.col-rule (ver col-range abaixo),
+     então as duas colunas de chave do documento caem no mesmo eixo. */
+  .info-card .when{flex-basis:150px;font-size:12.5px;color:#111!important}
+  .info-card>.info-card-h{flex-basis:150px}
+  .info-card-h{font-size:11.5px;color:#111!important}
+  .info-card-body{font-size:11px;line-height:1.5;margin-top:2px;color:#454545!important}
+  .tag{background:none!important;border:none!important;border-radius:0;padding:0;margin-left:4px;font-size:8.5px;font-weight:600;color:#777!important}
+  .tag::before{content:'('}
+  .tag::after{content:')'}
+
+  .range-table-wrap{border:none;border-radius:0;margin-bottom:12px}
+  table.range-table{font-size:11.5px}
+  table.range-table tbody tr{border-bottom:1px solid #e6e2d8}
+  table.range-table tbody tr:last-child{border-bottom:none}
+  table.range-table tbody td{padding:7px 4px 7px 0;border-bottom:none;line-height:1.5}
+  td.col-range{width:171px;font-size:12px;color:#111!important}
+  td.col-rule{color:#333!important}
+  .btn-row{display:none!important}
+
+  .com-obs{background:none;border:none;border-left:2px solid var(--gold);border-radius:0;padding:0 0 0 9px;margin-top:16px;font-size:11px;line-height:1.55;color:#333!important;break-inside:avoid}
+  .com-obs-label{color:#000!important;font-size:11px;margin-bottom:3px}
+  .obs-fecho{margin-top:7px;padding-top:7px}
+  .obs-fecho strong{color:#000!important}
+  .nota{font-size:9px;line-height:1.4;margin-top:4px;color:#666!important}
+  .com-obs+.part{margin-top:22px}
+  .example-btn{display:none!important}
+  .src-note{color:#777!important;font-size:8px;margin-top:10px}
+  .src-note a{color:#555!important}
+  .com-footer{background:none!important;border-top:1px solid #ccc;padding:5px 0 0;color:#444!important;font-size:8.5px;line-height:1.5}
+  .com-footer-cols{gap:0 16px;justify-content:center}
+  .com-footer-col{flex:0 0 auto;text-align:center}
+  .com-footer-h{color:#888!important;font-size:7px;margin-bottom:2px;letter-spacing:.1em}
+  .com-footer a{color:#444!important;display:inline;margin:0 4px}
+  .com-footer-col:nth-child(3){display:none!important}
+  .com-footer .addr-p{display:inline}
+  .com-footer .addr-p+.addr-p::before{content:" · "}
+  .com-footer-fine{border-top:none;margin-top:3px;padding-top:0;color:#777!important;font-size:7.5px;line-height:1.45}
+  .com-footer-fine .emitido{display:inline}
+  .com-footer-fine .emitido::before{content:" · "}
+}
+</style>
+</head>
+<body>
+<div class="com-wrapper">
+
+<div class="com-header">
+  <a href="https://www.kluke.com.br" target="_blank" rel="noopener">
+    <img class="com-header-logo" src="https://link.kluke.com.br/images/KlukeLogo.svg" alt="Kluke Serviços Contábeis">
+  </a>
+  <div class="com-header-rules">
+    <div class="com-firm-name">Kluke Serviços Contábeis e Econômicos</div>
+  </div>
+  <h1 class="com-title">Simples Nacional e a Reforma Tributária</h1>
+  <div class="com-subtitle">IBS e CBS dentro ou fora do Simples a partir de 2027</div>
+</div>
+<div class="com-gold-bar"></div>
+
+<div class="doc-main">
+
+  <div class="com-intro">A <strong>Resolução CGSN nº 190</strong>, de 4/8/2026, ajusta o Simples Nacional aos dois novos impostos da Reforma Tributária, o <strong>IBS</strong> e a <strong>CBS</strong>, a partir de <strong>1º de janeiro de 2027</strong>. A principal novidade é uma escolha: a empresa do Simples pode pagar esses dois impostos <strong>dentro da guia do Simples</strong> ou <strong>por fora</strong>, pelas regras normais. Explicamos abaixo como funciona cada caminho, os prazos e o que mais muda.</div>
+
+  <div class="part">
+    <span class="part-n">Parte 1</span>
+    <span class="part-title">IBS e CBS: dentro ou fora do Simples</span>
+  </div>
+  <div class="part-sub">A escolha vale <strong>só para esses dois impostos</strong> — os demais tributos continuam no Simples nos dois casos.</div>
+  <div class="part-rule"></div>
+
+  <div class="keynote">Quer continuar pagando o IBS e a CBS <strong>dentro do Simples</strong>? Não é preciso fazer nada — é o padrão. Só precisa agir, <strong>até 30 de setembro de 2026</strong>, a empresa que decidir pagar <strong>por fora</strong> a partir de janeiro de 2027; a próxima chance é em março, valendo a partir de julho.</div>
+
+  <div class="info-cards">
+
+    <div class="info-card">
+      <div class="when">Nenhuma data</div>
+      <div class="info-card-main">
+        <div class="info-card-h">Continuar pagando dentro do Simples<span class="tag">Padrão</span></div>
+        <div class="info-card-body">É o que acontece se você não fizer nada: IBS e CBS seguem na mesma guia dos outros tributos, com o cálculo simplificado de sempre.</div>
+      </div>
+    </div>
+
+    <div class="info-card">
+      <div class="when">Setembro ou março</div>
+      <div class="info-card-main">
+        <div class="info-card-h">Trocar para pagar por fora</div>
+        <div class="info-card-body">Duas vezes por ano dá para decidir pagar o IBS e a CBS <strong>fora</strong> do Simples, pelas regras normais. Setembro vale para o semestre de janeiro a junho; março, para o de julho a dezembro.<br>
+          <button class="example-btn" type="button" onclick="document.getElementById('modal-prazo-ibs').showModal()">Ver exemplo</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-card">
+      <div class="when">30 de novembro ou 31 de maio</div>
+      <div class="info-card-main">
+        <div class="info-card-h">Prazo para voltar atrás</div>
+        <div class="info-card-body">Escolheu pagar por fora e se arrependeu? Dá para cancelar até 30/11 (se a escolha foi em setembro) ou até 31/5 (se foi em março). O de 30/11/2026 <strong>pode ser prorrogado</strong> se a alíquota da CBS atrasar.</div>
+      </div>
+    </div>
+
+    <div class="info-card">
+      <div class="when">Depois do prazo</div>
+      <div class="info-card-main">
+        <div class="info-card-h">A troca vale por semestre inteiro</div>
+        <div class="info-card-body">Passado o prazo de cancelamento, a forma escolhida vale até o fim do semestre. E, se você não se manifestar depois, ela continua valendo nos semestres seguintes.</div>
+      </div>
+    </div>
+
+    <div class="info-card">
+      <div class="when">Após ressarcimento</div>
+      <div class="info-card-main">
+        <div class="info-card-h">Quando não dá para voltar para dentro</div>
+        <div class="info-card-body">Quem paga por fora e recebeu de volta (ressarcimento) crédito de IBS ou CBS neste ano ou no ano passado <strong>não pode voltar</strong> a pagá-los dentro do Simples.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="com-obs">
+    <span class="com-obs-label">Qual caminho compensa</span>
+    Pagar por fora <strong>não é pagar menos</strong>. O IBS e a CBS saem do DAS e passam à alíquota cheia das regras gerais: o ganho vem do crédito, não da alíquota. Por isso a conta costuma fechar quando <strong>quem compra da sua empresa é outra empresa</strong>, que aproveita esse crédito, ou quando ela <strong>compra muito</strong> de fornecedores que cobram IBS e CBS cheios — e fica mais cara na venda ao <strong>consumidor final</strong>, que não aproveita crédito nenhum. No primeiro ano isso pesa quase todo na CBS: em 2027 e 2028 o IBS ainda está em transição, cobrado a 0,1% (ADCT, art. 127), enquanto a CBS já é cobrada praticamente cheia.
+    <div class="obs-fecho"><strong>Você decide em setembro sem saber a alíquota.*</strong> O Senado tem até 15/12/2026 para fixar a alíquota de referência da CBS — a comparação terá de ser refeita com o número na mão. Por isso o CGSN pode prorrogar o cancelamento de 30/11 (Resolução CGSN nº 186/2026); e em março de 2027 dá para rever a escolha.
+      <span class="nota">* Ainda não há alíquota oficial da CBS para 2027. As projeções publicadas vão de 8,8% (Ministério da Fazenda, 2024) a 9,43% (consultoria ROIT, 2026). A alíquota definitiva deve ser fixada pelo Senado até 15/12/2026.</span>
+      <button class="example-btn" type="button" onclick="document.getElementById('modal-regime-regular').showModal()">Ver exemplo</button>
+    </div>
+  </div>
+
+  <div class="part part-2">
+    <span class="part-n">Parte 2</span>
+    <span class="part-title">Outras mudanças no Simples</span>
+  </div>
+  <div class="part-sub">Valem para todas as empresas do Simples, qualquer que seja a escolha acima.</div>
+  <div class="part-rule"></div>
+
+  <div class="info-cards">
+
+    <div class="info-card">
+      <div class="info-card-h">O crédito que o seu cliente aproveita</div>
+      <div class="info-card-body">Se a empresa paga o IBS e a CBS dentro do Simples, o cliente que é empresa aproveita como crédito o valor cobrado na guia — <strong>o percentual da sua faixa do Simples</strong>, informado na nota fiscal —, e não o imposto cheio.</div>
+    </div>
+
+    <div class="info-card">
+      <div class="info-card-h">O que entra na conta da receita</div>
+      <div class="info-card-body">Gorjeta que fica na empresa, juros e multas recebidos passam a entrar na conta. Gorjeta repassada ao funcionário e o próprio IBS/CBS já pagos não entram.</div>
+    </div>
+
+    <div class="info-card">
+      <div class="info-card-h">Empresa recém-aberta</div>
+      <div class="info-card-body">Nos 2 primeiros meses, usa a alíquota mais baixa da tabela. Do 3º ao 13º mês, a conta usa a média do que já faturou. Só a partir do 14º mês entra a regra normal.</div>
+    </div>
+
+    <div class="info-card">
+      <div class="info-card-h">Pagamento automático do imposto</div>
+      <div class="info-card-body">Parte do IBS e da CBS pode ser separada e recolhida automaticamente no momento em que o cliente paga, sem a empresa precisar calcular depois.<br>
+        <button class="example-btn" type="button" onclick="document.getElementById('modal-split').showModal()">Ver exemplo</button>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="mini-h">Para quem ainda não está no Simples</div>
+  <div class="mini-sub">A entrada no regime tem prazos próprios, na mesma época. Quem <strong>já está</strong> no Simples continua nele automaticamente. O <strong>MEI</strong> não entra nesses prazos: a opção pelo Simei continua em janeiro, até 29/01/2027.</div>
+  <div class="info-cards">
+
+    <div class="info-card">
+      <div class="when">1º a 30 de setembro</div>
+      <div class="info-card-main">
+        <div class="info-card-h">Pedir a entrada</div>
+        <div class="info-card-body">Com efeito a partir de 1º de janeiro do ano seguinte. Empresa aberta durante o ano opta na própria inscrição do CNPJ.</div>
+      </div>
+    </div>
+
+    <div class="info-card">
+      <div class="when">Até 30 de novembro</div>
+      <div class="info-card-main">
+        <div class="info-card-h">Prazo para desistir da entrada</div>
+        <div class="info-card-body">Pediu em setembro e mudou de ideia? Dá para cancelar. <strong>Não vale para empresa aberta durante o ano</strong>: nesse caso o pedido não pode ser cancelado.</div>
+      </div>
+    </div>
+
+    <div class="info-card">
+      <div class="when">30 dias</div>
+      <div class="info-card-main">
+        <div class="info-card-h">Prazo para corrigir pendências</div>
+        <div class="info-card-body">Se o pedido for negado, são 30 dias corridos, contados do aviso, para resolver as pendências — resolvidas no prazo, o pedido é aceito.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="part part-3">
+    <span class="part-n">Parte 3</span>
+    <span class="part-title">Sublimite e limite de faturamento</span>
+  </div>
+  <div class="part-sub">Receita acumulada no ano. No ano de abertura, os limites são proporcionais aos meses de atividade.</div>
+  <div class="part-rule"></div>
+
+  <div class="range-table-wrap">
+    <table class="range-table">
+      <tbody>
+        <tr>
+          <td class="col-range">Até R$ 3,6 milhões por ano</td>
+          <td class="col-rule">Tudo continua na guia do Simples, inclusive o IBS, o ICMS e o ISS.</td>
+        </tr>
+        <tr>
+          <td class="col-range">De R$ 3,6 a R$ 4,8 milhões</td>
+          <td class="col-rule">A empresa continua no Simples, mas <strong>o IBS, o ICMS e o ISS saem da guia</strong> e passam a ser pagos pelas regras normais. A CBS e os demais federais seguem no Simples. Vale a partir do mês seguinte se a receita passou de R$ 4,32 milhões; senão, só no ano seguinte.</td>
+        </tr>
+        <tr>
+          <td class="col-range">Acima de R$ 4,8 milhões</td>
+          <td class="col-rule">A empresa é <strong>excluída do Simples</strong>. Vale a partir do mês seguinte se a receita passou de R$ 5,76 milhões; senão, só no ano seguinte.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="btn-row"><button class="example-btn" type="button" onclick="document.getElementById('modal-sublimite').showModal()">Ver exemplo com números</button></div>
+
+  <div class="com-obs">
+    <span class="com-obs-label">Vale conversar com a Kluke até 30 de setembro</span>
+    Pagar o IBS e a CBS dentro ou fora do Simples depende de para quem a sua empresa vende e de quem ela compra. Se ela <strong>vende muito para outras empresas</strong> ou <strong>compra muito de fornecedores que cobram IBS e CBS cheios</strong>, vamos fazer a conta juntos. Se vende principalmente para o consumidor final, continuar pagando dentro — sem fazer nada — tende a ser o melhor caminho.
+  </div>
+
+  <div class="src-note">Conteúdo conferido com as Resoluções CGSN nº 186/2026 e nº 190/2026, com a Lei Complementar nº 123/2006 (art. 3º, §§ 9º e 9º-A), com o <a href="https://www.gov.br/receitafederal/pt-br/assuntos/noticias/2026/agosto/cgsn-atualiza-regras-do-simples-nacional-para-adequacao-a-reforma-tributaria-do-consumo" target="_blank" rel="noopener">comunicado oficial da Receita Federal</a> de agosto de 2026 e com o <a href="https://www8.receita.fazenda.gov.br/SimplesNacional/Arquivos/manual/Roteiro%20da%20op%C3%A7%C3%A3o%20pelo%20Simles%20Nacional%20para%20o%20ano%20de%202027.pdf" target="_blank" rel="noopener">Roteiro da Opção pelo Simples Nacional para 2027</a> (CGSN, 21/08/2026).</div>
+
+</div>
+
+<div class="com-footer">
+  <div class="com-footer-cols">
+    <div class="com-footer-col">
+      <div class="com-footer-h">Dúvidas? Fale conosco</div>
+      <a href="tel:4733820601">(47) 3382-0601</a>
+      <a href="tel:4733820767">(47) 3382-0767</a>
+      <a href="https://wa.me/5547984321322" target="_blank" rel="noopener">WhatsApp (47) 98432-1322</a>
+    </div>
+    <div class="com-footer-col">
+      <div class="com-footer-h">Endereço</div>
+      <a href="https://maps.app.goo.gl/BLgMuJf6wUEH9B5c6" target="_blank" rel="noopener"><span class="addr-p">Av. Nereu Ramos, 64</span><span class="addr-p">Timbó — Santa Catarina</span></a>
+    </div>
+    <div class="com-footer-col">
+      <div class="com-footer-h">Acompanhe</div>
+      <div class="com-footer-social">
+        <a href="https://www.instagram.com/klukecontabil/" target="_blank" rel="noopener" aria-label="Instagram da Kluke"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><line x1="17.5" y1="6.5" x2="17.5" y2="6.5"/></svg></a>
+        <a href="https://www.facebook.com/klukecontabilidade" target="_blank" rel="noopener" aria-label="Facebook da Kluke"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+        <a href="https://www.kluke.com.br" target="_blank" rel="noopener" aria-label="Site da Kluke"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></a>
+      </div>
+    </div>
+  </div>
+  <div class="com-footer-fine">
+    © 2026 Kluke Serviços Contábeis e Econômicos Ltda &nbsp;·&nbsp; CNPJ 76.860.386/0001-73 &nbsp;·&nbsp; CRC-SC 1081<span class="emitido">Emitido em 17/08/2026 &nbsp;·&nbsp; Atualizado em 15/09/2026</span>
+  </div>
+</div>
+<button class="btn-print" onclick="window.print()"><svg style="width:16px;height:16px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>Imprimir</button>
+
+<dialog class="modal" id="modal-prazo-ibs">
+  <div class="modal-head"><h3>Escolher como pagar IBS e CBS</h3><button class="modal-close" type="button" onclick="document.getElementById('modal-prazo-ibs').close()" aria-label="Fechar">✕</button></div>
+  <div class="modal-body">Essa decisão é <strong>separada</strong> da entrada no Simples e só existe para quem está no regime — empresa aberta durante o ano faz as duas escolhas juntas, na inscrição do CNPJ. Se você decidir em <strong>setembro de 2026</strong>, passa a pagar IBS/CBS por fora a partir de 1º de janeiro de 2027. Preferiu esperar e decidir em <strong>março de 2027</strong>? A mudança só vale a partir de 1º de julho de 2027 — meio ano depois. Enquanto não decidir nada, o IBS e a CBS continuam sendo pagos dentro do Simples, normalmente.</div>
+</dialog>
+
+<dialog class="modal" id="modal-regime-regular">
+  <div class="modal-head"><h3>Pagar IBS e CBS por fora do Simples</h3><button class="modal-close" type="button" onclick="document.getElementById('modal-regime-regular').close()" aria-label="Fechar">✕</button></div>
+  <div class="modal-body">
+    <strong>Quando você vende:</strong> uma indústria vende para outra empresa (não para o consumidor final). Ficando dentro do Simples, o crédito de IBS/CBS que ela repassa ao cliente fica limitado ao que foi recolhido pela alíquota simplificada — não ao imposto cheio. Pagando por fora, ela repassa o crédito integral, o que pode deixar a venda mais atraente para esse tipo de cliente.
+    <div class="modal-example">
+      <strong>Quando você compra:</strong> dentro do Simples, o imposto é calculado direto sobre a receita — o que a empresa pagou de IBS/CBS nas compras não entra na conta. Pagando por fora, vale a regra de descontar da conta final o que já foi pago nas compras. Quem compra bastante de fornecedores que cobram IBS/CBS cheio tende a aproveitar mais esse desconto pagando por fora.
+    </div>
+  </div>
+</dialog>
+
+<dialog class="modal" id="modal-split">
+  <div class="modal-head"><h3>Pagamento automático do imposto</h3><button class="modal-close" type="button" onclick="document.getElementById('modal-split').close()" aria-label="Fechar">✕</button></div>
+  <div class="modal-body">Numa venda de <strong>R$ 1.000,00</strong>, o sistema de pagamento já separa a parcela de IBS e CBS embutida no preço e manda direto para o governo, no mesmo instante em que o cliente paga. A empresa recebe o valor líquido, sem precisar calcular e recolher essa parte depois.</div>
+</dialog>
+
+<dialog class="modal" id="modal-sublimite">
+  <div class="modal-head"><h3>Sublimite — exemplo com números</h3><button class="modal-close" type="button" onclick="document.getElementById('modal-sublimite').close()" aria-label="Fechar">✕</button></div>
+  <div class="modal-body">Uma empresa faturou <strong>R$ 4.200.000,00</strong> em 2027. Passou do sublimite de R$ 3,6 milhões em <strong>R$ 600.000,00</strong> — menos de 20% (R$ 720.000,00) — e não chegou ao limite de R$ 4,8 milhões.
+    <div class="modal-example"><strong>Em 2027:</strong> tudo continua na guia do Simples. Os tributos federais sobre a parte que excedeu passam a ser calculados com alíquota maior.</div>
+    <div class="modal-example"><strong>A partir de janeiro de 2028:</strong> a empresa segue no Simples, mas o IBS, o ICMS e o ISS saem da guia e passam a ser pagos pelas regras normais. A CBS e os demais tributos federais continuam no Simples.</div>
+    <div class="modal-example">Se a receita tivesse passado de <strong>R$ 4.320.000,00</strong> (mais de 20% acima do sublimite), essa saída valeria já a partir do mês seguinte ao excesso.</div>
+  </div>
+</dialog>
+
+<script>
+document.querySelectorAll('dialog.modal').forEach(function(d){
+  d.addEventListener('click', function(e){ if (e.target === d) d.close(); });
+});
+</script>
+</body>
+</html>
