@@ -1,0 +1,1963 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vínculo NCM/NBS × cClassTrib — Kluke Serviços Contábeis</title>
+<meta name="description" content="Consulta dinâmica dos códigos NCM e NBS vinculados a cada cClassTrib/CST do IBS e da CBS, com as exceções previstas nos anexos da LC 214/2025.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Kluke Serviços Contábeis">
+<meta property="og:title" content="Vínculo NCM/NBS × cClassTrib — busca por código ou descrição">
+<meta property="og:description" content="Consulta dinâmica dos códigos NCM e NBS vinculados a cada cClassTrib/CST do IBS e da CBS, com as exceções previstas nos anexos da LC 214/2025.">
+<meta property="og:url" content="https://link.kluke.com.br/vinculo-ncm-nbs-cclasstrib">
+<meta property="og:image" content="https://link.kluke.com.br/original-5b2bf023264c2-K.png">
+<meta property="og:locale" content="pt_BR">
+<meta name="twitter:card" content="summary">
+<link rel="icon" type="image/svg+xml" href="https://link.kluke.com.br/images/kluke_favicon.svg" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/svg+xml" href="https://link.kluke.com.br/images/kluke_favicon_dark.svg" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="https://link.kluke.com.br/images/kluke_favicon_96px.png">
+<link rel="icon" type="image/png" sizes="192x192" href="https://link.kluke.com.br/images/kluke_favicon_192px.png">
+<link rel="icon" type="image/png" sizes="512x512" href="https://link.kluke.com.br/images/kluke_favicon_512px.png">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0d1f3c;--gold:#c8a84b;--gold-light:#e8c97a;--gold-text:#7a6019;--cream:#f8f4ee;--text:#2a2a2a;--muted:#6b6b6b;--line:#ddd5c4;--red:#a32b2b;--green:#2f6b3a;--warn:#8a4b0f;--busca-h:96px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#e8e4de;font-family:'Source Sans 3',sans-serif;min-height:100vh;color:var(--text)}
+/* Esta página é ferramenta de consulta, não comunicado: a tabela tem 6 colunas e
+   os textos dos anexos são longos. Os 820px padrão da série espremeriam a coluna
+   Descrição a ponto de inutilizá-la, então o wrapper vai a 1180px. Cabeçalho,
+   rodapé e tokens continuam idênticos aos das demais páginas. */
+.com-wrapper{max-width:1180px;margin:0 auto;background:var(--cream);box-shadow:0 4px 32px rgba(0,0,0,0.15)}
+
+/* ─── Cabeçalho: timbrado clássico ─── */
+.com-header{background:var(--cream);padding:22px 28px 20px;text-align:center;border-bottom:1px solid var(--line)}
+.com-header-logo{display:block;height:42px;width:auto;max-width:100%;margin:0 auto}
+.com-header-rules{border-top:2px solid var(--gold);border-bottom:1px solid var(--gold);padding:9px 0;margin:15px 0}
+.com-firm-name{font-family:'Playfair Display',serif;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--navy);line-height:1.4}
+.com-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--navy);line-height:1.3}
+.com-subtitle{font-size:12px;font-weight:300;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-top:5px}
+.aviso-validade{border-top:1px solid var(--warn);border-bottom:1px solid var(--warn);color:var(--warn);font-size:13px;font-weight:600;text-align:center;padding:8px 16px;line-height:1.45}
+.aviso-validade p{margin:2px 0}
+.com-gold-bar{height:3px;background:linear-gradient(90deg,var(--gold),var(--gold-light),var(--gold))}
+
+.doc-main{padding:26px 30px 40px}
+.com-intro{background:#fff;border-left:3px solid var(--gold);border-radius:0 8px 8px 0;padding:16px 20px;margin-bottom:6px;font-size:14px;color:var(--muted);line-height:1.65}
+.com-intro strong{color:var(--navy)}
+.com-intro p+p{margin-top:9px}
+
+/* ─── Painel de busca ─── */
+.busca{position:sticky;top:0;z-index:40;background:var(--cream);padding:14px 0 11px;border-bottom:1px solid var(--line);margin-bottom:4px}
+.busca-linha{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end}
+.campo{display:flex;flex-direction:column;gap:4px}
+.campo-cresce{flex:1 1 320px;min-width:220px}
+.campo-rot{font-size:9.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-text)}
+.campo input[type=search],.campo select{font-family:'Source Sans 3',sans-serif;font-size:14px;color:var(--text);background:#fff;border:1px solid var(--line);border-radius:7px;padding:9px 11px;width:100%;height:38px}
+.campo input[type=search]:focus,.campo select:focus{outline:2px solid var(--gold);outline-offset:-1px;border-color:var(--gold)}
+.campo select{max-width:330px}
+.chips{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px;align-items:center}
+.chip{font-family:'Source Sans 3',sans-serif;font-size:12px;font-weight:600;color:var(--muted);background:#fff;border:1px solid var(--line);border-radius:50px;padding:5px 13px;cursor:pointer;transition:background .15s,color .15s,border-color .15s}
+.chip:hover{border-color:var(--gold)}
+.chip[aria-pressed=true]{background:var(--navy);color:var(--gold-light);border-color:var(--navy)}
+.chip-limpar{margin-left:auto;border-style:dashed}
+/* Filtro por item do anexo: não tem controle próprio no painel, então precisa
+   aparecer como pastilha removível — filtro invisível é filtro esquecido. */
+.chip-item{background:var(--navy);color:var(--gold-light);border-color:var(--navy);max-width:min(100%,460px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.chip-item::after{content:" ×";font-weight:700}
+.chip-item:hover{background:var(--gold-text);border-color:var(--gold-text);color:#fff}
+.m-niveis{width:100%;border-collapse:collapse;font-size:12.5px;line-height:1.45}
+.m-niveis th{text-align:left;font-size:9px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--gold-text);padding:0 8px 5px 0;border-bottom:1px solid var(--line);white-space:nowrap}
+.m-niveis td{padding:6px 8px 6px 0;border-top:1px solid var(--line);vertical-align:top}
+.m-niveis td:first-child{white-space:nowrap;color:var(--muted);font-size:11.5px}
+.m-niveis td:nth-child(2){white-space:nowrap;font-variant-numeric:tabular-nums;font-weight:600;color:var(--navy)}
+.m-niveis tr.folha td{color:var(--navy);font-weight:600}
+.m-niveis tr.folha td:first-child{color:var(--gold-text)}
+.m-irmas{margin-top:9px;padding-top:9px;border-top:1px solid var(--line);font-size:12.5px;line-height:1.55;color:var(--muted)}
+.m-irmas b{color:var(--navy)}
+.m-irmas .btn-mini{margin-top:7px}
+
+.resumo{display:flex;gap:14px;flex-wrap:wrap;align-items:baseline;margin:14px 0 10px;font-size:13px;color:var(--muted)}
+.resumo b{color:var(--navy);font-size:15px}
+.resumo-acoes{margin-left:auto;display:flex;gap:7px}
+.btn-mini{font-family:'Source Sans 3',sans-serif;font-size:12px;font-weight:600;color:var(--navy);background:#fff;border:1px solid var(--line);border-radius:6px;padding:6px 12px;cursor:pointer}
+.btn-mini:hover{border-color:var(--gold);color:var(--gold-text)}
+
+/* ─── Tabela ─── */
+.tabela-wrap{background:#fff;border:1px solid var(--line);border-radius:9px}
+table.vinc{width:100%;border-collapse:collapse;font-size:13.5px}
+table.vinc thead th{position:sticky;top:var(--busca-h);z-index:20;background:var(--navy);color:var(--gold-light);font-size:9.5px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;text-align:left;padding:10px 11px;white-space:nowrap}
+table.vinc tbody td{padding:10px 11px;border-top:1px solid var(--line);vertical-align:top;line-height:1.5}
+table.vinc tbody tr:hover{background:#fffdf7}
+.c-tipo{width:74px}
+.c-cod{width:116px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.c-class{width:212px}
+.c-cst{width:98px}
+.c-exc{width:120px}
+.badge{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.08em;padding:2px 7px;border-radius:4px;border:1px solid var(--line);color:var(--muted);background:#fff}
+.badge-ncm{border-color:var(--navy);color:var(--navy)}
+.badge-nbs{border-color:var(--gold);color:var(--gold-text)}
+.cod-num{font-weight:700;color:var(--navy)}
+.cod-cru{font-size:10.5px;color:var(--muted);letter-spacing:.02em}
+.cod-linha{display:flex;align-items:center;gap:1px;margin-top:1px}
+
+/* ─── Botão de copiar ───
+   Vive ao lado do código sem pontos, que é a forma que se cola no ERP. Dois
+   ícones sobrepostos trocam de lugar por transform: nada de reescrever o SVG a
+   cada clique, e a transição continua suave se o clique se repetir. */
+.btn-copia{position:relative;display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;width:22px;height:22px;padding:0;border:1px solid transparent;border-radius:5px;background:none;color:#a9a292;cursor:pointer;vertical-align:middle;transition:color .15s,border-color .15s,background .15s}
+.btn-copia:hover{color:var(--gold-text);border-color:var(--line);background:#fff}
+.btn-copia:focus-visible{outline:2px solid var(--gold);outline-offset:1px}
+.btn-copia svg{position:absolute;width:13px;height:13px;transition:transform .24s cubic-bezier(.2,.9,.3,1.5),opacity .18s}
+.btn-copia .i-check{transform:scale(.3) rotate(-30deg);opacity:0}
+.btn-copia.copiado{color:var(--green);border-color:var(--green);background:#fff}
+.btn-copia.copiado .i-copia{transform:scale(.3) rotate(25deg);opacity:0}
+.btn-copia.copiado .i-check{transform:none;opacity:1}
+/* Balão: o conteúdo vem do atributo, então cada botão diz o que faz e vira
+   "Copiado!" sem tocar no DOM. Abre para baixo de propósito — acima do botão
+   ele tapava o código formatado, que é o que a dica está descrevendo. */
+.btn-copia::after{content:attr(data-dica);position:absolute;top:calc(100% + 7px);left:50%;transform:translateX(-50%) translateY(-4px);background:var(--navy);color:#fff;font-size:11px;font-weight:600;line-height:1.3;white-space:nowrap;padding:4px 9px;border-radius:5px;box-shadow:0 3px 10px rgba(13,31,60,.25)}
+.btn-copia::before{content:"";position:absolute;top:calc(100% + 2px);left:50%;transform:translateX(-50%) translateY(-4px);border:5px solid transparent;border-bottom-color:var(--navy)}
+.btn-copia::after,.btn-copia::before{opacity:0;pointer-events:none;z-index:60;transition:opacity .16s,transform .16s}
+.btn-copia:hover::after,.btn-copia:hover::before,
+.btn-copia:focus-visible::after,.btn-copia:focus-visible::before,
+.btn-copia.copiado::after,.btn-copia.copiado::before,
+.btn-copia.mostra::after,.btn-copia.mostra::before{opacity:1;transform:translateX(-50%)}
+.btn-copia.copiado::after{background:var(--green)}
+.btn-copia.copiado::before{border-bottom-color:var(--green)}
+/* Sem cursor não há hover que revele o botão: no toque ele fica sempre à vista. */
+@media (hover:none){.btn-copia{color:var(--gold-text);border-color:var(--line);background:#fff}}
+@media (prefers-reduced-motion:reduce){.btn-copia svg,.btn-copia::after,.btn-copia::before{transition:opacity .12s}.btn-copia .i-check{transform:none}.btn-copia.copiado .i-copia{transform:none}}
+.so-leitor{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+/* Migalha em cima, pequena; a folha embaixo, em destaque. A ordem importa: o
+   caminho prepara a leitura da folha, e é o que faz um "Outros" fazer sentido. */
+.desc-caminho{display:block;font-size:11px;color:var(--muted);line-height:1.4;margin-bottom:5px}
+.desc-item{display:block;font-size:14.5px;color:var(--text);line-height:1.4}
+.cls-cod{font-weight:700;color:var(--navy);font-variant-numeric:tabular-nums}
+.cls-nome{display:block;font-size:11.5px;color:var(--muted);line-height:1.4;margin-top:2px}
+.cls-red{display:inline-block;margin-top:5px;font-size:10.5px;font-weight:700;color:var(--gold-text);border:1px solid var(--gold);border-radius:4px;padding:1px 6px}
+.cst-cod{font-weight:700;color:var(--navy);font-variant-numeric:tabular-nums}
+.cst-nome{display:block;font-size:11px;color:var(--muted);line-height:1.35;margin-top:2px}
+.btn-exc{font-family:'Source Sans 3',sans-serif;font-size:11.5px;font-weight:700;border-radius:6px;padding:5px 10px;cursor:pointer;background:#fff;border:1px solid var(--gold);color:var(--gold-text);white-space:nowrap}
+.btn-exc:hover{background:var(--gold);color:#fff}
+.btn-exc.vedado{border-color:var(--red);color:var(--red)}
+.btn-exc.vedado:hover{background:var(--red);color:#fff}
+.sem-exc{color:#cfc7b5;font-size:15px}
+/* Marca as poucas linhas que não vieram da tabela do SVRS. Contorno, não fundo:
+   sobrevive à impressão sem gráficos de plano de fundo. */
+.tag-compl{display:block;width:-moz-fit-content;width:fit-content;margin-top:6px;font-size:9.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gold-text);border:1px solid var(--gold);border-radius:4px;padding:1px 6px}
+mark{background:#fbeeb8;color:inherit;padding:0 1px;border-radius:2px}
+.vazio{padding:34px 20px;text-align:center;color:var(--muted);font-size:14px;line-height:1.7}
+.vazio b{color:var(--navy)}
+.sentinela{height:1px}
+.carregando{padding:11px;text-align:center;font-size:12px;color:var(--muted)}
+
+/* ─── Legenda das classificações ─── */
+details.legenda{margin-top:22px;background:#fff;border:1px solid var(--line);border-radius:9px}
+details.legenda>summary{cursor:pointer;padding:13px 18px;font-family:'Playfair Display',serif;font-size:15px;color:var(--navy);list-style:none}
+details.legenda>summary::-webkit-details-marker{display:none}
+details.legenda>summary::before{content:"▸ ";color:var(--gold)}
+details.legenda[open]>summary::before{content:"▾ "}
+.legenda-corpo{padding:0 18px 16px;font-size:13px;overflow-x:auto}
+table.leg{width:100%;border-collapse:collapse;min-width:620px}
+table.leg th{text-align:left;font-size:9.5px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--gold-text);padding:7px 8px;border-bottom:1px solid var(--line);white-space:nowrap}
+table.leg td{padding:8px;border-top:1px solid var(--line);vertical-align:top;line-height:1.45}
+table.leg td:first-child{white-space:nowrap;font-variant-numeric:tabular-nums}
+table.leg a{color:var(--gold-text)}
+.leg-btn{background:none;border:none;padding:0;font:inherit;font-weight:700;color:var(--navy);text-decoration:underline;text-decoration-color:var(--gold);cursor:pointer;text-align:left}
+.leg-btn:hover{color:var(--gold-text)}
+.leg-n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+
+.print-cab{display:none}
+.so-papel{display:none}
+/* Regra geral: a pergunta mais comum é sobre o código que NÃO está na lista.
+   Borda, não fundo — precisa sair legível no papel. */
+.regra-geral{border:1.5px solid var(--navy);border-radius:9px;background:#fff;padding:13px 17px;margin:12px 0 6px;font-size:13.5px;line-height:1.6;color:var(--text)}
+.regra-geral b{color:var(--navy)}
+.regra-tit{display:block;font-family:'Playfair Display',serif;font-size:16px;margin-bottom:4px}
+.passos{margin:9px 0 0 20px;padding:0}
+.passos li{margin-top:5px;padding-left:3px}
+.passos li::marker{font-weight:700;color:var(--gold-text)}
+.regra-cod{display:inline-flex;align-items:center;gap:2px;font-weight:700;color:var(--navy);white-space:nowrap}
+.regra-ressalva{display:block;margin-top:6px;font-size:12px;color:var(--muted);line-height:1.55}
+.vazio .regra-cod{font-size:15px}
+.vazio-limpar{margin-top:10px;font-family:'Source Sans 3',sans-serif;font-size:13px;font-weight:600;color:var(--navy);background:#fff;border:1px solid var(--navy);border-radius:50px;padding:6px 16px;cursor:pointer}
+.vazio-limpar:hover{background:var(--navy);color:var(--gold-light)}
+.aviso-busca{background:#fffdf7;border:1px solid var(--gold);border-left-width:3px;border-radius:0 8px 8px 0;padding:11px 15px;margin-bottom:10px;font-size:13px;line-height:1.6;color:var(--text)}
+.aviso-busca b{color:var(--navy)}
+.aviso-busca em{font-style:normal;color:var(--gold-text);font-weight:600}
+.nota-fonte{margin-top:20px;font-size:12px;color:var(--muted);line-height:1.7;border-top:1px solid var(--line);padding-top:14px}
+.nota-fonte a{color:var(--gold-text)}
+.nota-fonte b{color:var(--navy)}
+.nota-fonte p+p{margin-top:8px}
+
+/* ─── Consulta por CFOP ───
+   Vem antes da tabela porque responde à primeira pergunta: o IBS/CBS desta nota
+   depende do produto ou da operação? Transferência, remessa e devolução têm
+   código próprio, qualquer que seja o NCM; só a venda manda procurar o NCM. */
+.cfop{background:#fff;border:1px solid var(--line);border-left:3px solid var(--navy);border-radius:0 9px 9px 0;padding:14px 18px 15px;margin:12px 0 6px}
+.cfop-tit{display:block;font-family:'Playfair Display',serif;font-size:16px;color:var(--navy);margin-bottom:3px}
+.cfop-txt{font-size:13px;color:var(--muted);line-height:1.55;margin-bottom:10px}
+.passo-rot{font-size:13.5px;font-weight:700;color:var(--navy);margin:10px 0 6px}
+.regime-linha{display:flex;gap:7px;flex-wrap:wrap;align-items:center}
+.regime-linha .chip{font-size:13px;padding:6px 14px}
+.regime-ajuda{font-size:12px;color:var(--muted)}
+.regime-nota{margin-top:8px;font-size:13px;line-height:1.6;color:var(--text);border-left:3px solid var(--gold);padding:4px 0 4px 11px}
+.regime-nota b{color:var(--navy)}
+.cfop-linha{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end}
+.cfop-linha .campo{flex:0 1 330px}
+.cfop-linha input[type=search]{font-family:'Source Sans 3',sans-serif;font-size:15px;color:var(--text);background:#fff;border:1px solid var(--line);border-radius:7px;padding:9px 11px;width:100%;height:38px}
+.cfop-linha input[type=search]:focus{outline:2px solid var(--gold);outline-offset:-1px;border-color:var(--gold)}
+.cfop-atalhos{display:flex;gap:6px;flex-wrap:wrap;align-items:center;font-size:12px;color:var(--muted)}
+.cfop-atalhos .chip{font-size:11.5px;padding:4px 11px}
+.cfop-res{margin-top:12px}
+.cfop-res:empty{display:none}
+.op{border-top:1px solid var(--line);padding:12px 0 2px}
+.op:first-child{border-top:none;padding-top:2px}
+.op-topo{display:flex;align-items:baseline;flex-wrap:wrap;gap:3px 12px;margin-bottom:8px}
+.op-cods{display:inline-flex;align-items:center;gap:2px 10px;flex-wrap:wrap}
+.op-cod{display:inline-flex;align-items:center;gap:2px;font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--navy);font-variant-numeric:tabular-nums}
+.op-cod.fora{color:#a9a292}
+.op-cod small{font-family:'Source Sans 3',sans-serif;font-size:10px;font-weight:600;letter-spacing:.04em;color:var(--muted);margin-left:3px}
+.op-desc{font-size:14.5px;font-weight:600;color:var(--navy);line-height:1.4;flex:1 1 300px}
+.op-grupo{font-size:9.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-text);margin:8px 0 5px}
+.op-caso{border:1px solid var(--line);border-radius:7px;padding:9px 12px;margin-bottom:7px;font-size:13.5px;line-height:1.55}
+.op-caso.produto{border-left:3px solid var(--gold)}
+.op-caso.fixo{border-left:3px solid var(--navy)}
+.op-caso.consulte{border-left:3px solid var(--red)}
+.op-quando{display:block;font-weight:600;color:var(--navy);margin-bottom:4px}
+.op-cod-linha{display:flex;flex-wrap:wrap;gap:4px 18px;align-items:center}
+.op-nome{display:block;font-size:12px;color:var(--muted);line-height:1.45;margin-top:3px}
+.op-nome a{color:var(--gold-text)}
+.op-nota{display:block;font-size:12.5px;color:var(--muted);line-height:1.5;margin-top:5px}
+.op-nota b{color:var(--navy)}
+.op-nota a,.op-caso a,.ficha-dica a{color:var(--gold-text)}
+/* Quadro dos dois fluxos de industrialização: o do CFOP consultado em destaque. */
+.fluxo{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:2px 0 8px}
+.fluxo-col{border:1px solid var(--line);border-radius:7px;padding:9px 12px;font-size:12.5px;line-height:1.5;color:var(--muted)}
+.fluxo-col.ativo{border:1.5px solid var(--navy);color:var(--text);background:#fff}
+.fluxo-n{display:block;font-size:13.5px;color:var(--navy)}
+.fluxo-q{display:block;font-size:12px;margin-bottom:5px}
+.fluxo-et{display:block;font-size:9px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;color:var(--gold-text);margin-top:5px}
+.fluxo ul{list-style:none;margin:2px 0 0;padding:0}
+.fluxo li{margin:2px 0}
+.fluxo li.aqui{font-weight:600;color:var(--navy)}
+.fluxo-cod{font-family:'Source Sans 3',sans-serif;font-size:12.5px;font-weight:700;color:var(--navy);background:none;border:none;border-bottom:1px dashed var(--gold);padding:0;cursor:pointer;font-variant-numeric:tabular-nums}
+.fluxo-cod:hover{color:var(--gold-text)}
+@media (max-width:820px){.fluxo{grid-template-columns:1fr}}
+.btn-ncm{margin-top:7px;font-family:'Source Sans 3',sans-serif;font-size:12.5px;font-weight:600;color:var(--navy);background:#fff;border:1px solid var(--navy);border-radius:50px;padding:5px 14px;cursor:pointer}
+.btn-ncm:hover{background:var(--navy);color:var(--gold-light)}
+table.op-outros{border-collapse:collapse;font-size:13.5px;margin-bottom:4px}
+table.op-outros td{padding:5px 18px 5px 0;border-top:1px solid #eee8db;vertical-align:middle}
+table.op-outros tr:first-child td{border-top:none}
+table.op-outros td:first-child{font-weight:700;color:var(--navy)}
+.op-val{display:inline-flex;align-items:center;gap:2px;font-weight:700;color:var(--navy);font-variant-numeric:tabular-nums;white-space:nowrap}
+/* Texto de dados adicionais: cabe numa frase, não num código — quebra linha. */
+.op-val.longo{white-space:normal;font-weight:600;align-items:flex-start}
+.cfop-vazio{font-size:13.5px;line-height:1.6;color:var(--text);border:1px solid var(--line);border-left:3px solid var(--red);border-radius:0 7px 7px 0;padding:10px 13px}
+.cfop-vazio b{color:var(--navy)}
+
+.op-exemplos{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:8px;font-size:12.5px;color:var(--muted)}
+.btn-exemplo{font-family:'Source Sans 3',sans-serif;font-size:12.5px;color:var(--navy);background:none;border:none;border-bottom:1px dashed var(--gold);padding:0;cursor:pointer;text-align:left}
+.btn-exemplo:hover{color:var(--gold-text);border-bottom-style:solid}
+.btn-exemplo b{font-variant-numeric:tabular-nums}
+
+/* ─── Produto clicável ───
+   Quem não é do ramo não sabe o que fazer com uma linha de seis colunas. Clicar
+   no produto abre a ficha "Como preencher a nota", com o exemplo do item já
+   montado para a operação escolhida no quadro do CFOP. */
+table.vinc tbody tr{cursor:pointer}
+.btn-ficha{display:inline-block;margin-top:6px;font-family:'Source Sans 3',sans-serif;font-size:12px;font-weight:700;color:var(--navy);background:none;border:none;border-bottom:1px solid var(--gold);padding:0 0 1px;cursor:pointer}
+.btn-ficha:hover,tr:hover .btn-ficha{color:var(--gold-text)}
+.op-escolhida{font-size:12.5px;color:var(--muted);margin-bottom:9px;line-height:1.5}
+.op-escolhida b{color:var(--navy)}
+.op-escolhida button{font-family:'Source Sans 3',sans-serif;font-size:12px;font-weight:600;color:var(--gold-text);background:none;border:none;text-decoration:underline;cursor:pointer;padding:0 0 0 4px}
+
+/* Ficha: o item da nota como ele aparece no sistema, um cenário por linha. */
+.ficha-op{font-size:13px;line-height:1.55;color:var(--muted);margin-bottom:12px}
+.ficha-op b{color:var(--navy)}
+.ficha-op button{font-family:'Source Sans 3',sans-serif;font-size:12.5px;font-weight:600;color:var(--gold-text);background:none;border:none;text-decoration:underline;cursor:pointer;padding:0 0 0 3px}
+table.nota-ex{width:100%;border-collapse:collapse;background:#fff;border:1.5px solid var(--navy);font-size:13px}
+table.nota-ex th{background:var(--navy);color:var(--gold-light);font-size:9px;font-weight:700;letter-spacing:.11em;text-transform:uppercase;text-align:left;padding:7px 9px;white-space:nowrap}
+table.nota-ex td{padding:8px 9px;border-top:1px solid var(--line);vertical-align:top;line-height:1.45}
+table.nota-ex td.nx-quando{color:var(--text);font-size:12.5px}
+table.nota-ex tr.atual td{background:#fffaea}
+table.nota-ex tr.normal td{color:var(--muted)}
+.nx-val{display:inline-flex;align-items:center;gap:2px;font-weight:700;color:var(--navy);font-variant-numeric:tabular-nums;white-space:nowrap}
+.nx-val.longo{white-space:normal;font-weight:600;align-items:flex-start}
+.nx-red{display:block;font-size:11px;font-weight:700;color:var(--gold-text);margin-top:2px}
+.nx-of{display:block;font-size:11px;color:var(--muted);margin-top:1px}
+.tag-pop{display:inline-block;font-size:10.5px;font-weight:700;color:var(--gold-text);border:1px solid var(--gold);border-radius:3px;padding:0 5px;margin-left:6px;vertical-align:1px}
+.nx-tag{display:inline-block;font-size:9.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--navy);border:1px solid var(--navy);border-radius:4px;padding:0 5px;margin-left:5px;vertical-align:1px}
+.ficha-dica{font-size:12.5px;color:var(--muted);line-height:1.55;margin-top:7px}
+
+/* ─── Modal de exceções ─── */
+.modal-fundo{position:fixed;inset:0;background:rgba(13,31,60,.55);display:none;align-items:center;justify-content:center;padding:20px;z-index:900}
+.modal-fundo.aberto{display:flex}
+.modal{background:var(--cream);border-radius:11px;max-width:720px;width:100%;max-height:88vh;display:flex;flex-direction:column;box-shadow:0 16px 48px rgba(0,0,0,.35);overflow:hidden}
+.modal-topo{background:var(--navy);color:#fff;padding:15px 20px;display:flex;align-items:flex-start;gap:14px}
+.modal-topo h2{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:#fff;line-height:1.3}
+.modal-topo .sub{font-size:11px;color:var(--gold-light);letter-spacing:.09em;text-transform:uppercase;margin-top:4px}
+/* No topo navy o cinza do botão sumiria. */
+.modal-topo .btn-copia{color:rgba(255,255,255,.6);margin-left:8px}
+.modal-topo .btn-copia:hover{color:var(--navy);background:var(--gold-light);border-color:var(--gold-light)}
+.modal-topo .btn-copia.copiado{color:#fff;background:var(--green);border-color:var(--green)}
+.modal-fechar{margin-left:auto;background:none;border:1px solid rgba(255,255,255,.35);color:#fff;border-radius:50%;width:28px;height:28px;flex:0 0 28px;cursor:pointer;font-size:16px;line-height:1}
+.modal-fechar:hover{border-color:var(--gold);color:var(--gold)}
+.modal-corpo{padding:18px 20px 22px;overflow-y:auto;font-size:13.5px;line-height:1.6}
+.mrow{margin-bottom:15px}
+.mrow:last-child{margin-bottom:0}
+.mrot{font-size:9.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-text);margin-bottom:5px}
+.mbox{background:#fff;border:1px solid var(--line);border-radius:7px;padding:11px 13px}
+.mbox-alerta{border-left:3px solid var(--red)}
+.mbox-ok{border-left:3px solid var(--green)}
+.mbox-aviso{border-left:3px solid var(--gold)}
+.mstatus{font-weight:700;font-size:13.5px;display:block;margin-bottom:5px}
+.mstatus.vedado{color:var(--red)}
+.mstatus.permitido{color:var(--green)}
+.mstatus.alerta{color:var(--gold-text)}
+.modal-sub .cod-linha{display:inline-flex;align-items:center;gap:2px}
+.mval-cod{display:inline-flex;align-items:center;gap:3px}
+.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.modal a{color:var(--gold-text);word-break:break-word}
+.modal-acao{margin-top:4px}
+
+/* ─── Rodapé ─── */
+.com-footer{background:var(--navy);border-top:2px solid var(--gold);padding:22px 28px;color:rgba(255,255,255,.6);font-size:12px;line-height:1.75}
+.com-footer-cols{display:flex;flex-wrap:wrap;gap:22px}
+.com-footer-col{flex:1 1 160px}
+.com-footer-h{font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:7px}
+.com-footer a{color:rgba(255,255,255,.8);text-decoration:none;display:block}
+.com-footer a:hover{color:var(--gold-light)}
+.com-footer .addr-p{display:block}
+.com-footer-social{display:flex;gap:9px;margin-top:8px}
+.com-footer-social a{display:flex;align-items:center;justify-content:center;width:30px;height:30px;border:1px solid rgba(255,255,255,.3);border-radius:50%;color:var(--gold-light)}
+.com-footer-social a:hover{border-color:var(--gold);color:var(--gold)}
+.com-footer-social svg{width:15px;height:15px}
+.com-footer-fine{border-top:1px solid rgba(255,255,255,.15);margin-top:18px;padding-top:12px;font-size:11px;color:rgba(255,255,255,.55);text-align:center;line-height:1.7}
+
+.btn-print{position:fixed;bottom:28px;right:28px;background:var(--navy);color:var(--gold);border:1px solid var(--gold);border-radius:50px;padding:12px 22px;font-family:'Source Sans 3',sans-serif;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px;box-shadow:0 4px 16px rgba(13,31,60,.25);transition:background .2s,color .2s;z-index:800}
+.btn-print:hover{background:var(--gold);color:var(--navy)}
+/* O botão flutuante não pode cobrir o rodapé (CNPJ) ao rolar até o fim: reserva um respiro sob a página e afasta o botão da borda. Só em tela; na impressão o botão some. */
+@media screen and (max-width:1500px){body{padding-bottom:calc(78px + env(safe-area-inset-bottom,0px))}.btn-print{bottom:calc(16px + env(safe-area-inset-bottom,0px));right:16px}}
+
+/* Faixa em que a tabela ainda tem 6 colunas mas a janela já aperta. O scroll
+   horizontal cria contexto de rolagem e desliga o thead grudento — é o preço,
+   e só nesta faixa. */
+@media (max-width:1080px){
+  .tabela-wrap{overflow-x:auto}
+  table.vinc{min-width:900px}
+}
+@media (max-width:820px){
+  .doc-main{padding:22px 16px 34px}
+  .com-header{padding:18px 20px 16px}
+  .com-firm-name{font-size:10.5px;letter-spacing:.14em}
+  .com-footer{padding:20px}
+  .campo select{max-width:none}
+  .campo-cresce{flex:1 1 100%}
+  .resumo-acoes{margin-left:0;width:100%}
+  /* Seis colunas não cabem em tela estreita: cada linha vira um cartão. */
+  .tabela-wrap{overflow-x:visible}
+  table.vinc,table.vinc tbody,table.vinc tr,table.vinc td{display:block;width:auto;min-width:0}
+  table.vinc thead{display:none}
+  table.vinc tbody tr{border-top:1px solid var(--line);padding:13px 14px}
+  table.vinc tbody tr:first-child{border-top:none}
+  table.vinc tbody td{border-top:none;padding:0 0 7px}
+  table.vinc tbody td:last-child{padding-bottom:0}
+  .c-tipo,.c-cod,.c-class,.c-cst,.c-exc{width:auto}
+  /* O painel tem três campos e cinco pastilhas: grudado no topo comeria metade
+     da tela do celular. Aqui ele rola junto com o resto. */
+  .busca{position:static}
+  /* Precisa da mesma especificidade da regra de padding acima, senão a etiqueta
+     NCM/NBS encosta no código. */
+  table.vinc tbody td.c-tipo{display:inline-block;padding:0 13px 7px 0;vertical-align:middle}
+  table.vinc tbody td.c-cod{display:inline-block;vertical-align:middle}
+  .cod-linha{display:inline-flex;margin:0 0 0 7px;vertical-align:middle}
+  .mgrid{grid-template-columns:1fr}
+  .cfop{padding:13px 14px}
+  .cfop-linha .campo{flex:1 1 100%}
+  /* A nota de exemplo vira uma ficha por cenário: quatro colunas não cabem. */
+  table.nota-ex,table.nota-ex tbody,table.nota-ex tr,table.nota-ex td{display:block;width:auto}
+  table.nota-ex thead{display:none}
+  table.nota-ex tr{border-top:1px solid var(--line);padding:8px 10px}
+  table.nota-ex tr:first-child{border-top:none}
+  table.nota-ex td{border-top:none;padding:2px 0}
+  table.nota-ex td[data-rot]::before{content:attr(data-rot) " ";font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-text)}
+}
+
+@media print{
+  @page{size:A4 landscape;margin:10mm}
+  body{background:#fff}
+  /* .resumo sai porque o print-cab já diz quantos são e sob qual recorte; a
+     legenda fechada deixaria só um título órfão no papel. */
+  .btn-print,.busca,.resumo,.modal-fundo,.sentinela,.carregando{display:none!important}
+  details.legenda:not([open]){display:none!important}
+  .com-wrapper{box-shadow:none;max-width:100%;background:#fff}
+  .com-header{padding:2px 0 5px;border-bottom:none}
+  .com-header-logo{height:28px!important}
+  /* Os dois filetes são bordas, não fundo: sobrevivem com "gráficos de plano de
+     fundo" desligado, que é como o navegador imprime por padrão. */
+  .com-header-rules{padding:5px 0;margin:8px 0 9px}
+  .com-title{font-size:16px}
+  .com-subtitle{font-size:9px;margin-top:3px}
+  .com-gold-bar{display:none}
+  .doc-main{padding:6px 0 0}
+  .com-intro{border-left-width:2px;padding:7px 10px;margin-bottom:10px;font-size:9.5px;background:none}
+  .regra-geral{border-width:1pt;border-radius:0;padding:6px 9px;margin:0 0 10px;font-size:9.5px;background:none}
+  .regra-ressalva{font-size:8.5px;margin-top:3px}
+  .regra-tit{font-size:11px;margin-bottom:2px}
+  .passos{margin:4px 0 0 14px}
+  .passos li{margin-top:2px}
+  /* CFOP: sem consulta feita, o painel é só um campo vazio — não imprime. Com
+     consulta, imprime o resultado e esconde o campo e os atalhos. */
+  .cfop:not(.tem-res),.cfop-linha,.cfop-txt,.btn-ncm,.regime-linha,.passo-rot{display:none!important}
+  .regime-nota{font-size:8.5px;margin:2px 0 4px;padding:1px 0 1px 7px}
+  .cfop{border:1pt solid #999;border-radius:0;padding:6px 9px;margin:0 0 10px;page-break-inside:avoid}
+  .cfop-tit{font-size:11px}
+  .cfop-res{margin-top:4px}
+  .op-cod{font-size:12px;color:#000!important}
+  .op-desc{font-size:10px;color:#000!important}
+  .op-grupo{font-size:7px;margin:4px 0 3px}
+  .op-caso{font-size:9px;padding:4px 7px;margin-bottom:4px;border-color:#999}
+  .op-quando,.op-val{color:#000!important}
+  .op-nome,.op-nota{font-size:8px;color:#444!important}
+  table.op-outros{font-size:9px}
+  table.op-outros td{padding:2px 12px 2px 0}
+  details.legenda{border:none;margin-top:12px}
+  details.legenda>summary{padding:0 0 6px;font-size:12px}
+  .legenda-corpo{padding:0;overflow:visible}
+  table.leg{min-width:0;font-size:8.5px}
+  .resumo{margin:0 0 8px;font-size:9.5px}
+  .print-cab{display:block;font-size:9.5px;color:#000;border-left:2px solid #999;padding:5px 9px;margin:0 0 9px;line-height:1.5}
+  .print-cab b{font-weight:700}
+  .tabela-wrap{overflow:visible;border:none;border-radius:0}
+  table.vinc{font-size:8.5px;min-width:0}
+  /* O thead é branco sobre navy na tela: sem override sai branco no branco. */
+  table.vinc thead th{position:static;background:none!important;color:#000!important;border-bottom:1.5px solid #999;padding:4px 5px;font-size:7px}
+  table.vinc tbody td{padding:4px 5px;border-top:1px solid #ddd}
+  table.vinc tbody tr{page-break-inside:avoid}
+  .btn-exc,.btn-copia,.btn-ficha,.op-escolhida,.op-exemplos{display:none!important}
+  .so-papel{display:inline;font-size:8px;color:#333}
+  .so-papel.vedado{color:#000;font-weight:700}
+  .desc-caminho,.cls-nome,.cst-nome{font-size:7.5px;color:#555!important}
+  .desc-item{font-size:9px}
+  .cls-red{border-color:#999;color:#000!important;font-size:7.5px}
+  .badge{color:#000!important;border-color:#999}
+  .cod-num,.cls-cod,.cst-cod{color:#000!important}
+  mark{background:none!important;font-weight:700}
+  .nota-fonte{font-size:8px;padding-top:8px}
+  .com-footer{background:none!important;border-top:1px solid #ccc;padding:7px 0 0;color:#444!important;font-size:8.5px;line-height:1.5}
+  .com-footer-cols{gap:0 16px;justify-content:center}
+  .com-footer-col{flex:0 0 auto;text-align:center}
+  .com-footer-h{color:#888!important;font-size:7px;margin-bottom:2px;letter-spacing:.1em}
+  .com-footer a{color:#444!important;display:inline;margin:0 4px}
+  .com-footer-col:nth-child(3){display:none!important}
+  .com-footer .addr-p{display:inline}
+  .com-footer .addr-p+.addr-p::before{content:" · "}
+  .com-footer-fine{border-top:none;margin-top:4px;padding-top:0;color:#777!important;font-size:7.5px;line-height:1.45}
+}
+</style>
+</head>
+<body>
+<div class="com-wrapper">
+
+<div class="com-header">
+  <a href="https://www.kluke.com.br" target="_blank" rel="noopener">
+    <img class="com-header-logo" src="https://link.kluke.com.br/images/KlukeLogo.svg" alt="Kluke Serviços Contábeis">
+  </a>
+  <div class="com-header-rules">
+    <div class="com-firm-name">Kluke Serviços Contábeis e Econômicos</div>
+  </div>
+  <h1 class="com-title">Vínculo NCM/NBS × cClassTrib</h1>
+  <div class="com-subtitle">Consulta por código ou descrição — IBS e CBS</div>
+</div>
+<div class="com-gold-bar"></div>
+<div class="aviso-validade" id="aviso-validade" hidden></div>
+
+<div class="doc-main">
+
+  <!-- Quem usa esta página é o cliente, não o contador: a introdução é um passo
+       a passo em linguagem de balcão. A explicação técnica (anexos, itens,
+       vedados) vive na nota "Alcance", no fim. -->
+  <div class="com-intro">
+    <p><strong>Para que serve:</strong> descobrir se o seu produto ou serviço paga menos imposto com a Reforma Tributária (IBS e CBS) e quais códigos colocar na nota fiscal.</p>
+    <ol class="passos">
+      <li><strong>No quadro abaixo, escolha o regime da empresa e diga que nota vai emitir</strong> (o CFOP). Se for uma venda comum, o CFOP pode ficar em branco.</li>
+      <li><strong>Procure o produto pelo código NCM</strong> (ou NBS, se for serviço). Ele está no cadastro do produto no seu sistema ou na nota de compra do fornecedor. Pode digitar só o começo, como 0402.</li>
+      <li><strong>Clique no produto.</strong> Abre um exemplo da nota já preenchida, com os códigos prontos para copiar. Se o produto não aparece na lista, ele paga o imposto normal.</li>
+    </ol>
+  </div>
+
+  <div class="cfop" id="cfop">
+    <b class="cfop-tit">Comece aqui</b>
+    <div class="passo-rot">1. Qual é o regime da sua empresa?</div>
+    <div class="regime-linha" id="regime" role="group" aria-label="Regime da empresa">
+      <button type="button" class="chip" data-reg="sn" aria-pressed="false">Simples Nacional ou MEI</button>
+      <button type="button" class="chip" data-reg="hib" aria-pressed="false">Simples com IBS e CBS por fora</button>
+      <button type="button" class="chip" data-reg="rn" aria-pressed="false">Lucro Presumido ou Lucro Real</button>
+      <span class="regime-ajuda">Não sabe? Pergunte para a gente.</span>
+    </div>
+    <div class="regime-nota" id="regime-nota" hidden></div>
+    <div class="passo-rot">2. Que nota você vai emitir?</div>
+    <div class="cfop-txt">Na <strong>venda</strong>, o código do IBS e da CBS depende do produto: aí você procura o NCM na tabela abaixo. Mas em <strong>transferência, remessa, devolução, bonificação e exportação</strong> o código vem da operação e vale para qualquer produto. Digite o CFOP para saber em qual caso a sua nota está.</div>
+    <div class="cfop-linha">
+      <label class="campo">
+        <span class="campo-rot">CFOP ou operação</span>
+        <input type="search" id="cfop-q" placeholder="ex.: 5102, 6152, conserto, bonificação…" autocomplete="off" spellcheck="false" inputmode="search">
+      </label>
+      <div class="cfop-atalhos" id="cfop-atalhos" role="group" aria-label="CFOPs mais usados"><span>Mais usados:</span></div>
+    </div>
+    <div class="cfop-res" id="cfop-res" aria-live="polite"></div>
+  </div>
+
+  <div class="regra-geral" id="regra-geral">
+    <b class="regra-tit">Não achou o seu produto? Então ele paga o imposto normal.</b>
+    Aqui só aparecem os produtos e serviços que têm algum benefício: imposto menor, isenção ou pagamento adiado. Se o código do seu produto não aparece, preencha a nota assim:
+    <span class="regra-cod">CST 000</span> ·
+    <span class="regra-cod">cClassTrib 000001</span>
+    <span class="regra-ressalva">Isso vale para venda. Transferência, remessa, devolução, bonificação, doação e exportação seguem outra regra, que não depende do produto: veja a consulta por CFOP acima. Venda para a Zona Franca de Manaus também tem regra própria: fale com a gente.</span>
+  </div>
+
+  <div class="busca">
+    <div class="op-escolhida" id="op-escolhida"></div>
+    <div class="busca-linha">
+      <label class="campo campo-cresce">
+        <span class="campo-rot">Buscar por código ou descrição</span>
+        <input type="search" id="q" placeholder="ex.: 0402, arroz, cadeira de rodas, 200034, insulina…" autocomplete="off" spellcheck="false">
+      </label>
+      <label class="campo">
+        <span class="campo-rot">Classificação tributária</span>
+        <select id="f-class"><option value="">Todas as classificações</option></select>
+      </label>
+      <label class="campo">
+        <span class="campo-rot">CST</span>
+        <select id="f-cst"><option value="">Todos</option></select>
+      </label>
+    </div>
+    <div class="chips">
+      <button type="button" class="chip" id="c-ncm" aria-pressed="false">Só NCM</button>
+      <button type="button" class="chip" id="c-nbs" aria-pressed="false">Só NBS</button>
+      <button type="button" class="chip" id="c-ved" aria-pressed="false">Só vedados</button>
+      <button type="button" class="chip" id="c-exc" aria-pressed="false">Só com exceção</button>
+      <button type="button" class="chip chip-item" id="c-item" hidden></button>
+      <button type="button" class="chip chip-limpar" id="c-limpar">Limpar filtros</button>
+    </div>
+  </div>
+
+  <!-- Só aparece no papel: sem os filtros à vista, a folha impressa não diria
+       qual recorte gerou aquela lista. -->
+  <div class="print-cab" id="print-cab" aria-hidden="true"></div>
+
+  <div class="resumo">
+    <span><b id="n-result">0</b> <span id="n-palavra">vínculos</span></span>
+    <span id="n-detalhe"></span>
+    <span class="resumo-acoes">
+      <button type="button" class="btn-mini" id="b-csv">Baixar CSV</button>
+      <button type="button" class="btn-mini" id="b-copia">Copiar CSV</button>
+    </span>
+  </div>
+
+  <!-- Aparece quando a busca cai num item de anexo coletivo: uma frase só que
+       nomeia vários produtos e vincula todos os códigos de uma vez. Sem isto o
+       usuário conclui que a tabela está errada. -->
+  <div class="aviso-busca" id="aviso-busca" hidden></div>
+
+  <div class="tabela-wrap">
+    <table class="vinc">
+      <thead>
+        <tr>
+          <th class="c-tipo" scope="col">NCM/NBS</th>
+          <th class="c-cod" scope="col">Código</th>
+          <th scope="col">Descrição</th>
+          <th class="c-class" scope="col">cClassTrib</th>
+          <th class="c-cst" scope="col">CST</th>
+          <th class="c-exc" scope="col">Exceções</th>
+        </tr>
+      </thead>
+      <tbody id="corpo"></tbody>
+    </table>
+    <div class="vazio" id="vazio" hidden></div>
+    <div class="sentinela" id="sentinela"></div>
+    <div class="carregando" id="carregando" hidden>carregando mais…</div>
+  </div>
+
+  <details class="legenda">
+    <summary>Classificações tributárias com lista de NCM/NBS (<span id="n-class">0</span>)</summary>
+    <div class="legenda-corpo">
+      <table class="leg">
+        <thead><tr><th>cClassTrib</th><th>CST</th><th>Redução IBS/CBS</th><th>Descrição e base legal</th><th class="leg-n">Códigos</th></tr></thead>
+        <tbody id="leg-corpo"></tbody>
+      </table>
+    </div>
+  </details>
+
+  <div class="nota-fonte">
+    <p><b>Fontes.</b> Vínculos, exceções e vigências: <a href="https://dfe-portal.svrs.rs.gov.br/CFF/ClassificacaoTributaria" target="_blank" rel="noopener">Tabela de Classificação Tributária do Portal da Conformidade Fácil (SVRS)</a>, que é a mesma tabela usada na validação dos DF-e. Texto legal: <a href="https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp214.htm" target="_blank" rel="noopener">Lei Complementar nº 214/2025</a> — cada linha traz o link para o artigo correspondente. Descrições oficiais dos códigos NCM: Nomenclatura Comum do Mercosul, <span id="m-ncm"></span>. Dados coletados em <span id="m-data"></span>; vínculos vigentes a partir de 01/01/2026.</p>
+    <p><b>Alcance.</b> Os regimes diferenciados não valem para “alimentos” ou “dispositivos médicos” em geral: valem para os códigos NCM/NBS que os anexos da LC 214/2025 listam, um a um. Um mesmo código pode aparecer em várias classificações, e até duas vezes na mesma, por itens de anexo distintos; os marcados como vedados caem na posição citada pelo anexo, mas o próprio texto os excetua. Constam aqui as classificações que têm lista de códigos vinculada — <span id="m-svrs"></span> das <span id="m-pub"></span> cClassTrib publicadas. As demais não dependem de NCM/NBS: o enquadramento vem da operação, não do produto. <b>A tabela do SVRS muda</b> a cada nova versão da Nota Técnica; antes de parametrizar o ERP, confira a data acima contra a do portal.</p>
+
+    <p><b>Combustíveis: <span id="m-compl"></span> linhas fora da tabela do SVRS.</b> O SVRS não vincula nenhum NCM ao CST 620, porque a <a href="https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp214.htm#art172" target="_blank" rel="noopener">LC 214/2025, art. 172</a> relaciona os combustíveis do regime monofásico <b>pelo nome</b>, não por código — e o art. 172, XII ainda remete a ato conjunto do CGIBS e do Executivo. Montamos essas linhas para o <b>cClassTrib 620006</b> (revenda com o tributo já cobrado na origem, <a href="https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp214.htm#art180" target="_blank" rel="noopener">art. 180</a>), conferindo cada classificação contra a Nomenclatura Comum do Mercosul vigente. Elas vêm marcadas com <span class="tag-compl">fora da tabela SVRS</span> na tabela, na legenda e na coluna Fonte do CSV. <b>Lembre que a NF-e com tributação monofásica só passa a ser obrigatória em 1º/01/2027</b> — Ato Conjunto RFB/CGIBS nº 4, de 30/07/2026, art. 1º, § 2º.</p>
+    <p><b>Serviços de educação, saúde e outros: <span id="m-rtc"></span> linhas fora da tabela do SVRS.</b> O SVRS publica as classificações de educação (200028, Anexo II), saúde humana (200029, Anexo III) e os serviços dos Anexos IX, X e XI sem nenhum código NBS vinculado — sem eles, quem buscasse o código de um serviço de saúde ouviria que paga o imposto normal, quando a redução é de 60%. Esses vínculos vêm da base de dados da <a href="https://github.com/ReceitaFederal/calculadora-rtc-regime-regular" target="_blank" rel="noopener">calculadora oficial da Receita Federal</a> (<span id="m-rtc-v"></span>), e cada um foi conferido contra o anexo da <a href="https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp214.htm" target="_blank" rel="noopener">LC 214/2025</a>: só entrou o que as duas fontes confirmam. Também vêm marcadas com <span class="tag-compl">fora da tabela SVRS</span>.</p>
+    <p><b>Isto não substitui a análise do caso.</b> O código correto depende do produto efetivamente comercializado e da sua destinação, não apenas do NCM que consta no cadastro. Em dúvida, fale com a Kluke.</p>
+  </div>
+
+</div>
+
+<div class="com-footer">
+  <div class="com-footer-cols">
+    <div class="com-footer-col">
+      <div class="com-footer-h">Dúvidas? Fale conosco</div>
+      <a href="tel:4733820601">(47) 3382-0601</a>
+      <a href="tel:4733820767">(47) 3382-0767</a>
+      <a href="https://wa.me/5547984321322" target="_blank" rel="noopener">WhatsApp (47) 98432-1322</a>
+    </div>
+    <div class="com-footer-col">
+      <div class="com-footer-h">Endereço</div>
+      <a href="https://maps.app.goo.gl/BLgMuJf6wUEH9B5c6" target="_blank" rel="noopener"><span class="addr-p">Av. Nereu Ramos, 64</span><span class="addr-p">Timbó — Santa Catarina</span></a>
+    </div>
+    <div class="com-footer-col">
+      <div class="com-footer-h">Acompanhe</div>
+      <div class="com-footer-social">
+        <a href="https://www.instagram.com/klukecontabil/" target="_blank" rel="noopener" aria-label="Instagram da Kluke"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><line x1="17.5" y1="6.5" x2="17.5" y2="6.5"/></svg></a>
+        <a href="https://www.facebook.com/klukecontabilidade" target="_blank" rel="noopener" aria-label="Facebook da Kluke"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+        <a href="https://www.kluke.com.br" target="_blank" rel="noopener" aria-label="Site da Kluke"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></a>
+      </div>
+    </div>
+  </div>
+  <div class="com-footer-fine">
+    © 2026 Kluke Serviços Contábeis e Econômicos Ltda &nbsp;·&nbsp; CNPJ 76.860.386/0001-73 &nbsp;·&nbsp; CRC-SC 1081<br>
+    Atualizado em <span id="m-data2"></span>
+  </div>
+</div>
+</div>
+
+<div class="modal-fundo" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-titulo" hidden>
+  <div class="modal">
+    <div class="modal-topo">
+      <div>
+        <h2 id="modal-titulo"></h2>
+        <div class="sub" id="modal-sub"></div>
+      </div>
+      <button type="button" class="modal-fechar" id="modal-x" aria-label="Fechar">×</button>
+    </div>
+    <div class="modal-corpo" id="modal-corpo"></div>
+  </div>
+</div>
+
+<!-- O balão de "Copiado!" é visual; quem usa leitor de tela ouve por aqui. -->
+<div class="so-leitor" id="aviso-copia" role="status" aria-live="polite"></div>
+
+<button class="btn-print" id="b-print"><svg style="width:16px;height:16px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>Imprimir</button>
+
+<script src="comum/vinculo-dados.js?v=2026-11-24"></script>
+<script src="comum/operacoes.js?v=2026-11-24"></script>
+<script src="comum/sinonimos.js?v=2026-10-29e"></script>
+<script src="comum/busca.js?v=2026-10-29"></script>
+<script>
+(function () {
+  'use strict';
+
+  /* ─── Dados ───
+     O JSON de comum/vinculo-dados.js vem normalizado: strings repetidas (descrições de anexo,
+     exceções, segmentos da NCM) vivem em dicionários e as linhas guardam
+     índices. Sem isso o arquivo passaria de 900 KB; assim fica em ~400 KB. */
+  var DB = window.KLUKE_VINCULO;
+  if (!DB || !window.KLUKE_OPERACOES) {
+    document.getElementById('corpo').innerHTML = '<tr><td colspan="9" style="padding:24px;text-align:center">' +
+      'Não foi possível carregar os dados desta consulta. Recarregue a página; se continuar, fale com a gente.</td></tr>';
+    return;
+  }
+  var classes = DB.classes, csts = DB.csts, dic = DB.dic;
+  (function () {
+    var av = window.KLUKE_OPERACOES.avisosValidade(DB.meta.coletadoEm), el = document.getElementById('aviso-validade');
+    if (av.length) { el.innerHTML = av.map(function (t) { return '<p>' + t + '</p>'; }).join(''); el.hidden = false; }
+  })();
+
+  var $ = function (id) { return document.getElementById(id); };
+  var esc = function (s) {
+    return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
+    });
+  };
+
+  /* Dobra maiúsculas e acentos preservando o comprimento — é o que permite
+     destacar "acucar" dentro de "Açúcar" sem desalinhar os índices. */
+  function dobraChar(c) {
+    var x = c.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    return x.length ? x.charAt(0) : c.toLowerCase();
+  }
+  function dobra(s) {
+    var o = '', i;
+    for (i = 0; i < s.length; i++) o += dobraChar(s.charAt(i));
+    return o;
+  }
+
+  /* ─── Copiar ───
+     Um só caminho para tudo que se copia na página: os botõezinhos das linhas,
+     os do modal e o CSV. A área de transferência assíncrona falha em contexto
+     não seguro, daí a rede de segurança com textarea. */
+  function copiaTexto(txt) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(txt);
+    }
+    return new Promise(function (ok, err) {
+      var ta = document.createElement('textarea');
+      ta.value = txt;
+      ta.setAttribute('readonly', '');
+      ta.style.cssText = 'position:fixed;top:-1000px;opacity:0';
+      document.body.appendChild(ta);
+      ta.select();
+      var deu = false;
+      try { deu = document.execCommand('copy'); } catch (e) { deu = false; }
+      ta.remove();
+      deu ? ok() : err(new Error('sem area de transferencia'));
+    });
+  }
+
+  var ICONES =
+    '<svg class="i-copia" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+      '<rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>' +
+    '<svg class="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+      '<polyline points="20 6 9 17 4 12"/></svg>';
+
+  function botaoCopia(valor, dica) {
+    return '<button type="button" class="btn-copia" data-copia="' + esc(valor) + '" data-dica="' + esc(dica) +
+           '" aria-label="' + esc(dica) + ': ' + esc(valor) + '">' + ICONES + '</button>';
+  }
+
+  function fmtCod(cod, tipo) {
+    if (tipo === 1 && cod.length === 9) return cod.charAt(0) + '.' + cod.slice(1, 5) + '.' + cod.slice(5, 7) + '.' + cod.slice(7);
+    if (tipo === 0 && cod.length === 8) return cod.slice(0, 4) + '.' + cod.slice(4, 6) + '.' + cod.slice(6);
+    return cod;
+  }
+  /* A hierarquia da NCM vem do build como [nDigitos, índice do texto]. O número
+     de dígitos é o que permite nomear o nível e escrevê-lo na notação usual:
+     capítulo 02, posição 02.10, subposição 0210.1, código 0210.12.00. */
+  var NIVEIS = { 2: 'Capítulo', 4: 'Posição', 5: 'Subposição', 6: 'Subposição', 7: 'Item', 8: 'Código NCM' };
+
+  function codNivel(cod, n) {
+    if (n <= 2) return cod.slice(0, 2);
+    if (n <= 4) return cod.slice(0, 2) + '.' + cod.slice(2, 4);
+    if (n <= 6) return cod.slice(0, 4) + '.' + cod.slice(4, n);
+    return cod.slice(0, 4) + '.' + cod.slice(4, 6) + '.' + cod.slice(6, n);
+  }
+
+  function segmentosNcm(i, cod) {
+    if (i < 0) return [];
+    return DB.ncmPaths[i].map(function (x) {
+      return { n: x[0], cod: codNivel(cod, x[0]), nivel: NIVEIS[x[0]] || 'Desdobramento', txt: dic.seg[x[1]] };
+    });
+  }
+  function caminhoNcm(i, cod) {
+    return segmentosNcm(i, cod).map(function (s) { return s.txt; }).join(' › ');
+  }
+
+  var corta = function (s, n) { return s.length > n ? s.slice(0, n).replace(/[\s,;]+$/, '') + '…' : s; };
+
+  /* Migalha de pão: o caminho até a folha, lido de cima para baixo. O NCM é a
+     folha — a hierarquia é como se chega nela, não parte do nome. Por isso o
+     caminho vem antes, pequeno, e a folha depois, em destaque: com
+     "… › Alhos ›" logo acima, um "Outros" grande lê certo.
+
+     Níveis com mais de 90 caracteres saem: são os textos-inventário da posição,
+     que 81% dos códigos carregam e que os níveis abaixo quase sempre reformulam
+     melhor. Sem esse corte o caminho tem 307 caracteres na mediana. O `…` marca
+     o buraco onde ele acontece, não sempre no começo. Cadeia inteira no modal. */
+  var LIMITE_NIVEL = 90;
+
+  function migalha(niveis) {
+    var anc = niveis.slice(0, -1);
+    if (!anc.length) return '';
+    var saiu = [], omitiu = false, k;
+    for (k = 0; k < anc.length; k++) {
+      if (anc[k].txt.length > LIMITE_NIVEL) { omitiu = true; continue; }
+      if (omitiu) { saiu.push('…'); omitiu = false; }
+      saiu.push(anc[k].txt);
+    }
+    if (omitiu) saiu.push('…');
+    // Todos eram textão: melhor o mais próximo cortado do que só reticências.
+    if (!saiu.filter(function (x) { return x !== '…'; }).length) {
+      saiu = ['…', corta(anc[anc.length - 1].txt, 70)];
+    }
+    return saiu.join(' › ') + ' ›';
+  }
+  var pct = function (v) { return (Math.round(v * 100) / 100) + '%'; };
+
+  var ITENS = DB.rows.map(function (r, i) {
+    var cl = classes[r[3]];
+    var o = {
+      i: i,
+      tipo: r[0],
+      cod: r[1],
+      fmt: fmtCod(r[1], r[0]),
+      desc: r[2] >= 0 ? dic.desc[r[2]] : '',
+      di: r[2],                // índice do item do anexo, para filtrar e caber no hash
+      cls: r[3],
+      cl: cl,
+      exc: r[4] >= 0 ? dic.exc[r[4]] : '',
+      cond: r[5] >= 0 ? dic.cond[r[5]] : '',
+      obs: r[6] >= 0 ? dic.obs[r[6]] : '',
+      perm: r[7],                       // 0 = não informado, 1 = permitido, 2 = vedado
+      ncm: caminhoNcm(r[8], r[1]),
+      ncmNiveis: segmentosNcm(r[8], r[1]),
+      compl: r[9] === 1,       // linha montada por nós, não publicada pelo SVRS
+      rtc: r[9] === 2          // serviço que o SVRS não vincula: calculadora da Receita + texto da lei (dados/rtc.js)
+
+    };
+    /* Quem manda na coluna Descrição é a descrição do próprio NCM. O texto do
+       item do anexo saiu da tabela (repetido em centenas de linhas, não
+       identificava nada) e ficou no modal. Duas exceções, senão a célula perde o
+       sentido: NBS não tem hierarquia de NCM, e nas linhas de combustível a folha
+       é "Outras" — as duas gasolinas ficariam idênticas sem o nome do produto. */
+    o.folha = (o.compl || !o.ncmNiveis.length)
+      ? o.desc
+      : corta(o.ncmNiveis[o.ncmNiveis.length - 1].txt, 200);
+    o.caminho = o.ncmNiveis.length ? migalha(o.ncmNiveis) : '';
+
+    o.temExc = !!o.exc || o.perm === 2;
+    /* Três feixes, não um: o que casa no código ou no nome oficial da NCM vale
+       mais do que o que casa só no texto do item do anexo, que é coletivo e
+       repetido em centenas de linhas. Ver `forca()`. */
+    // Onde a folha é a própria descrição (serviço NBS, sem hierarquia, e combustível), ela é
+    // o nome do código e conta como tal na ordenação; sem isso, buscar "nutrição" punha
+    // "Serviços de nutrição" atrás de todas as linhas de nutrição enteral.
+    o.hayCod = dobra([o.fmt, o.cod, o.ncm].concat(o.folha === o.desc ? [o.desc] : []).join(' '));
+    o.hayCls = dobra([o.cls, cl.n, cl.d, cl.cst, csts[cl.cst]].join(' '));
+    o.hay = o.hayCod + ' ' + o.hayCls + ' ' + dobra([o.desc, cl.ax, o.exc, o.cond, o.obs].join(' '));
+    return o;
+  });
+
+  /* ─── Destaque dos termos ───
+     Trabalha sobre a string dobrada, com o mesmo comprimento do original, e
+     recorta o texto original para escapar só depois. */
+  function destaca(txt, termos) {
+    if (!txt) return '';
+    if (!termos.length) return esc(txt);
+    var alvo = dobra(txt), faixas = [], t, de, ate, k;
+    for (k = 0; k < termos.length; k++) {
+      t = termos[k];
+      if (t.length < 2) continue;
+      de = alvo.indexOf(t);
+      while (de !== -1) { faixas.push([de, de + t.length]); de = alvo.indexOf(t, de + t.length); }
+    }
+    if (!faixas.length) return esc(txt);
+    faixas.sort(function (a, b) { return a[0] - b[0]; });
+    var uni = [faixas[0]];
+    for (k = 1; k < faixas.length; k++) {
+      var u = uni[uni.length - 1];
+      if (faixas[k][0] <= u[1]) u[1] = Math.max(u[1], faixas[k][1]);
+      else uni.push(faixas[k]);
+    }
+    var out = '', pos = 0;
+    for (k = 0; k < uni.length; k++) {
+      de = uni[k][0]; ate = uni[k][1];
+      out += esc(txt.slice(pos, de)) + '<mark>' + esc(txt.slice(de, ate)) + '</mark>';
+      pos = ate;
+    }
+    return out + esc(txt.slice(pos));
+  }
+
+  /* ─── Filtros ─── */
+  var estado = { q: '', cls: '', cst: '', tipo: '', ved: false, exc: false, item: -1 };
+  var termos = [];
+  var filtrados = [];
+  var popAtual = {};   // código -> { m, o } dos nomes populares da busca atual
+  var casaAtual = [], forcaCache = Object.create(null), ondeAtual = '', popPeso = {};
+
+  function aplica() {
+    var frase = dobra(estado.q).replace(/\s+/g, ' ').trim();
+    var partes = frase ? frase.split(' ') : [];
+
+    // Filtros que não dependem do texto, primeiro: eles decidem em que universo
+    // a busca por frase vai ser procurada.
+    var base = ITENS.filter(function (o) {
+      if (estado.cls && o.cls !== estado.cls) return false;
+      if (estado.cst && o.cl.cst !== estado.cst) return false;
+      if (estado.tipo === 'ncm' && o.tipo !== 0) return false;
+      if (estado.tipo === 'nbs' && o.tipo !== 1) return false;
+      if (estado.ved && o.perm !== 2) return false;
+      if (estado.exc && !o.temExc) return false;
+      if (estado.item >= 0 && o.di !== estado.item) return false;
+      return true;
+    });
+
+    /* "alho em pó" quebrado em três termos vira um E de substrings: "em" casa
+       com quase tudo e "po" casa com "porco". Se a expressão inteira existir em
+       alguma linha, ela vale como frase; só quando não existe é que cai no E
+       termo a termo, que é o que faz "leite 0402" funcionar. A frase é testada
+       com a mesma regra do filtro (começo de palavra), senão uma frase que só
+       aparece no meio de uma palavra ligaria o modo frase e o filtro não
+       deixaria passar nada. */
+    var frRe = casador(frase);
+    var comoFrase = partes.length > 1 && frase.length >= 5 &&
+      base.some(function (o) { return frRe(o.hay); });
+    termos = comoFrase ? [frase] : partes;
+    /* Termo de texto casa só no começo de palavra: "ração" não pode casar
+       dentro de "preparação", nem "ovo" dentro de "novo". Termo com dígito
+       continua por trecho, senão "02.10" não acharia 0402.10.10. */
+    casaAtual = termos.map(casador);
+    forcaCache = Object.create(null);
+
+    filtrados = !termos.length ? base : base.filter(function (o) {
+      for (var k = 0; k < casaAtual.length; k++) if (!casaAtual[k](o.hay)) return false;
+      return true;
+    });
+
+    /* Nome popular (comum/sinonimos.js): "sabonete" não está em lugar nenhum
+       da tabela oficial ("sabões de toucador"). As linhas dos códigos que o
+       dicionário aponta entram e sobem para o topo; o que casa só porque o
+       nome está dentro do digitado ("alho" em "alho em pó") entra apenas se
+       nada mais casou. Linha cujo código ou nome oficial já tem o termo
+       ("arroz" em 1006.10) não é marcada: ali a tabela fala a língua do
+       cliente, e dizer "não é o nome oficial" seria falso. */
+    popAtual = {}; popPeso = {};
+    if (termos.length && window.KLUKE_BUSCA) {
+      var cods = [], vistos = Object.create(null);
+      base.forEach(function (o) { if (o.tipo === 0 && !vistos[o.cod]) { vistos[o.cod] = 1; cods.push(o.cod); } });
+      var pop = popPeso = KLUKE_BUSCA.populares(estado.q, cods), ja = Object.create(null), vazio = !filtrados.length;
+      filtrados.forEach(function (o) { ja[o.i] = 1; });
+      base.forEach(function (o) {
+        var p = o.tipo === 0 && pop[o.cod];
+        if (!p || (p.m < 1 && !vazio) || forca(o) >= 2) return;
+        popAtual[o.cod] = p;
+        if (!ja[o.i]) filtrados.push(o);
+      });
+    }
+    /* "a geladeira comum costuma estar em 8418…": calculado uma vez por busca,
+       usado pelo aviso e pela lista vazia. */
+    ondeAtual = termos.length && !temFiltro() ? ondeCostuma(estado.q.trim()) : '';
+    /* Sem busca, a ordem já vem por código do build — não mexer. Com busca, a
+       linha cujo código ou nome oficial tem o termo vem primeiro ("maçã" acha
+       Maçãs antes do macarrão que o dicionário traz por "maca…"); depois as de
+       nome popular, na ordem do dicionário; depois as que casam no nome da
+       classificação; por último as que casam só no texto do item do anexo. */
+    if (termos.length) {
+      var chave = function (o) {
+        var f = forca(o), p = popAtual[o.cod];
+        // Entre as de nome oficial, o peso do dicionário desempata: em "maçã" (dobrado
+        // "maca"), Maçãs é nome exato e vence Macadâmia, que só começa igual.
+        var q = popPeso[o.cod];
+        return f >= 2 ? [3, q ? -q.m : 0, f] : p ? [1 + p.m, p.o, f] : [0, 0, f];
+      };
+      filtrados.sort(function (a, b) {
+        var ka = chave(a), kb = chave(b);
+        return kb[0] - ka[0] || ka[1] - kb[1] || kb[2] - ka[2] || a.cod.localeCompare(b.cod) || a.cls.localeCompare(b.cls);
+      });
+    }
+    atualizaResumo();
+    reinicia();
+    guardaEndereco();
+  }
+
+  // Casa no começo de palavra; termo com dígito, por trecho (ver aplica()).
+  function casador(w) {
+    if (/\d/.test(w)) return function (h) { return h.indexOf(w) !== -1; };
+    var re = new RegExp('(^|[^a-z0-9])' + w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+    return function (h) { return re.test(h); };
+  }
+
+  // Calculada uma vez por linha e por busca: o sort chama muitas vezes.
+  function forca(o) {
+    if (o.i in forcaCache) return forcaCache[o.i];
+    var s = 0;
+    for (var k = 0; k < casaAtual.length; k++) {
+      if (casaAtual[k](o.hayCod)) s += 2;
+      else if (casaAtual[k](o.hayCls)) s += 1;
+    }
+    return (forcaCache[o.i] = s);
+  }
+
+  function atualizaResumo() {
+    var nNcm = 0, nNbs = 0, nVed = 0, codigos = Object.create(null);
+    filtrados.forEach(function (o) {
+      if (o.tipo === 0) nNcm++; else nNbs++;
+      if (o.perm === 2) nVed++;
+      codigos[o.cod] = 1;
+    });
+    $('n-result').textContent = filtrados.length.toLocaleString('pt-BR');
+    $('n-palavra').textContent = filtrados.length === 1 ? 'vínculo' : 'vínculos';
+    var partes = [Object.keys(codigos).length.toLocaleString('pt-BR') + ' código(s) distinto(s)'];
+    if (nNcm) partes.push(nNcm.toLocaleString('pt-BR') + ' NCM');
+    if (nNbs) partes.push(nNbs.toLocaleString('pt-BR') + ' NBS');
+    if (nVed) partes.push(nVed.toLocaleString('pt-BR') + ' vedado(s)');
+    $('n-detalhe').textContent = filtrados.length ? '· ' + partes.join(' · ') : '';
+
+    /* Alguns itens do anexo são coletivos: uma frase nomeia dez produtos e
+       arrasta todos os NCM de todos eles. Buscar por um dos nomes devolve
+       centenas de códigos que nada têm a ver — dizer isso vale mais do que
+       deixar o usuário achar que a tabela está errada. */
+    var av = $('aviso-busca'), itens = Object.create(null), nItens = 0;
+    filtrados.forEach(function (o) {
+      if (!itens[o.desc]) { itens[o.desc] = 1; nItens++; }
+    });
+    var topoPop = filtrados.length && popAtual[filtrados[0].cod];
+    if (topoPop) {
+      av.innerHTML = '<b>“' + esc(estado.q.trim()) + '” não é o nome usado na tabela oficial.</b> As linhas marcadas como <b>nome popular</b> são os códigos ' +
+        'onde esse produto costuma estar, pelo nosso dicionário. Confira o NCM no cadastro do produto antes de usar.';
+      av.hidden = false;
+    } else if (filtrados.length && ondeAtual) {
+      // "parafuso" acha parafusos cirúrgicos pelo texto da lei; quem vende parafuso comum precisa saber do dele.
+      av.innerHTML = '<b>O “' + esc(estado.q.trim()) + '” comum costuma estar ' + ondeAtual + ', que não têm benefício: o imposto é o normal ' +
+        '(CST 000, cClassTrib 000001).</b> As linhas abaixo aparecem porque o texto da lei cita o termo em outros produtos.';
+      av.hidden = false;
+    } else if (termos.length && filtrados.length >= 20 && nItens <= 2 && !forca(filtrados[0])) {
+      av.innerHTML = 'O termo não está na descrição de nenhum destes NCM: ele aparece ' +
+        (nItens === 1 ? 'no texto de <b>um único item</b>' : 'no texto de <b>dois itens</b>') +
+        ' do anexo. Itens assim são <em>coletivos</em> — uma só frase nomeia vários produtos e vincula de uma vez ' +
+        'os códigos de todos eles, sem dizer qual código é qual produto. Por isso aparecem NCM que nada têm a ver ' +
+        'com o que você procurou. Abra <b>Ver detalhes</b> numa linha para ler o texto do item.';
+      av.hidden = false;
+    } else {
+      av.hidden = true;
+    }
+    /* 5102 é CFOP e também começo de NCM (lã). Quem digita o CFOP na busca de
+       produto receberia lã sem entender por quê. */
+    var q4 = estado.q.replace(/[\s.]/g, '');
+    if (av.hidden && /^\d{4}$/.test(q4) && OPERACOES.some(function (op) { return op.c.indexOf(q4) > -1; })) {
+      av.innerHTML = '<b>' + esc(q4) + ' também é um CFOP.</b> Esta busca é de <em>produto</em> (NCM). ' +
+        'Se você quis dizer a operação da nota, ' +
+        '<button type="button" class="btn-mini" id="usar-cfop" data-cfop-q="' + esc(q4) + '">usar ' + esc(q4) + ' como CFOP</button>';
+      av.hidden = false;
+    }
+
+    var recorte = [];
+    if (estado.q) recorte.push('busca "' + estado.q + '"');
+    if (estado.cls) recorte.push('cClassTrib ' + estado.cls + ' — ' + classes[estado.cls].n);
+    if (estado.cst) recorte.push('CST ' + estado.cst);
+    if (estado.tipo) recorte.push('somente ' + estado.tipo.toUpperCase());
+    if (estado.ved) recorte.push('somente códigos vedados');
+    if (estado.exc) recorte.push('somente itens com exceção');
+    if (estado.item >= 0) recorte.push('item do anexo "' + (dic.desc[estado.item] || '').slice(0, 90) + '…"');
+    $('print-cab').innerHTML = '<b>' + filtrados.length.toLocaleString('pt-BR') + ' vínculo(s)</b> — ' +
+      (recorte.length ? esc(recorte.join(' · ')) : 'tabela completa, sem filtros') +
+      '. Vigência a partir de 01/01/2026. Fonte: tabela cClassTrib do SVRS, coletada em ' +
+      esc(DB.meta.coletadoEm.split('-').reverse().join('/')) + '.';
+  }
+
+  /* ─── Renderização em blocos ───
+     4.399 linhas de uma vez travam o primeiro paint; o observador desenha mais
+     conforme a rolagem chega ao fim da lista. */
+  var LOTE = 60, desenhadas = 0, corpo = $('corpo');
+
+  function linhaHTML(o) {
+    var cl = o.cl;
+    var td = [];
+    td.push('<td class="c-tipo"><span class="badge ' + (o.tipo === 1 ? 'badge-nbs">NBS' : 'badge-ncm">NCM') + '</span></td>');
+    // Duas formas do mesmo código: com pontos para documento e texto, sem pontos
+    // para o ERP. Cada botão copia exatamente o que está escrito ao lado dele.
+    td.push('<td class="c-cod">' +
+            '<span class="cod-linha"><span class="cod-num">' + destaca(o.fmt, termos) + '</span>' +
+            botaoCopia(o.fmt, 'Copiar com pontos') + '</span>' +
+            '<span class="cod-linha"><span class="cod-cru">' + destaca(o.cod, termos) + '</span>' +
+            botaoCopia(o.cod, 'Copiar sem pontos') + '</span></td>');
+    td.push('<td>' +
+            (o.caminho ? '<span class="desc-caminho">' + destaca(o.caminho, termos) + '</span>' : '') +
+            '<span class="desc-item">' + destaca(o.folha, termos) + '</span>' +
+            (o.compl || o.rtc ? '<span class="tag-compl">fora da tabela SVRS</span>' : '') +
+            (popAtual[o.cod] ? '<span class="tag-pop">nome popular</span>' : '') +
+            '<br><button type="button" class="btn-ficha" data-ficha="' + o.i + '">Como preencher a nota →</button></td>');
+    var red = cl.ri || cl.rc
+      ? '<span class="cls-red">' + (cl.ri === cl.rc ? '−' + pct(cl.ri) : '−' + pct(cl.ri) + ' IBS / −' + pct(cl.rc) + ' CBS') + '</span>'
+      : '';
+    td.push('<td class="c-class"><span class="cod-linha"><span class="cls-cod">' + destaca(o.cls, termos) + '</span>' +
+            botaoCopia(o.cls, 'Copiar cClassTrib') + '</span>' +
+            '<span class="cls-nome">' + destaca(cl.n, termos) + '</span>' + red + '</td>');
+    td.push('<td class="c-cst"><span class="cod-linha"><span class="cst-cod">' + destaca(cl.cst, termos) + '</span>' +
+            botaoCopia(cl.cst, 'Copiar CST') + '</span>' +
+            '<span class="cst-nome">' + destaca(csts[cl.cst] || '', termos) + '</span></td>');
+    var rot = o.perm === 2 ? 'Vedado' : (o.exc ? 'Ver exceções' : 'Ver detalhes');
+    // No papel o botão vira texto morto: "Ver detalhes" impresso não informa nada.
+    // A versão só-impressão diz o estado, que é o que sobra de útil na folha.
+    var noPapel = o.perm === 2 ? 'Vedado' : (o.exc ? 'Há exceção no item' : '—');
+    td.push('<td class="c-exc"><button type="button" class="btn-exc' + (o.perm === 2 ? ' vedado' : '') +
+            '" data-i="' + o.i + '">' + rot + '</button>' +
+            '<span class="so-papel' + (o.perm === 2 ? ' vedado' : '') + '">' + noPapel + '</span></td>');
+    return '<tr>' + td.join('') + '</tr>';
+  }
+
+  function desenhaLote(n) {
+    if (desenhadas >= filtrados.length) return;
+    var ate = Math.min(desenhadas + (n || LOTE), filtrados.length);
+    var buf = [];
+    for (var k = desenhadas; k < ate; k++) buf.push(linhaHTML(filtrados[k]));
+    corpo.insertAdjacentHTML('beforeend', buf.join(''));
+    desenhadas = ate;
+    $('carregando').hidden = desenhadas >= filtrados.length;
+  }
+
+  /* ─── Nada encontrado ───
+     Para quem busca, lista vazia é a resposta mais comum — e a que mais se lê
+     errado ("a tabela está incompleta"). O texto depende de como se buscou:
+     só a busca por código, sem filtro nenhum, permite afirmar a regra normal.
+     Com filtro ligado o código pode estar numa linha escondida; pela descrição,
+     o nome comercial pode não bater com o texto da nomenclatura. */
+  var NORMAL = '<span class="regra-cod">CST 000' + botaoCopia('000', 'Copiar CST') + '</span> · ' +
+               '<span class="regra-cod">cClassTrib 000001' + botaoCopia('000001', 'Copiar cClassTrib') + '</span>';
+
+  function temFiltro() {
+    return !!(estado.cls || estado.cst || estado.tipo || estado.ved || estado.exc || estado.item >= 0);
+  }
+
+  /* "nos códigos começados por 7318.11, 7318.12…" quando o dicionário conhece o
+     nome e nenhum desses códigos tem linha na tabela; senão ''. */
+  function ondeCostuma(q) {
+    var lin = window.KLUKE_BUSCA ? KLUKE_BUSCA.linhas(q).filter(function (l) { return l.m >= 1; }) : [];
+    var pre = [];
+    lin.forEach(function (l) { l.cods.forEach(function (c) { if (pre.indexOf(c) < 0) pre.push(c); }); });
+    if (!pre.length || ITENS.some(function (o) { return o.tipo === 0 && pre.some(function (p) { return o.cod.indexOf(p) === 0; }); })) return '';
+    var fmtP = function (c) { return c.length <= 4 ? c : c.slice(0, 4) + '.' + c.slice(4, 6) + (c.length > 6 ? '.' + c.slice(6) : ''); };
+    return (pre.length > 1 ? 'nos códigos começados por ' : 'no código ') + esc(pre.slice(0, 8).map(fmtP).join(', ')) + (pre.length > 8 ? '…' : '');
+  }
+
+  function vazioHTML() {
+    var q = estado.q.trim();
+    if (temFiltro()) {
+      return '<b>Nada encontrado com os filtros ligados.</b><br>Os filtros escondem parte da lista. Desligue-os e veja de novo antes de concluir.' +
+             '<br><button type="button" class="vazio-limpar" id="vazio-limpar">Desligar os filtros</button>';
+    }
+    if (/^[\d.\s-]+$/.test(q) && q.replace(/\D/g, '').length >= 4) {
+      return '<b>O código ' + esc(q) + ' não está na lista, então paga o imposto normal.</b><br>Na nota, use:<br>' + NORMAL +
+             '<br><span style="font-size:12.5px">Exportação, venda para a Zona Franca de Manaus e doação seguem outra regra: fale com a gente.</span>';
+    }
+    /* O dicionário conhece o nome, mas nenhum desses códigos tem linha aqui:
+       é a resposta da dúvida mais comum ("e o parafuso?"), não "nada encontrado". */
+    var onde = ondeAtual;
+    if (onde) {
+      return '<b>“' + esc(q) + '” costuma estar ' + onde + '.</b><br>' +
+             'Nenhum deles tem benefício nesta tabela: o imposto é o normal. Na nota, use:<br>' + NORMAL +
+             '<br><span style="font-size:12.5px">Confira o NCM no cadastro do produto. Exportação, venda para a Zona Franca de Manaus e doação seguem outra regra: fale com a gente.</span>';
+    }
+    return '<b>Não encontramos nada com esse nome.</b><br>O nome oficial nem sempre é o que a gente usa no dia a dia — refrigerante, por exemplo, aparece como “bebidas não alcoólicas”.' +
+           '<br><b>Tente pelo código NCM</b>, que está no cadastro do produto ou na nota do fornecedor.' +
+           '<br>Se pelo código também não aparecer, o imposto é o normal: ' + NORMAL + '.';
+  }
+
+  document.querySelectorAll('#regra-geral .regra-cod').forEach(function (s, k) {
+    s.insertAdjacentHTML('beforeend', k ? botaoCopia('000001', 'Copiar cClassTrib') : botaoCopia('000', 'Copiar CST'));
+  });
+
+  function reinicia() {
+    corpo.innerHTML = '';
+    desenhadas = 0;
+    $('vazio').hidden = filtrados.length > 0;
+    if (!filtrados.length) {
+      $('vazio').innerHTML = vazioHTML();
+      var bl = $('vazio-limpar');
+      // Diferente do "Limpar filtros" do painel, este preserva a busca: a
+      // pergunta era sobre aquele código, e sem filtro ela tem resposta.
+      if (bl) bl.addEventListener('click', function () {
+        var q = estado.q;
+        limpaFiltros();
+        estado.q = q;
+        $('q').value = q;
+        aplica();
+      });
+    }
+    desenhaLote(LOTE);
+    // Enche a tela quando o lote inicial não gera rolagem suficiente.
+    var voltas = 0;
+    while (desenhadas < filtrados.length && document.body.scrollHeight <= window.innerHeight + 400 && voltas++ < 20) desenhaLote(LOTE);
+  }
+
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function (ents) {
+      if (ents[0].isIntersecting) desenhaLote(LOTE);
+    }, { rootMargin: '600px' }).observe($('sentinela'));
+  } else {
+    window.addEventListener('scroll', function () {
+      if (window.innerHeight + window.scrollY > document.body.offsetHeight - 800) desenhaLote(LOTE);
+    });
+  }
+  // A impressão só sai completa se todas as linhas filtradas estiverem no DOM.
+  window.addEventListener('beforeprint', function () {
+    while (desenhadas < filtrados.length) desenhaLote(500);
+  });
+
+  /* A tabela inteira dá mais de cem folhas. Quem quer imprimir quase sempre quer
+     um recorte; o aviso existe para não descobrir isso na bandeja da impressora. */
+  var LIMITE_IMPRESSAO = 300;
+  $('b-print').addEventListener('click', function () {
+    if (filtrados.length > LIMITE_IMPRESSAO) {
+      var folhas = Math.ceil(filtrados.length / 34);
+      if (!confirm('São ' + filtrados.length.toLocaleString('pt-BR') + ' vínculos — cerca de ' +
+                   folhas + ' folhas A4 na horizontal.\n\nFiltre por classificação, CST ou busca antes de imprimir.\n\nImprimir mesmo assim?')) return;
+    }
+    window.print();
+  });
+
+  /* ─── Modal ─── */
+  var modal = $('modal'), ultimoFoco = null;
+
+  function bloco(rot, html, classe) {
+    return '<div class="mrow"><div class="mrot">' + rot + '</div><div class="mbox' +
+           (classe ? ' ' + classe : '') + '">' + html + '</div></div>';
+  }
+
+  function abreModal(o) {
+    var cl = o.cl, h = [];
+    $('modal-titulo').innerHTML = esc((o.tipo === 1 ? 'NBS ' : 'NCM ') + o.fmt) +
+      botaoCopia(o.fmt, 'Copiar com pontos');
+    // O subtítulo trazia cClassTrib e CST, que já aparecem no corpo. Trocado pelo
+    // código sem pontos, que é a forma do ERP e não estava em lugar nenhum aqui.
+    $('modal-sub').innerHTML = '<span class="cod-linha">' + esc(o.cod) +
+      botaoCopia(o.cod, 'Copiar sem pontos') + '</span>';
+
+    if (o.compl) {
+      h.push(bloco('Origem desta linha',
+        '<span class="mstatus alerta">Fora da tabela de vínculos do SVRS</span>' +
+        'A tabela do SVRS não vincula nenhum NCM ao CST 620: a LC 214/2025 relaciona os combustíveis ' +
+        'do regime monofásico <b>pelo nome</b> (art. 172), não por código. Esta linha foi montada pela Kluke — ' +
+        'o cClassTrib vem da tabela oficial, e a classificação do produto na NCM foi conferida contra a ' +
+        'Nomenclatura Comum do Mercosul vigente. Trate-a como orientação, não como vínculo publicado.',
+        'mbox-aviso'));
+    }
+    if (o.rtc) {
+      h.push(bloco('Origem desta linha',
+        '<span class="mstatus alerta">Fora da tabela de vínculos do SVRS</span>' +
+        'O SVRS publica esta classificação sem nenhum código de serviço (NBS) vinculado, embora a LC 214/2025 liste os serviços ' +
+        'um a um no anexo. O vínculo vem da base de dados da <b>calculadora oficial da Receita Federal</b>' +
+        (DB.meta.rtc ? ' (versão ' + esc(DB.meta.rtc.script) + ', de ' + esc(DB.meta.rtc.data.split('-').reverse().join('/')) + ')' : '') +
+        ', e o item foi conferido contra o texto do anexo da lei. As duas fontes concordam em todos os códigos.',
+        'mbox-aviso'));
+    }
+
+    if (o.perm === 2) {
+      h.push(bloco('Situação deste código no anexo',
+        '<span class="mstatus vedado">Vedado — o benefício não alcança este código</span>' +
+        'O código está dentro da posição citada pelo anexo, mas o próprio texto do item o excetua. ' +
+        'Nesta classificação ele não recebe a redução: tributa-se pela regra geral, salvo se couber em outro item ou em outra cClassTrib.',
+        'mbox-alerta'));
+    } else if (o.perm === 1) {
+      h.push(bloco('Situação deste código no anexo',
+        '<span class="mstatus permitido">Permitido — o código consta da lista do anexo</span>' +
+        'Continua valendo a condição do item: o benefício depende do produto e da destinação efetivos, não do NCM isolado.',
+        'mbox-ok'));
+    }
+
+    // As linhas de complemento não vêm de anexo nenhum: falar em "item do anexo"
+    // ou em "exceção não registrada" seria inventar uma fonte que não existe.
+    if (!o.compl) {
+      if (o.exc) h.push(bloco('Exceções previstas no item do anexo', esc(o.exc), o.perm === 2 ? 'mbox-alerta' : ''));
+      else if (o.perm !== 2) h.push(bloco('Exceções previstas no item do anexo',
+        '<span style="color:var(--muted)">O item do anexo não registra exceção para este código.</span>'));
+    }
+
+    var irmas = o.compl ? 0 : ITENS.filter(function (x) {
+      return x.desc === o.desc && x.cls === o.cls;
+    }).length;
+    h.push(bloco(o.compl ? 'Produto' : 'Item do anexo (descrição legal)',
+      esc(o.desc || '—') +
+      (irmas > 1
+        ? '<div class="m-irmas">Este item vincula <b>' + irmas + ' códigos</b> nesta classificação. ' +
+          'Quando um item nomeia vários produtos numa frase só, todos os códigos entram juntos — ' +
+          'o texto não diz qual código corresponde a qual produto. ' +
+          '<button type="button" class="btn-mini" id="m-ver-item">Ver os ' + irmas + '</button></div>'
+        : '')));
+    // Hierarquia por níveis em vez de "A › B › C": mostra de que nível saiu cada
+    // frase e qual é o código de cada um. É o que responde "por que aparece
+    // toucinho aqui" sem precisar consultar a nomenclatura por fora.
+    if (o.ncmNiveis.length) {
+      h.push(bloco('Descrição oficial da NCM',
+        '<table class="m-niveis"><thead><tr><th>Nível</th><th>Código</th><th>Descrição</th></tr></thead><tbody>' +
+        o.ncmNiveis.map(function (s, k) {
+          var ultimo = k === o.ncmNiveis.length - 1;
+          return '<tr' + (ultimo ? ' class="folha"' : '') + '><td>' + esc(s.nivel) + '</td>' +
+                 '<td>' + esc(s.cod) + '</td><td>' + esc(s.txt) + '</td></tr>';
+        }).join('') +
+        '</tbody></table>'));
+    }
+    if (o.cond) h.push(bloco('Condição / grupo do anexo', esc(o.cond)));
+    if (o.obs) h.push(bloco(o.compl ? 'Nota' : o.rtc ? 'Descrição oficial e base legal' : 'Observação do SVRS', esc(o.obs)));
+
+    if (o.compl) {
+      h.push(bloco('Quando passa a valer na NF-e',
+        'A obrigatoriedade da NF-e que registre fornecimentos sujeitos à <b>tributação monofásica</b> começa em ' +
+        '<b>1º/01/2027</b>, e não em 03/08/2026 como nos demais casos — Ato Conjunto RFB/CGIBS nº 4, de 30/07/2026, art. 1º, § 2º. ' +
+        'A obrigação legal do art. 172 da LC 214/2025 não mudou: o que foi adiado é a exigência do campo no documento.'));
+      h.push(bloco('Também exigido na NF-e de combustível',
+        'O grupo de combustíveis pede o <b>cProdANP</b>, o código de produto da ANP. É ele — não a NCM — que separa ' +
+        'gasolina comum de aditivada e diesel S-10 de S-500, que compartilham o mesmo código na nomenclatura.'));
+    }
+
+    var red = cl.ri === cl.rc ? pct(cl.ri) : pct(cl.ri) + ' (IBS) / ' + pct(cl.rc) + ' (CBS)';
+    // Estes três são os valores que o operador digita no documento fiscal — é
+    // onde copiar à mão mais erra, então cada um ganha seu botão.
+    h.push('<div class="mgrid">' +
+      bloco('Classificação tributária',
+        '<span class="mval-cod"><b>' + esc(o.cls) + '</b>' + botaoCopia(o.cls, 'Copiar cClassTrib') + '</span><br>' + esc(cl.n)) +
+      bloco('CST',
+        '<span class="mval-cod"><b>' + esc(cl.cst) + '</b>' + botaoCopia(cl.cst, 'Copiar CST') + '</span><br>' + esc(csts[cl.cst] || '')) +
+      '</div>');
+    h.push('<div class="mgrid">' +
+      // Para um código vedado o percentual é o da classificação, não o dele: sem
+      // essa ressalva a caixa "100%" ao lado de "Vedado" diria o contrário do certo.
+      bloco(o.perm === 2 ? 'Redução da classificação' : 'Redução de alíquota',
+        (cl.ri || cl.rc)
+          ? '<b>' + esc(red) + '</b>' + (o.perm === 2 ? '<br><span style="color:var(--red)">não se aplica a este código</span>' : '')
+          : '<span style="color:var(--muted)">sem redução percentual — ver o regime da CST</span>') +
+      bloco('Vigência do vínculo', o.compl
+        ? 'incidência única desde <b>01/01/2026</b>'
+        : 'a partir de <b>01/01/2026</b>') +
+      '</div>');
+    h.push(bloco('Texto integral da classificação', esc(cl.d || cl.n)));
+    if (cl.url) h.push(bloco('Base legal', '<a href="' + esc(cl.url) + '" target="_blank" rel="noopener">' + esc(cl.url) + '</a>'));
+
+    h.push('<div class="mrow modal-acao"><button type="button" class="btn-mini" id="m-ver-cod">Ver todos os vínculos do código ' + esc(o.fmt) + '</button></div>');
+
+    $('modal-corpo').innerHTML = h.join('');
+    if ($('m-ver-item')) {
+      $('m-ver-item').addEventListener('click', function () {
+        fechaModal();
+        limpaFiltros();
+        estado.cls = o.cls;
+        estado.item = o.di;
+        sincronizaChips();
+        aplica();
+        $('q').scrollIntoView({ block: 'center' });
+      });
+    }
+    $('m-ver-cod').addEventListener('click', function () {
+      fechaModal();
+      limpaFiltros();
+      $('q').value = o.fmt;
+      estado.q = o.fmt;
+      aplica();
+      $('q').scrollIntoView({ block: 'center' });
+    });
+
+    // Vindo da ficha, o modal já está aberto: o foco a devolver é o de antes dela.
+    if (!modal.classList.contains('aberto')) ultimoFoco = document.activeElement;
+    modal.hidden = false;
+    modal.classList.add('aberto');
+    $('modal-x').focus();
+    $('modal-corpo').scrollTop = 0;
+  }
+
+  /* ─── Ficha "Como preencher a nota" ───
+     Junta as duas metades da página: a operação (quadro do CFOP) e o produto
+     (linha clicada). O resultado é o item da nota montado, uma linha por
+     situação. O mesmo NCM costuma ter várias classificações — o arroz tem cesta
+     básica, insumo agropecuário e uma vedada —, e o leigo não tem como saber qual
+     é a sua. Por isso a ficha mostra todas as que valem para o código, em
+     palavras, e termina sempre em "nenhuma destas: imposto normal". */
+  function opContexto() {
+    var dig = cfopAtual.replace(/[\s.]/g, '');
+    if (!/^\d{4}$/.test(dig)) return null;
+    var op = OPERACOES.filter(function (x) { return x.c.indexOf(dig) > -1; })[0];
+    return op ? { op: op, cf: dig } : null;
+  }
+
+  function reducaoTexto(cl) {
+    if (!cl.ri && !cl.rc) return '';
+    var f = function (v) { return v >= 100 ? 'não paga' : 'paga ' + pct(100 - v) + ' do normal'; };
+    return cl.ri === cl.rc ? 'IBS e CBS: ' + f(cl.ri) : 'IBS: ' + f(cl.ri) + ' · CBS: ' + f(cl.rc);
+  }
+
+  // Uma opção por cClassTrib em que o código aparece; vedada se todas as
+  // linhas dele naquela classificação forem vedadas.
+  function opcoesDoCodigo(o) {
+    var por = Object.create(null), ordem = [];
+    ITENS.forEach(function (x) {
+      if (x.tipo !== o.tipo || x.cod !== o.cod) return;
+      var p = por[x.cls];
+      if (!p) { p = por[x.cls] = { cls: x.cls, cl: x.cl, row: x, ok: false }; ordem.push(p); }
+      if (x.perm !== 2 && (!p.ok || x === o)) { p.row = x; p.ok = true; }
+    });
+    return ordem;
+  }
+
+  function abreFicha(o) {
+    var ctx = opContexto();
+    var casos = ctx ? ctx.op.ibs : VENDA;
+    var cf = ctx ? ctx.cf : '5102';
+    var opcoes = opcoesDoCodigo(o), validas = opcoes.filter(function (p) { return p.ok; });
+    var val = function (v, dica) { return '<span class="nx-val' + (v.length > 24 ? ' longo' : '') + '">' + esc(v) + botaoCopia(v, dica) + '</span>'; };
+    var celNcm = val(o.cod, 'Copiar ' + (o.tipo === 1 ? 'NBS' : 'NCM'));
+    var celCf = val(cf, 'Copiar CFOP');
+    var linhas = [], temProduto = false, temFixo = false;
+
+    function linha(quando, cst, cls, extra, classe) {
+      linhas.push('<tr' + (classe ? ' class="' + classe + '"' : '') + '>' +
+        '<td class="nx-quando" data-rot="Situação:">' + quando + '</td>' +
+        '<td data-rot="NCM:">' + celNcm + '</td><td data-rot="CFOP:">' + celCf + '</td>' +
+        (cls ? '<td data-rot="CST:">' + val(cst, 'Copiar CST') + '</td>' +
+               '<td data-rot="cClassTrib:">' + val(cls, 'Copiar cClassTrib') + (extra || '') + '</td>'
+             : '<td colspan="2">' + cst + '</td>') +
+        '</tr>');
+    }
+
+    casos.forEach(function (k) {
+      var pre = k.quando ? esc(k.quando) + ': ' : '';
+      if (k.t === 'produto') {
+        temProduto = true;
+        validas.forEach(function (p) {
+          var r = reducaoTexto(p.cl);
+          var leigo = NOME_LEIGO[p.cls];
+          linha(pre + (leigo ? esc(leigo) + '<span class="nx-of">' + esc(p.cl.n) + '</span>' : esc(p.cl.n)), p.cl.cst, p.cls, r ? '<span class="nx-red">' + esc(r) + '</span>' : '',
+                p.row === o ? 'atual' : '');
+        });
+        linha(pre + (validas.length ? 'Nenhuma das situações acima' : 'Este código está fora dos benefícios'),
+              '000', '000001', '<span class="nx-tag">imposto normal</span>', 'normal');
+      } else if (k.t === 'fixo') {
+        temFixo = true;
+        var c = CLASSE_OP[k.c];
+        linha(pre ? pre.slice(0, -2) : esc(c.n), c.cst, k.c, '<span class="nx-tag">qualquer produto</span>');
+      } else if (k.t === 'original') {
+        linha('Devolução', '<b>O mesmo CST e cClassTrib que este item tem na nota original.</b> A devolução desfaz aquela operação.');
+      } else {
+        linha(pre + 'Operação sem regra única', '<b>Fale com a gente antes de emitir.</b>');
+      }
+    });
+
+    if (regime === 'sn') {
+      // Uma linha por caso de CSOSN (venda: 101 ou 102, conforme o comprador).
+      var g = CSOSN_CFOP[cf];
+      var casosSn = g ? g.casos : [['', null]];
+      linhas = casosSn.map(function (k) {
+        return '<tr><td class="nx-quando" data-rot="Situação:">' + esc(k[0] || 'Simples Nacional') + '</td>' +
+          '<td data-rot="NCM:">' + celNcm + '</td><td data-rot="CFOP:">' + celCf + '</td>' +
+          '<td data-rot="CSOSN:">' + (k[1] ? val(k[1], 'Copiar CSOSN') : '<span style="color:var(--muted)">fale com a gente</span>') + '</td>' +
+          '<td data-rot="IBS/CBS:"><b>não preencher</b> em 2026</td></tr>';
+      });
+      temProduto = temFixo = false;
+      validas = [];
+    }
+    var desc = ctx ? 'CFOP <b>' + esc(ctx.cf) + '</b> — ' + esc(ctx.op.d)
+                   : '<b>venda</b>. O exemplo usa o CFOP 5102 (revenda dentro do estado); para outro estado é 6102, e quem fabrica o produto usa 5101/6101';
+    var h = '<div class="ficha-op">' + (regime ? 'Regime: <b>' + esc(REGIMES[regime].n) + '</b>. ' : 'Regime: <b>não escolhido</b>. ') +
+            'Operação: ' + desc + '. <button type="button" id="f-trocar">' +
+            (ctx ? 'Trocar a operação' : 'Não é venda? Escolha a operação') + '</button></div>';
+    h += '<table class="nota-ex"><thead><tr><th>Situação</th><th>NCM</th><th>CFOP</th>' +
+         (regime === 'sn' ? '<th>CSOSN</th><th>IBS/CBS</th>' : '<th>CST IBS/CBS</th><th>cClassTrib</th>') +
+         '</tr></thead><tbody>' + linhas.join('') + '</tbody></table>';
+    if (regime === 'sn') {
+      h += '<div class="ficha-dica">' + IBS_SIMPLES + ' Os códigos de IBS/CBS desta página valem para quem paga por fora do Simples e para o Lucro Presumido ou Real.</div>';
+    }
+    if (temProduto && validas.length) {
+      h += '<div class="ficha-dica"><b>Qual linha usar?</b> O mesmo produto pode ter desconto numa situação e não em outra — ' +
+           'conforme o que ele é de fato, quem compra ou para que serve. Use a linha que descreve a sua venda; ' +
+           'se nenhuma descreve, é a do imposto normal. Na dúvida, fale com a gente.</div>';
+    }
+    if (o.perm === 2 && regime !== 'sn') {
+      h += '<div class="ficha-dica" style="color:var(--red)"><b>A linha que você clicou é vedada:</b> o código ' + esc(o.fmt) +
+           ' está na lista da classificação ' + esc(o.cls) + ', mas o próprio texto da lei o exclui. Por isso ela não aparece acima.</div>';
+    }
+    if (temFixo && !temProduto) {
+      h += '<div class="ficha-dica">Nesta operação o código do IBS/CBS <b>não depende do produto</b>: é o mesmo para qualquer NCM.</div>';
+    }
+    var demais = demaisDados(ctx ? ctx.op : null, cf);
+    var gSn = (regime === 'sn' || regime === 'hib') && CSOSN_CFOP[cf];
+    if (ctx && ctx.op.aviso) h += '<div class="ficha-dica"><b>Atenção:</b> ' + ctx.op.aviso + '</div>';
+    if (regime !== 'sn') {
+      h += '<div class="ficha-dica"><b>' + demaisRot() + ':</b> ' + (demais
+        ? demais.map(function (x) { return esc(x[0]) + ' ' + (x[1] ? val(x[1], 'Copiar ' + x[0].split(' (')[0]) : 'fale com a gente'); }).join(' · ')
+        : demaisTexto()) + '</div>';
+    } else if (!gSn) {
+      h += '<div class="ficha-dica"><b>CSOSN:</b> ' + demaisTexto() + '</div>';
+    }
+    if (gSn) h += '<div class="ficha-dica">Fonte do CSOSN: ' + gSn.fonte + '</div>';
+    h += '<div class="mrow modal-acao" style="margin-top:12px"><button type="button" class="btn-mini" id="f-tecnico">Ver detalhes técnicos desta linha</button></div>';
+
+    $('modal-titulo').textContent = 'Como preencher a nota';
+    $('modal-sub').textContent = (o.tipo === 1 ? 'NBS ' : 'NCM ') + o.fmt + ' — ' + corta(o.folha, 70);
+    $('modal-corpo').innerHTML = h;
+    $('f-tecnico').addEventListener('click', function () { abreModal(o); });
+    $('f-trocar').addEventListener('click', function () { fechaModal(); vaiParaCfop(); });
+
+    if (!modal.classList.contains('aberto')) ultimoFoco = document.activeElement;
+    modal.hidden = false;
+    modal.classList.add('aberto');
+    $('modal-x').focus();
+  }
+
+  function fechaModal() {
+    modal.classList.remove('aberto');
+    modal.hidden = true;
+    $('modal-corpo').innerHTML = '';
+    if (ultimoFoco && ultimoFoco.focus) ultimoFoco.focus();
+  }
+
+  /* A linha inteira abre a ficha, menos os botões dela: copiar e "Ver detalhes"
+     têm ação própria, e seleção de texto não é clique. */
+  corpo.addEventListener('click', function (e) {
+    var b = e.target.closest('.btn-exc');
+    if (b) { abreModal(ITENS[+b.dataset.i]); return; }
+    var f = e.target.closest('.btn-ficha');
+    if (f) { abreFicha(ITENS[+f.dataset.ficha]); return; }
+    if (e.target.closest('button, a') || String(window.getSelection()).length) return;
+    var tr = e.target.closest('tr'), fb = tr && tr.querySelector('.btn-ficha');
+    if (fb) abreFicha(ITENS[+fb.dataset.ficha]);
+  });
+
+  /* Um só ouvinte para todos os botões de copiar — tabela e modal. As linhas são
+     redesenhadas a cada filtro; ligar o evento em cada botão vazaria memória. */
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('.btn-copia');
+    if (!b) return;
+    var valor = b.dataset.copia;
+    copiaTexto(valor).then(function () {
+      var dica = b.dataset.dica;
+      clearTimeout(b._volta);
+      b.dataset.dica = 'Copiado!';
+      b.classList.add('copiado');
+      $('aviso-copia').textContent = valor + ' copiado';
+      b._volta = setTimeout(function () {
+        b.classList.remove('copiado');
+        b.dataset.dica = dica;
+      }, 1600);
+    }, function () {
+      // Contexto sem área de transferência: o balão avisa em vez de fingir sucesso.
+      var dica = b.dataset.dica;
+      clearTimeout(b._volta);
+      b.dataset.dica = 'Copie com Ctrl+C';
+      b.classList.add('mostra');
+      b._volta = setTimeout(function () {
+        b.classList.remove('mostra');
+        b.dataset.dica = dica;
+      }, 2400);
+    });
+  });
+  $('modal-x').addEventListener('click', fechaModal);
+  modal.addEventListener('click', function (e) { if (e.target === modal) fechaModal(); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && modal.classList.contains('aberto')) fechaModal();
+  });
+
+  /* ─── Controles ─── */
+  var deb;
+  $('q').addEventListener('input', function () {
+    clearTimeout(deb);
+    var v = this.value;
+    deb = setTimeout(function () { estado.q = v; aplica(); }, 140);
+  });
+  $('f-class').addEventListener('change', function () { estado.cls = this.value; aplica(); });
+  $('f-cst').addEventListener('change', function () { estado.cst = this.value; aplica(); });
+
+  function ligaChip(id, fn) {
+    $(id).addEventListener('click', function () {
+      fn(this.getAttribute('aria-pressed') !== 'true');
+      sincronizaChips();
+      aplica();
+    });
+  }
+  ligaChip('c-ncm', function (on) { estado.tipo = on ? 'ncm' : ''; });
+  ligaChip('c-nbs', function (on) { estado.tipo = on ? 'nbs' : ''; });
+  ligaChip('c-ved', function (on) { estado.ved = on; });
+  ligaChip('c-exc', function (on) { estado.exc = on; });
+
+  function sincronizaChips() {
+    var ci = $('c-item');
+    if (estado.item >= 0) {
+      var txt = dic.desc[estado.item] || '';
+      ci.textContent = 'Item do anexo: ' + (txt.length > 58 ? txt.slice(0, 58) + '…' : txt);
+      ci.title = txt;
+      ci.hidden = false;
+    } else {
+      ci.hidden = true;
+    }
+    $('c-ncm').setAttribute('aria-pressed', estado.tipo === 'ncm');
+    $('c-nbs').setAttribute('aria-pressed', estado.tipo === 'nbs');
+    $('c-ved').setAttribute('aria-pressed', !!estado.ved);
+    $('c-exc').setAttribute('aria-pressed', !!estado.exc);
+    $('f-class').value = estado.cls;
+    $('f-cst').value = estado.cst;
+    $('q').value = estado.q;
+  }
+
+  function limpaFiltros() {
+    estado = { q: '', cls: '', cst: '', tipo: '', ved: false, exc: false, item: -1 };
+    sincronizaChips();
+  }
+  $('c-limpar').addEventListener('click', function () { limpaFiltros(); aplica(); });
+  $('c-item').addEventListener('click', function () { estado.item = -1; sincronizaChips(); aplica(); });
+
+  /* ─── Consulta por CFOP ───
+     Operações, CSOSN e regimes são dado curado pela Kluke e vivem em
+     comum/operacoes.js, compartilhado com a página "Monte sua nota". A
+     semântica (produto, fixo, original, consulte) está comentada lá. */
+  var OPS_DB = window.KLUKE_OPERACOES;
+  var LC = OPS_DB.LC, CST_OP = OPS_DB.CST_OP, CLASSE_OP = OPS_DB.CLASSE_OP, FLUXOS = OPS_DB.FLUXOS, FLUXO_DE = OPS_DB.FLUXO_DE, OPERACOES = OPS_DB.OPERACOES, CSOSN = OPS_DB.CSOSN, CSOSN_CFOP = OPS_DB.CSOSN_CFOP, REGIMES = OPS_DB.REGIMES, IBS_SIMPLES = OPS_DB.IBS_SIMPLES, NOME_LEIGO = OPS_DB.NOME_LEIGO, VENDA = OPS_DB.VENDA;
+
+  function fluxoHTML(op) {
+    var meu = FLUXO_DE[op.c[0]];
+    if (!meu) return '';
+    var cod = function (x) {
+      var aqui = op.c.indexOf(x[0]) > -1;
+      return '<li' + (aqui ? ' class="aqui"' : '') + '><button type="button" class="fluxo-cod" data-cfop="' + x[0] + '">' + x[0] + '/' + x[1] + '</button> ' +
+             esc(x[2]) + (aqui ? ' <b>← este</b>' : '') + '</li>';
+    };
+    return '<div class="fluxo">' + FLUXOS.map(function (f) {
+      var ativo = meu === f.id || meu === 'ambos';
+      return '<div class="fluxo-col' + (ativo ? ' ativo' : '') + '"><b class="fluxo-n">' + esc(f.n) + '</b><span class="fluxo-q">' + esc(f.q) + '</span>' +
+        '<span class="fluxo-et">Ida</span><ul>' + f.ida.map(cod).join('') + '</ul>' +
+        '<span class="fluxo-et">Volta, numa nota só</span><ul>' + f.volta.map(cod).join('') + '</ul></div>';
+    }).join('') + '</div>';
+  }
+
+  var ATALHOS = ['5102', '6102', '5405', '5152', '5910', '5202', '5915', '5949'];
+
+  OPERACOES.forEach(function (op) { op.hay = dobra(op.c.join(' ') + ' ' + op.d + ' ' + (op.k || '')); });
+
+  function codOp(c) {
+    var cl = CLASSE_OP[c];
+    return '<span class="op-cod-linha">' +
+      '<span class="op-val">CST ' + cl.cst + botaoCopia(cl.cst, 'Copiar CST') + '</span>' +
+      '<span class="op-val">cClassTrib ' + c + botaoCopia(c, 'Copiar cClassTrib') + '</span></span>' +
+      '<span class="op-nome">' + esc(cl.n) + ' — ' + esc(CST_OP[cl.cst]) + ' · <a href="' + LC + cl.art + '" target="_blank" rel="noopener">LC 214/2025, art. ' + cl.art + (cl.art < 10 ? 'º' : '') + '</a></span>';
+  }
+
+  function casoHTML(k) {
+    var h = '<div class="op-caso ' + (k.t === 'original' ? 'fixo' : k.t) + '">';
+    if (k.quando) h += '<span class="op-quando">' + esc(k.quando) + '</span>';
+    if (k.t === 'fixo') h += codOp(k.c);
+    else if (k.t === 'produto') {
+      h += '<b>Depende do produto.</b> Procure o NCM (ou NBS) na tabela abaixo e use o CST e o cClassTrib da linha. ' +
+           'Se o código não aparece: <span class="op-val">CST 000' + botaoCopia('000', 'Copiar CST') + '</span> · ' +
+           '<span class="op-val">cClassTrib 000001' + botaoCopia('000001', 'Copiar cClassTrib') + '</span>' +
+           '<br><button type="button" class="btn-ncm">Procurar o NCM na tabela ↓</button>' +
+           (k.quando ? '' : '<span class="op-exemplos"><span>Exemplos:</span>' +
+             '<button type="button" class="btn-exemplo" data-ex="04011010">Leite UHT, NCM <b>0401.10.10</b> → tem desconto</button>' +
+             '<button type="button" class="btn-exemplo" data-q="8471.30.12">Notebook, NCM <b>8471.30.12</b> → não está na lista: imposto normal</button></span>');
+    } else if (k.t === 'original') {
+      h += '<b>Repita o da nota original.</b> Em cada item, use o mesmo CST e cClassTrib da nota que está sendo devolvida: a devolução desfaz aquela operação.' +
+           '<span class="op-nota">Nota original anterior a 2026, sem IBS e CBS: <span class="op-val">CST 410' + botaoCopia('410', 'Copiar CST') + '</span> · ' +
+           '<span class="op-val">cClassTrib 410031' + botaoCopia('410031', 'Copiar cClassTrib') + '</span></span>';
+    } else {
+      h += '<b>Não há um código único.</b>';
+    }
+    if (k.nota) h += '<span class="op-nota">' + k.nota + '</span>';
+    return h + '</div>';
+  }
+
+  function cartaoOp(op, ativo) {
+    var h = '<div class="op"><div class="op-topo"><span class="op-cods">';
+    op.c.forEach(function (c) {
+      // 1º dígito: 1/5 dentro do estado, 2/6 outro estado, 3/7 exterior.
+      var d1 = c.charAt(0), lado = '15'.indexOf(d1) > -1 ? 'no estado' : '26'.indexOf(d1) > -1 ? 'outro estado' : 'exterior';
+      h += '<span class="op-cod' + (ativo && c !== ativo ? ' fora' : '') + '">' + c + botaoCopia(c, 'Copiar CFOP') + '<small>' + lado + '</small></span>';
+    });
+    h += '</span><span class="op-desc">' + esc(op.d) + '</span></div>';
+    var cf = ativo || (op.c.length === 1 ? op.c[0] : '');
+    h += fluxoHTML(op);
+    if (op.aviso) h += '<div class="op-caso consulte" style="margin-top:2px">' + op.aviso + '</div>';
+    h += '<div class="op-grupo">IBS e CBS</div>';
+    if (regime === 'sn') h += '<div class="op-caso consulte">' + IBS_SIMPLES + '</div>';
+    else op.ibs.forEach(function (k) { h += casoHTML(k); });
+    h += demaisHTML(op, cf);
+    return h + '</div>';
+  }
+
+  var regime = '';
+
+  // Demais impostos (fora o IBS/CBS) para o regime escolhido; vazio quando a
+  // Kluke ainda não informou aquele CFOP.
+  function demaisDados(op, cf) {
+    if (regime === 'rn') return (op && op.normal && op.normal[cf]) || null;
+    if (regime === 'sn' || regime === 'hib') {
+      var g = CSOSN_CFOP[cf];
+      return g ? g.casos.map(function (k) { return ['ICMS — CSOSN' + (k[0] ? ' (' + k[0].toLowerCase() + ')' : ''), k[1]]; }) : null;
+    }
+    return null;
+  }
+  function demaisTexto() {
+    if (regime === 'rn') return 'Configuramos caso a caso: dependem do produto, do estado de destino e da tributação da sua empresa. Fale com a gente.';
+    if (regime) return 'O CSOSN desta operação ainda não está nesta consulta. Fale com a gente.';
+    return 'Escolha o regime da empresa no quadro "Comece aqui" para ver o que vai no ICMS.';
+  }
+  function demaisRot() { return regime === 'rn' ? 'ICMS, PIS/COFINS e IPI' : regime ? 'ICMS (CSOSN)' : 'ICMS e demais impostos'; }
+
+  function demaisHTML(op, cf) {
+    var d = demaisDados(op, cf);
+    var h = '<div class="op-grupo">' + demaisRot() + (d ? ' — CFOP ' + cf : '') + '</div>';
+    if (d) {
+      var g = (regime === 'sn' || regime === 'hib') && CSOSN_CFOP[cf];
+      return h + '<table class="op-outros"><tbody>' + d.map(function (o) {
+        return '<tr><td>' + esc(o[0]) + '</td><td>' + (o[1]
+          ? '<span class="op-val' + (o[1].length > 24 ? ' longo' : '') + '">' + esc(o[1]) + botaoCopia(o[1], 'Copiar ' + o[0].split(' (')[0]) + '</span>'
+          : '<span class="op-nota" style="margin:0">fale com a gente</span>') + '</td></tr>';
+      }).join('') + '</tbody></table>' + (g ? '<div class="op-nota">' + g.fonte + '</div>' : '');
+    }
+    return h + '<div class="op-nota">' + demaisTexto() + '</div>';
+  }
+
+  function regimeDefine(r, quieto) {
+    regime = REGIMES[r] ? r : '';
+    document.querySelectorAll('#regime [data-reg]').forEach(function (b) {
+      b.setAttribute('aria-pressed', b.dataset.reg === regime ? 'true' : 'false');
+    });
+    var n = $('regime-nota');
+    n.hidden = !regime;
+    n.innerHTML = regime ? REGIMES[regime].nota : '';
+    try { if (regime) localStorage.setItem('kluke-regime', regime); else localStorage.removeItem('kluke-regime'); } catch (e) { /* sem armazenamento */ }
+    cfopAplica();
+    if (!quieto) guardaEndereco();
+  }
+  $('regime').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-reg]');
+    if (b) regimeDefine(b.dataset.reg === regime ? '' : b.dataset.reg);
+  });
+
+  function listaOps(ops) {
+    return '<div class="cfop-atalhos" style="margin-bottom:4px"><span>Escolha a operação:</span></div>' +
+      ops.map(function (op) {
+        return '<button type="button" class="chip" data-cfop="' + op.c[0] + '" style="display:block;margin:5px 0;text-align:left">' +
+               op.c.join(' · ') + ' — ' + esc(op.d) + '</button>';
+      }).join('');
+  }
+
+  var cfopAtual = '';
+  function cfopAplica() {
+    var v = $('cfop-q').value.trim();
+    cfopAtual = v;
+    var res = $('cfop-res'), html = '';
+    var dig = v.replace(/[\s.]/g, '');
+    if (!v) html = '';
+    else if (/^\d+$/.test(dig)) {
+      var achou = OPERACOES.filter(function (op) { return op.c.some(function (c) { return c.indexOf(dig) === 0; }); });
+      if (dig.length >= 4) {
+        if (dig.length > 4) html = '<div class="cfop-vazio">O CFOP tem <b>4 dígitos</b>, como 5102 ou 6152. Confira o número.</div>';
+        else if (achou.length) html = cartaoOp(achou[0], dig);
+        else {
+          html = '<div class="cfop-vazio"><b>O CFOP ' + esc(dig) + ' ainda não está nesta consulta.</b> Fale com a gente antes de emitir a nota — não use o código de um CFOP parecido.';
+          if ('123'.indexOf(dig.charAt(0)) > -1) html += '<br>É um CFOP de <b>entrada</b>: na compra, quem preenche o IBS e a CBS é o fornecedor, na nota dele. A sua empresa só preenche quando ela mesma emite a nota de entrada.';
+          html += '</div>';
+        }
+      } else html = achou.length ? listaOps(achou) : '<div class="cfop-vazio">Nenhum CFOP desta consulta começa com <b>' + esc(dig) + '</b>.</div>';
+    } else {
+      var termos = dobra(v).split(/\s+/).filter(Boolean);
+      var ops = OPERACOES.filter(function (op) { return termos.every(function (t) { return op.hay.indexOf(t) > -1; }); });
+      html = !ops.length ? '<div class="cfop-vazio">Nenhuma operação encontrada. Tente pelo número do CFOP, que está na nota fiscal.</div>'
+           : ops.length === 1 ? cartaoOp(ops[0], '') : listaOps(ops);
+    }
+    res.innerHTML = html;
+    $('cfop').classList.toggle('tem-res', !!html);
+    atualizaOpEscolhida();
+  }
+  function cfopDefine(v) { $('cfop-q').value = v; cfopAplica(); }
+
+  var atalhos = $('cfop-atalhos');
+  ATALHOS.forEach(function (c) {
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'chip';
+    b.dataset.cfop = c;
+    b.textContent = c;
+    atalhos.appendChild(b);
+  });
+  function vaiParaBusca() {
+    var q = $('q');
+    document.querySelector('.busca').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    setTimeout(function () { q.focus({ preventScroll: true }); }, 350);
+  }
+  function vaiParaCfop() {
+    $('cfop').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    setTimeout(function () { $('cfop-q').focus({ preventScroll: true }); }, 350);
+  }
+
+  // O aviso acima da busca diz com qual operação a ficha vai ser montada —
+  // sem ele, quem rolou até a tabela esquece o CFOP que escolheu lá em cima.
+  function atualizaOpEscolhida() {
+    var ctx = opContexto();
+    $('op-escolhida').innerHTML = (regime ? 'Regime: <b>' + esc(REGIMES[regime].n) + '</b> · ' : '') + (ctx
+      ? 'Operação escolhida: <b>CFOP ' + esc(ctx.cf) + ' — ' + esc(ctx.op.d) + '</b>. Clique num produto para ver a nota preenchida.<button type="button" id="op-trocar">trocar</button>'
+      : 'Operação: <b>venda</b>. Clique num produto para ver a nota preenchida. Se não for venda, escolha o CFOP no quadro acima.<button type="button" id="op-trocar">escolher</button>');
+  }
+  $('aviso-busca').addEventListener('click', function (e) {
+    var b = e.target.closest('#usar-cfop');
+    if (!b) return;
+    var c = b.dataset.cfopQ;
+    $('q').value = '';
+    estado.q = '';
+    cfopDefine(c);
+    aplica();
+    vaiParaCfop();
+  });
+  $('op-escolhida').addEventListener('click', function (e) { if (e.target.id === 'op-trocar') vaiParaCfop(); });
+
+  $('cfop').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-cfop]');
+    if (b) { cfopDefine(b.dataset.cfop); guardaEndereco(); return; }
+    if (e.target.closest('.btn-ncm')) { vaiParaBusca(); return; }
+    var ex = e.target.closest('[data-ex]');
+    if (ex) {
+      var row = ITENS.filter(function (x) { return x.cod === ex.dataset.ex && x.perm !== 2; })[0];
+      if (row) abreFicha(row);
+      return;
+    }
+    var eq = e.target.closest('[data-q]');
+    if (eq) {
+      limpaFiltros();
+      $('q').value = eq.dataset.q;
+      estado.q = eq.dataset.q;
+      aplica();
+      vaiParaBusca();
+    }
+  });
+  // O regime é da empresa, não da consulta: fica guardado no navegador para a
+  // próxima visita. O endereço (#reg=) vale mais, se vier.
+  var reg0 = '';
+  try { reg0 = localStorage.getItem('kluke-regime') || ''; } catch (e) { /* sem armazenamento */ }
+  regimeDefine(reg0, true);
+  atualizaOpEscolhida();
+  var debCfop;
+  $('cfop-q').addEventListener('input', function () {
+    clearTimeout(debCfop);
+    debCfop = setTimeout(function () { cfopAplica(); guardaEndereco(); }, 120);
+  });
+
+  /* ─── Endereço compartilhável ─── */
+  function guardaEndereco() {
+    var p = [];
+    if (regime) p.push('reg=' + regime);
+    if (cfopAtual) p.push('cfop=' + encodeURIComponent(cfopAtual));
+    if (estado.q) p.push('q=' + encodeURIComponent(estado.q));
+    if (estado.cls) p.push('cls=' + estado.cls);
+    if (estado.cst) p.push('cst=' + estado.cst);
+    if (estado.tipo) p.push('tipo=' + estado.tipo);
+    if (estado.ved) p.push('ved=1');
+    if (estado.exc) p.push('exc=1');
+    if (estado.item >= 0) p.push('item=' + estado.item);
+    var h = p.length ? '#' + p.join('&') : '';
+    if (h !== location.hash) history.replaceState(null, '', location.pathname + location.search + h);
+  }
+  function leEndereco() {
+    var h = location.hash.replace(/^#/, '');
+    if (!h) return;
+    h.split('&').forEach(function (par) {
+      var i = par.indexOf('='), k = i < 0 ? par : par.slice(0, i), v = i < 0 ? '' : decodeURIComponent(par.slice(i + 1));
+      if (k === 'q') estado.q = v;
+      else if (k === 'cfop') cfopDefine(v);
+      else if (k === 'reg') regimeDefine(v, true);
+      else if (k === 'cls' && classes[v]) estado.cls = v;
+      else if (k === 'cst' && csts[v]) estado.cst = v;
+      else if (k === 'tipo' && (v === 'ncm' || v === 'nbs')) estado.tipo = v;
+      else if (k === 'ved') estado.ved = v === '1';
+      else if (k === 'exc') estado.exc = v === '1';
+      else if (k === 'item' && dic.desc[+v] !== undefined) estado.item = +v;
+    });
+    sincronizaChips();
+  }
+
+  /* ─── CSV ─── */
+  var COLS = ['Tipo', 'Codigo', 'Codigo formatado', 'Descricao do item do anexo', 'Descricao oficial NCM',
+              'cClassTrib', 'Nome cClassTrib', 'CST', 'Nome CST', 'Reducao IBS (%)', 'Reducao CBS (%)',
+              'Permissao', 'Condicao', 'Excecao', 'Observacao', 'Base legal', 'Fonte'];
+  function csvCampo(v) { return '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"'; }
+  function montaCSV() {
+    var l = [COLS.map(csvCampo).join(';')];
+    filtrados.forEach(function (o) {
+      var cl = o.cl;
+      l.push([o.tipo === 1 ? 'NBS' : 'NCM', o.cod, o.fmt, o.desc, o.ncm, o.cls, cl.n, cl.cst, csts[cl.cst] || '',
+              cl.ri, cl.rc, o.perm === 2 ? 'VEDADO' : (o.perm === 1 ? 'PERMITIDO' : ''),
+              o.cond, o.exc, o.obs, cl.url,
+              o.compl ? 'Complemento Kluke (fora da tabela SVRS)' : o.rtc ? 'Calculadora da Receita + LC 214 (fora da tabela SVRS)' : 'SVRS'].map(csvCampo).join(';'));
+    });
+    return l.join('\r\n');
+  }
+  function avisa(botao, texto) {
+    var antes = botao.textContent;
+    botao.textContent = texto;
+    setTimeout(function () { botao.textContent = antes; }, 1800);
+  }
+  $('b-csv').addEventListener('click', function () {
+    // BOM para o Excel pt-BR abrir os acentos corretamente.
+    var blob = new Blob(['\uFEFF' + montaCSV()], { type: 'text/csv;charset=utf-8;' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'vinculo-ncm-nbs-cclasstrib.csv';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+  });
+  $('b-copia').addEventListener('click', function () {
+    var b = this;
+    copiaTexto(montaCSV()).then(
+      function () {
+        avisa(b, 'Copiado!');
+        $('aviso-copia').textContent = filtrados.length + ' linhas copiadas';
+      },
+      function () { avisa(b, 'Não foi possível copiar'); }
+    );
+  });
+
+  /* ─── Preenchimento inicial ─── */
+  var porClasse = Object.create(null);
+  ITENS.forEach(function (o) { porClasse[o.cls] = (porClasse[o.cls] || 0) + 1; });
+
+  var ordemClasses = Object.keys(classes).sort();
+  var selC = $('f-class');
+  ordemClasses.forEach(function (c) {
+    var op = document.createElement('option');
+    op.value = c;
+    op.textContent = c + ' — ' + classes[c].n;
+    selC.appendChild(op);
+  });
+  var selCst = $('f-cst');
+  Object.keys(csts).sort().forEach(function (c) {
+    var op = document.createElement('option');
+    op.value = c;
+    op.textContent = c + ' — ' + csts[c];
+    selCst.appendChild(op);
+  });
+
+  var legHTML = ordemClasses.map(function (c) {
+    var cl = classes[c];
+    var red = (cl.ri || cl.rc) ? (cl.ri === cl.rc ? '−' + pct(cl.ri) : '−' + pct(cl.ri) + ' / −' + pct(cl.rc)) : '—';
+    return '<tr>' +
+      '<td><span class="cod-linha"><button type="button" class="leg-btn" data-cls="' + esc(c) + '">' + esc(c) + '</button>' +
+        botaoCopia(c, 'Copiar cClassTrib') + '</span>' +
+        (cl.compl || cl.rtc ? '<span class="tag-compl">fora da tabela SVRS</span>' : '') + '</td>' +
+      '<td>' + esc(cl.cst) + '</td>' +
+      '<td>' + esc(red) + '</td>' +
+      '<td>' + esc(cl.d || cl.n) +
+        (cl.url ? '<br><a href="' + esc(cl.url) + '" target="_blank" rel="noopener">' + esc(cl.url.split('#')[1] ? 'LC 214/2025, ' + cl.url.split('#')[1].replace('art', 'art. ') : cl.url) + '</a>' : '') +
+      '</td>' +
+      '<td class="leg-n">' + (porClasse[c] || 0).toLocaleString('pt-BR') + '</td>' +
+    '</tr>';
+  }).join('');
+  $('leg-corpo').innerHTML = legHTML;
+  $('leg-corpo').addEventListener('click', function (e) {
+    var b = e.target.closest('.leg-btn');
+    if (!b) return;
+    limpaFiltros();
+    estado.cls = b.dataset.cls;
+    sincronizaChips();
+    aplica();
+    $('q').scrollIntoView({ block: 'center' });
+  });
+
+  $('n-class').textContent = ordemClasses.length;
+  $('m-svrs').textContent = ordemClasses.filter(function (c) { return !classes[c].compl; }).length;
+  $('m-compl').textContent = ITENS.filter(function (o) { return o.compl; }).length;
+  $('m-pub').textContent = DB.meta.publicadas || 'cerca de 170';
+  $('m-rtc').textContent = ITENS.filter(function (o) { return o.rtc; }).length;
+  $('m-rtc-v').textContent = DB.meta.rtc ? 'versão ' + DB.meta.rtc.script + ', de ' + DB.meta.rtc.data.split('-').reverse().join('/') : 'versão não registrada';
+  $('m-ncm').textContent = DB.meta.fonteNcm;
+  var dataBR = DB.meta.coletadoEm.split('-').reverse().join('/');
+  $('m-data').textContent = dataBR;
+  $('m-data2').textContent = dataBR;
+
+  /* O thead gruda logo abaixo do painel de busca, cuja altura muda conforme os
+     filtros quebram em mais linhas. */
+  function mediaBusca() {
+    document.documentElement.style.setProperty('--busca-h', $('busca-altura').offsetHeight + 'px');
+  }
+  var painel = document.querySelector('.busca');
+  painel.id = 'busca-altura';
+  mediaBusca();
+  if ('ResizeObserver' in window) new ResizeObserver(mediaBusca).observe(painel);
+  else window.addEventListener('resize', mediaBusca);
+
+  /* Link colado com a página já aberta (ou botão "voltar"): só o hash muda e o
+     navegador não recarrega. Sem isto, um link compartilhado clicado de dentro
+     da própria página não faria nada. */
+  window.addEventListener('hashchange', function () {
+    limpaFiltros();
+    cfopDefine('');
+    leEndereco();
+    aplica();
+  });
+
+  leEndereco();
+  aplica();
+})();
+</script>
+</body>
+</html>
