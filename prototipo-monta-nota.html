@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Monte sua nota — Kluke Serviços Contábeis</title>
+<!-- Protótipo: tirar o noindex ao publicar. O og:url assume que a página vai
+     ao ar como "monte-sua-nota"; se o nome for outro, troque aqui e no CATALOGO. -->
+<meta name="robots" content="noindex">
+<meta name="description" content="Escolha o regime da empresa, o tipo de nota e os produtos, e veja o que preencher em cada item da NF-e: CFOP, CST ou CSOSN do ICMS, CST e cClassTrib do IBS e da CBS.">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Kluke Serviços Contábeis">
+<meta property="og:title" content="Monte sua nota — o que preencher em cada produto da NF-e">
+<meta property="og:description" content="Escolha o regime da empresa, o tipo de nota e os produtos, e veja o que preencher em cada item da NF-e: CFOP, CST ou CSOSN do ICMS, CST e cClassTrib do IBS e da CBS.">
+<meta property="og:url" content="https://link.kluke.com.br/monte-sua-nota">
+<meta property="og:image" content="https://link.kluke.com.br/original-5b2bf023264c2-K.png">
+<meta property="og:locale" content="pt_BR">
+<meta name="twitter:card" content="summary">
+<link rel="icon" type="image/svg+xml" href="https://link.kluke.com.br/images/kluke_favicon.svg" media="(prefers-color-scheme: light)">
+<link rel="icon" type="image/svg+xml" href="https://link.kluke.com.br/images/kluke_favicon_dark.svg" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="96x96" href="https://link.kluke.com.br/images/kluke_favicon_96px.png">
+<link rel="icon" type="image/png" sizes="192x192" href="https://link.kluke.com.br/images/kluke_favicon_192px.png">
+<link rel="icon" type="image/png" sizes="512x512" href="https://link.kluke.com.br/images/kluke_favicon_512px.png">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0d1f3c;--gold:#c8a84b;--gold-light:#e8c97a;--gold-text:#7a6019;--cream:#f8f4ee;--text:#2a2a2a;--muted:#6b6b6b;--line:#ddd5c4;--ok:#2f6b3a;--warn:#8a4b0f}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#e8e4de;font-family:'Source Sans 3',sans-serif;min-height:100vh;color:var(--text)}
+.com-wrapper{max-width:980px;margin:0 auto;background:var(--cream);box-shadow:0 4px 32px rgba(0,0,0,0.15)}
+.com-header{background:var(--cream);padding:22px 28px 20px;text-align:center;border-bottom:1px solid var(--line)}
+.com-header-logo{display:block;height:42px;width:auto;max-width:100%;margin:0 auto}
+.com-header-rules{border-top:2px solid var(--gold);border-bottom:1px solid var(--gold);padding:9px 0;margin:15px 0}
+.com-firm-name{font-family:'Playfair Display',serif;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--navy);line-height:1.4}
+.com-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--navy);line-height:1.3}
+.com-subtitle{font-size:12px;font-weight:300;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-top:5px}
+.com-gold-bar{height:3px;background:linear-gradient(90deg,var(--gold),var(--gold-light),var(--gold))}
+
+/* ─── Faixa de protótipo: some quando virar página de verdade ─── */
+.aviso-validade{border-top:1px solid var(--warn);border-bottom:1px solid var(--warn);color:var(--warn);font-size:13px;font-weight:600;text-align:center;padding:8px 16px;line-height:1.45}
+.aviso-validade p{margin:2px 0}
+.proto{background:#fff4d6;border-bottom:1px solid var(--gold);color:var(--warn);font-size:13px;text-align:center;padding:8px 16px}
+
+.corpo{padding:24px 28px 30px}
+.passo{background:#fff;border:1px solid var(--line);border-radius:8px;padding:16px 18px;margin-bottom:14px}
+.passo-h{display:flex;align-items:baseline;gap:10px;margin-bottom:10px}
+.passo-n{flex:none;width:24px;height:24px;border-radius:50%;background:var(--navy);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;transform:translateY(3px)}
+.passo-t{font-family:'Playfair Display',serif;font-size:17px;color:var(--navy)}
+.passo-d{font-size:13px;color:var(--muted);margin:-4px 0 10px 34px}
+.passo-c{margin-left:34px}
+.passo.feito .passo-n{background:var(--gold);color:var(--navy)}
+/* O que espera resposta agora: o passo ganha moldura dourada e, dentro dele, a pergunta da vez uma barra à esquerda. */
+.passo.atual{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold),0 4px 14px rgba(200,168,75,.18)}
+.pergunta.atual{border-left:3px solid var(--gold);padding-left:10px;margin-left:-13px}
+.pergunta.atual .pergunta-q::after{content:' ← escolha aqui';font-weight:400;color:var(--gold-text)}
+.resumo{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:15px}
+.resumo b{color:var(--navy)}
+.link{background:none;border:none;color:var(--gold-text);font:inherit;font-size:14px;font-weight:600;text-decoration:underline;cursor:pointer;padding:0}
+
+.opcoes{display:flex;flex-wrap:wrap;gap:8px}
+.opc{background:#fff;border:1px solid var(--line);border-radius:6px;padding:9px 14px;font:inherit;font-size:14px;color:var(--text);cursor:pointer;text-align:left;line-height:1.3}
+.opc:hover{border-color:var(--gold)}
+.opc.on{border-color:var(--navy);background:var(--navy);color:#fff}
+.opc small{display:block;font-size:12px;color:var(--muted);margin-top:2px}
+.opc.on small{color:rgba(255,255,255,.75)}
+.opc.grande{flex:1 1 190px;padding:12px 14px}
+.opc.grande b{display:block;font-size:15px}
+.pergunta{margin-top:12px}
+.pergunta-q{font-size:13px;font-weight:600;color:var(--navy);margin-bottom:6px}
+
+.busca{position:relative}
+.busca input{width:100%;font:inherit;font-size:16px;padding:11px 14px;border:1px solid var(--line);border-radius:6px;background:#fff}
+.busca input:focus{outline:2px solid var(--gold);outline-offset:-1px}
+.sug{position:absolute;left:0;right:0;top:100%;margin-top:4px;background:#fff;border:1px solid var(--line);border-radius:6px;box-shadow:0 8px 24px rgba(13,31,60,.15);z-index:5;max-height:340px;overflow:auto}
+.sug button{display:block;width:100%;text-align:left;background:none;border:none;border-bottom:1px solid #f0ebe1;padding:9px 14px;font:inherit;font-size:14px;cursor:pointer;color:var(--text)}
+.sug button:hover,.sug button:focus{background:var(--cream);outline:none}
+.sug .s-ncm{font-variant-numeric:tabular-nums;font-weight:700;color:var(--navy);margin-right:8px}
+.sug .s-of{display:block;font-size:12px;color:var(--muted)}
+.sug .s-tag{font-size:11px;font-weight:700;border-radius:3px;padding:1px 6px;margin-left:6px;border:1px solid}
+.s-tag.ben{color:var(--ok);border-color:var(--ok)}
+.s-tag.nor{color:var(--muted);border-color:#bbb}
+.s-tag.pop{color:var(--gold-text);border-color:var(--gold)}
+.sug .s-msg{padding:10px 14px;font-size:13px;color:var(--muted)}
+.sug .s-mig{display:block;font-size:11.5px;color:var(--muted);line-height:1.35;margin-bottom:2px}
+.sug .s-mais{padding:8px 14px;font-size:12.5px;color:var(--muted);background:var(--cream)}
+.alerta{color:var(--warn);font-weight:600}
+.mig{display:block;font-size:11.5px;color:var(--muted);margin-top:1px;line-height:1.35}
+.fonte-dados{border-top:1px solid var(--line);margin-top:6px;padding-top:6px;font-size:11.5px;color:var(--muted);list-style:none}
+.notas li.fonte-dados{margin-left:0}
+.dica{font-size:12.5px;color:var(--muted);margin-top:6px}
+
+/* ─── O "DANFE": só o quadro de produtos, com cabeçalho de natureza ───
+   Bordas finas e rótulos pequenos em caixa alta, como no documento que o
+   cliente conhece. Tudo em borda — sobrevive à impressão sem fundo. */
+.danfe{border:1.5px solid var(--navy);background:#fff;margin-top:22px}
+.danfe-cab{display:grid;grid-template-columns:2fr 1fr 1fr;border-bottom:1.5px solid var(--navy)}
+.campo{padding:6px 10px;border-right:1px solid var(--navy);min-width:0}
+.campo:last-child{border-right:none}
+.campo-l{font-size:9.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.campo-v{font-size:14px;font-weight:600;color:var(--navy);margin-top:1px}
+.danfe-tit{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--navy);padding:5px 10px;border-bottom:1px solid var(--navy);background:var(--cream)}
+.tab-wrap{overflow-x:auto}
+table.itens{width:100%;border-collapse:collapse;font-size:14px;min-width:760px}
+.itens th{font-size:9.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);text-align:left;padding:6px 8px;border-bottom:1px solid var(--navy);border-right:1px solid var(--line);white-space:nowrap}
+.itens td{padding:8px;border-bottom:1px solid var(--line);border-right:1px solid var(--line);vertical-align:top}
+.itens th:last-child,.itens td:last-child{border-right:none}
+.itens td.num{color:var(--muted);font-size:12px;width:28px}
+.itens input.desc{width:100%;font:inherit;font-size:14px;font-weight:600;border:1px solid transparent;border-radius:4px;padding:2px 4px;margin:-3px -5px 0;background:none;color:var(--text)}
+.itens input.desc:hover{border-color:var(--line)}
+.itens input.desc:focus{border-color:var(--gold);outline:none;background:#fff}
+.sit{font-size:12.5px;color:var(--muted);margin-top:3px;line-height:1.4}
+.sit .ben{color:var(--ok);font-weight:600}
+.escolha{margin-top:6px;border:1px dashed var(--gold);border-radius:6px;padding:8px 10px;background:#fffdf6}
+.escolha-q{font-size:12.5px;font-weight:700;color:var(--warn);margin-bottom:5px}
+.escolha .opc{font-size:13px;padding:6px 10px}
+
+/* Célula de código: clicar copia exatamente o que está escrito nela. */
+.cp{font-variant-numeric:tabular-nums;font-weight:700;color:var(--navy);background:none;border:1px solid transparent;border-radius:4px;padding:2px 5px;margin:-3px -6px;font-family:inherit;font-size:14px;cursor:copy;white-space:nowrap}
+.cp:hover{border-color:var(--gold);background:var(--cream)}
+.pend{font-size:12px;color:var(--warn);font-style:italic}
+.so-papel{display:none}
+.nada{font-size:12px;color:var(--muted);white-space:nowrap}
+.rm{background:none;border:none;color:#a33;font-size:18px;line-height:1;cursor:pointer;padding:0 4px}
+.vazio{padding:26px 12px;text-align:center;color:var(--muted);font-size:14px}
+
+.notas{border-top:1.5px solid var(--navy);padding:8px 12px 10px;font-size:13px;line-height:1.5}
+.notas li{margin:3px 0 3px 18px}
+.notas a{color:var(--gold-text)}
+.acoes{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.btn{font:inherit;font-size:14px;font-weight:600;border-radius:6px;padding:9px 16px;cursor:pointer;border:1px solid var(--navy);background:var(--navy);color:#fff}
+.btn.sec{background:#fff;color:var(--navy)}
+.btn:disabled{opacity:.4;cursor:default}
+
+.toast{position:fixed;left:50%;bottom:30px;transform:translateX(-50%) translateY(20px);background:var(--navy);color:#fff;padding:9px 18px;border-radius:30px;font-size:14px;opacity:0;transition:opacity .2s,transform .2s;pointer-events:none;z-index:1000}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+
+.com-footer{background:var(--navy);border-top:2px solid var(--gold);padding:22px 28px;color:rgba(255,255,255,.6);font-size:12px;line-height:1.75}
+.com-footer-cols{display:flex;flex-wrap:wrap;gap:22px}
+.com-footer-col{flex:1 1 160px}
+.com-footer-h{font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:7px}
+.com-footer a{color:rgba(255,255,255,.8);text-decoration:none;display:block}
+.com-footer a:hover{color:var(--gold-light)}
+.com-footer .addr-p{display:block}
+.com-footer-social{display:flex;gap:9px;margin-top:8px}
+.com-footer-social a{display:flex;align-items:center;justify-content:center;width:30px;height:30px;border:1px solid rgba(255,255,255,.3);border-radius:50%;color:var(--gold-light)}
+.com-footer-social a:hover{border-color:var(--gold);color:var(--gold)}
+.com-footer-social svg{width:15px;height:15px}
+.com-footer-fine{border-top:1px solid rgba(255,255,255,.15);margin-top:18px;padding-top:12px;font-size:11px;color:rgba(255,255,255,.55);text-align:center;line-height:1.7}
+.btn-print{position:fixed;bottom:28px;right:28px;background:var(--navy);color:var(--gold);border:1px solid var(--gold);border-radius:50px;padding:12px 22px;font-family:'Source Sans 3',sans-serif;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px;box-shadow:0 4px 16px rgba(13,31,60,.25);transition:background .2s,color .2s;z-index:999}
+.btn-print:hover{background:var(--gold);color:var(--navy)}
+@media screen and (max-width:1140px){body{padding-bottom:calc(78px + env(safe-area-inset-bottom,0px))}.btn-print{bottom:calc(16px + env(safe-area-inset-bottom,0px));right:16px}}
+
+@media (max-width:600px){
+  .com-header{padding:18px 16px 16px}
+  .corpo{padding:16px}
+  .passo{padding:14px}
+  .passo-c,.passo-d{margin-left:0}
+  .danfe-cab{grid-template-columns:1fr 1fr}
+  .danfe-cab .campo:first-child{grid-column:1/-1;border-right:none;border-bottom:1px solid var(--navy)}
+  .com-footer{padding:20px 16px}
+  /* Cada produto vira um cartão: descrição em cima, os cinco códigos em grade
+     com o rótulo de cada um (data-l). Sem isso a tabela de 760px cortava logo
+     depois do NCM e os códigos, que são o motivo da página, ficavam fora da tela. */
+  .tab-wrap{overflow:visible}
+  table.itens{min-width:0}
+  .itens thead{display:none}
+  .itens tbody,.itens tr{display:block}
+  .itens tr{display:grid;grid-template-columns:1fr 1fr;position:relative;border-bottom:1.5px solid var(--navy);padding:6px 0 8px}
+  .itens tr:last-child{border-bottom:none}
+  .itens td{border:none;padding:5px 12px}
+  .itens td.num{display:none}
+  .itens td:nth-child(2),.itens td.vazio{grid-column:1/-1;padding-right:40px}
+  .itens td[data-l]::before{content:attr(data-l);display:block;font-size:9.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
+  .itens td.rm-c{position:absolute;top:8px;right:6px;padding:0}
+}
+
+/* ─── Impressão: só a nota montada ─── */
+@media print{
+  @page{size:A4;margin:12mm}
+  body{background:#fff;padding:0!important}
+  .com-wrapper{box-shadow:none;max-width:none}
+  .btn-print,.proto,.passos,.acoes,.escolha,.rm,.toast{display:none!important}
+  .com-header{padding:2px 0 5px;border-bottom:none}
+  .com-header-logo{height:28px!important}
+  .com-header-rules{padding:5px 0;margin:8px 0 9px}
+  .com-gold-bar{display:none}
+  .corpo{padding:0}
+  .danfe{margin-top:6px}
+  .danfe-tit{background:none}
+  table.itens{min-width:0;font-size:11px}
+  .itens input.desc{border:none;padding:0;margin:0;font-size:11px}
+  .mig a,.sit .link,.so-tela{display:none}
+  .so-papel{display:inline}
+  .cp{border:none;padding:0;margin:0;font-size:11px}
+  .com-footer{background:none!important;border-top:1px solid #ccc;padding:7px 0 0;color:#444!important;font-size:8.5px;line-height:1.5;margin-top:14px}
+  .com-footer-cols{gap:0 16px;justify-content:center}
+  .com-footer-col{flex:0 0 auto;text-align:center}
+  .com-footer-h{color:#888!important;font-size:7px;margin-bottom:2px;letter-spacing:.1em}
+  .com-footer a{color:#444!important;display:inline;margin:0 4px}
+  .com-footer-col:nth-child(3){display:none!important}
+  .com-footer .addr-p{display:inline}
+  .com-footer .addr-p+.addr-p::before{content:" · "}
+  .com-footer-fine{border-top:none;margin-top:4px;padding-top:0;color:#777!important;font-size:7.5px;line-height:1.45}
+}
+</style>
+</head>
+<body>
+<div class="com-wrapper">
+
+<div class="com-header">
+  <a href="https://www.kluke.com.br" target="_blank" rel="noopener">
+    <img class="com-header-logo" src="https://link.kluke.com.br/images/KlukeLogo.svg" alt="Kluke Serviços Contábeis">
+  </a>
+  <div class="com-header-rules">
+    <div class="com-firm-name">Kluke Serviços Contábeis e Econômicos</div>
+  </div>
+  <h1 class="com-title">Monte sua nota</h1>
+  <div class="com-subtitle">O que preencher em cada produto da NF-e</div>
+</div>
+<div class="com-gold-bar"></div>
+<div class="proto"><b>Em teste, não publicado.</b> Só mercadorias. Confira com a gente antes de usar numa nota de verdade.</div>
+<div class="aviso-validade" id="aviso-validade" hidden></div>
+
+<div class="corpo">
+  <div class="passos">
+    <div class="passo" id="p1"></div>
+    <div class="passo" id="p2"></div>
+    <div class="passo" id="p3"></div>
+  </div>
+
+  <div class="danfe">
+    <div class="danfe-cab">
+      <div class="campo"><div class="campo-l">Natureza da operação</div><div class="campo-v" id="d-nat">—</div></div>
+      <div class="campo"><div class="campo-l">Regime da empresa</div><div class="campo-v" id="d-reg">—</div></div>
+      <div class="campo"><div class="campo-l">Destino</div><div class="campo-v" id="d-dest">—</div></div>
+    </div>
+    <div class="danfe-tit">Dados dos produtos</div>
+    <div class="tab-wrap"><table class="itens">
+      <thead><tr><th>#</th><th>Descrição</th><th>NCM</th><th>CFOP</th><th id="h-icms">ICMS</th><th>CST IBS/CBS</th><th>cClassTrib</th><th></th></tr></thead>
+      <tbody id="corpo"></tbody>
+    </table></div>
+    <ul class="notas" id="notas"></ul>
+  </div>
+  <div class="acoes">
+    <button class="btn" id="b-copiar">Copiar tabela</button>
+    <button class="btn sec" id="b-limpar">Começar outra nota</button>
+  </div>
+</div>
+
+</div>
+
+<div class="com-footer">
+  <div class="com-footer-cols">
+    <div class="com-footer-col">
+      <div class="com-footer-h">Dúvidas? Fale conosco</div>
+      <a href="tel:4733820601">(47) 3382-0601</a>
+      <a href="tel:4733820767">(47) 3382-0767</a>
+      <a href="https://wa.me/5547984321322" target="_blank" rel="noopener">WhatsApp (47) 98432-1322</a>
+    </div>
+    <div class="com-footer-col">
+      <div class="com-footer-h">Endereço</div>
+      <a href="https://maps.app.goo.gl/BLgMuJf6wUEH9B5c6" target="_blank" rel="noopener"><span class="addr-p">Av. Nereu Ramos, 64</span><span class="addr-p">Timbó — Santa Catarina</span></a>
+    </div>
+    <div class="com-footer-col">
+      <div class="com-footer-h">Acompanhe</div>
+      <div class="com-footer-social">
+        <a href="https://www.instagram.com/klukecontabil/" target="_blank" rel="noopener" aria-label="Instagram da Kluke"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><line x1="17.5" y1="6.5" x2="17.5" y2="6.5"/></svg></a>
+        <a href="https://www.facebook.com/klukecontabilidade" target="_blank" rel="noopener" aria-label="Facebook da Kluke"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg></a>
+        <a href="https://www.kluke.com.br" target="_blank" rel="noopener" aria-label="Site da Kluke"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></a>
+      </div>
+    </div>
+  </div>
+  <div class="com-footer-fine">
+    © 2026 Kluke Serviços Contábeis e Econômicos Ltda &nbsp;·&nbsp; CNPJ 76.860.386/0001-73 &nbsp;·&nbsp; CRC-SC 1081<br>
+    Simulação para orientar o preenchimento — não é documento fiscal
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<button class="btn-print" id="b-imprimir"><svg style="width:16px;height:16px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>Imprimir a nota</button>
+
+<script src="comum/vinculo-dados.js?v=2026-11-24"></script>
+<script src="comum/operacoes.js?v=2026-11-24"></script>
+<script src="comum/ncm-completa.js?v=2026-11-24"></script>
+<script src="comum/sinonimos.js?v=2026-10-29e"></script>
+<script src="comum/busca.js?v=2026-10-29"></script>
+<script>
+(function () {
+  'use strict';
+
+  /* ─── Dados ───
+     Os mesmos arquivos da página de consulta (ver CLAUDE.md, "Dados
+     compartilhados"): vínculos do SVRS, operações curadas pela Kluke e a
+     nomenclatura NCM completa. Nada de tributação é decidido aqui — esta
+     página só junta as três fontes no formato da nota. */
+  var V = window.KLUKE_VINCULO, O = window.KLUKE_OPERACOES, N = window.KLUKE_NCM;
+  if (!V || !O || !N) {
+    document.querySelector('.passos').innerHTML = '<div class="passo">Não foi possível carregar os dados desta página. Recarregue; se continuar, fale com a gente.</div>';
+    return;
+  }
+
+  var NCM = Object.create(null);           // código (2 a 8 dígitos) -> texto oficial
+  N.n.forEach(function (x) { NCM[x[0]] = N.seg[x[1]]; });
+  var FOLHAS = N.n.filter(function (x) { return x[0].length === 8; }).map(function (x) { return x[0]; });
+
+  var VINC = Object.create(null);          // NCM -> linhas do SVRS (só NCM; NBS é serviço)
+  V.rows.forEach(function (r) { if (r[0] === 0) (VINC[r[1]] = VINC[r[1]] || []).push(r); });
+
+  /* Códigos que o SVRS ainda vincula mas a nomenclatura vigente desdobrou.
+     Em geral o SVRS também vincula os novos (0207.14.00 -> 0207.14.11 a .39,
+     todos na cesta básica), mas nem sempre: de 2827.39.98 saíram 16 códigos e
+     só 2 estão no vínculo. Para um código novo sem vínculo, vindo de um antigo
+     com benefício, a página manda conferir em vez de afirmar tributação normal. */
+  var ANTIGOS = Object.keys(VINC).filter(function (c) { return !NCM[c]; });
+  function antigoDe(c) {
+    for (var i = 0; i < ANTIGOS.length; i++) if (ANTIGOS[i] !== c && ANTIGOS[i].slice(0, 6) === c.slice(0, 6)) return ANTIGOS[i];
+    return '';
+  }
+
+  (function () {
+    var av = window.KLUKE_OPERACOES.avisosValidade(V.meta.coletadoEm), el = document.getElementById('aviso-validade');
+    if (av.length) { el.innerHTML = av.map(function (t) { return '<p>' + t + '</p>'; }).join(''); el.hidden = false; }
+  })();
+
+  var REG_D = { sn: 'Imposto todo dentro da guia DAS', hib: 'Optou por pagar IBS e CBS fora do DAS', rn: 'Fora do Simples' };
+
+  /* Tipos de nota em linguagem de balcão. Cada escolha aponta para um CFOP de
+     OPERACOES; o que vai no IBS/CBS vem de lá. Quando a operação tem mais de
+     um caso (comodato, entrega futura, comercial exportadora), "caso" diz
+     qual. Brinde não tem lista própria: as escolhas são os casos ("quando")
+     do 5910. CFOP iniciado por 7 é exterior: não pergunta o destino. Os
+     retornos (5913, 5916, 5909, 5902) ficaram de fora: quem emite é quem
+     recebeu o bem, não o cliente que o mandou. */
+  // Texto conferido pela Kluke (29/10/2026), com a ressalva do "Desconhecimento da Operação".
+  var DEVOL_VENDA_OBS = 'Esta é uma <b>nota de entrada</b>. Em geral você a emite quando quem devolve não emite nota fiscal (consumidor, pessoa física). ' +
+    'Se o cliente é empresa, normalmente quem emite a devolução é ele. Você também pode emiti-la quando o cliente registra <b>Desconhecimento da Operação</b> ' +
+    'para a sua nota, ou há outro problema na entrega e a mercadoria volta. Na dúvida, fale com a gente.';
+  var TIPOS = {
+    venda: { n: 'Venda', d: 'Para cliente, loja, consumidor', q: 'O que você vende?', sub: {
+      revenda: { n: 'Mercadoria que comprou pronta', c: '5102', nat: 'Venda de mercadoria de terceiros' },
+      fabrica: { n: 'Mercadoria que você fabrica', c: '5101', nat: 'Venda de produção própria' },
+      ativo: { n: 'Bem do ativo (máquina, veículo, equipamento da empresa)', c: '5551', nat: 'Venda de bem do ativo imobilizado' },
+      // ST: fora do estado o CFOP não é só trocar o 5 pelo 6 (5405 -> 6404); c6 diz qual é.
+      st_rev: { n: 'Mercadoria com ST já recolhida (você revende)', c: '5405', c6: '6404', nat: 'Venda de mercadoria com ST, como substituído' },
+      st_subst: { n: 'Mercadoria com ST que você recolhe (substituto)', c: '5403', nat: 'Venda de mercadoria com ST, como substituto' },
+      st_fab: { n: 'Mercadoria que você fabrica, com ST', c: '5401', nat: 'Venda de produção própria com ST' } } },
+    futura: { n: 'Venda para entrega futura', d: 'Fatura agora, entrega depois', q: 'Qual nota?', sub: {
+      fatura: { n: 'Faturamento, sem pagamento antecipado', c: '5922', caso: 0, nat: 'Simples faturamento, venda para entrega futura' },
+      fatura_pago: { n: 'Faturamento, com pagamento antecipado', c: '5922', caso: 1, nat: 'Simples faturamento, venda para entrega futura' },
+      entrega_rev: { n: 'Entrega — mercadoria que comprou pronta', c: '5117', nat: 'Venda de mercadoria de terceiros, entrega futura' },
+      entrega_fab: { n: 'Entrega — mercadoria que você fabrica', c: '5116', nat: 'Venda de produção própria, entrega futura' } } },
+    devolucao: { n: 'Devolução', d: 'Você devolve ao fornecedor, ou o cliente devolve para você', q: 'Qual devolução?', sub: {
+      revenda: { n: 'Ao fornecedor: comprei para revender', c: '5202', nat: 'Devolução de compra para revenda' },
+      industria: { n: 'Ao fornecedor: comprei para usar na fabricação', c: '5201', nat: 'Devolução de compra para industrialização' },
+      uso: { n: 'Ao fornecedor: comprei para uso e consumo', c: '5556', nat: 'Devolução de compra para uso e consumo' },
+      // Nota de entrada: quem emite é você, quando quem devolve não emite nota.
+      cliente_rev: { n: 'Do cliente: mercadoria que comprei pronta', c: '1202', nat: 'Devolução de venda (entrada)',
+        obs: DEVOL_VENDA_OBS },
+      cliente_fab: { n: 'Do cliente: mercadoria que eu fabrico', c: '1201', nat: 'Devolução de venda de produção própria (entrada)',
+        obs: DEVOL_VENDA_OBS } } },
+    remessa: { n: 'Remessa', d: 'O produto sai, mas continua sendo seu', q: 'Para quê?', sub: {
+      conserto: { n: 'Conserto', c: '5915', nat: 'Remessa para conserto' },
+      demo: { n: 'Demonstração ou mostruário', c: '5912', nat: 'Remessa para demonstração' },
+      feira: { n: 'Feira ou exposição', c: '5914', nat: 'Remessa para feira ou exposição' },
+      comodato: { n: 'Comodato (empréstimo do bem)', c: '5908', caso: 0, nat: 'Remessa em comodato' },
+      comodato_rel: { n: 'Comodato para sócio, empresa do grupo ou parente', c: '5908', caso: 1, nat: 'Remessa em comodato' },
+      industria: { n: 'Industrialização por outra empresa (você manda os insumos)', c: '5901', nat: 'Remessa para industrialização por encomenda' },
+      amostra: { n: 'Amostra grátis, sem crédito de IBS/CBS na compra', c: '5911', caso: 0, nat: 'Remessa de amostra grátis' },
+      amostra_cred: { n: 'Amostra grátis que deu crédito na compra', c: '5911', caso: 1, nat: 'Remessa de amostra grátis' } } },
+    transf: { n: 'Transferência entre filiais', d: 'Mesma empresa, outro estabelecimento', q: 'O que vai?', sub: {
+      revenda: { n: 'Mercadoria que comprou pronta', c: '5152', nat: 'Transferência de mercadoria de terceiros' },
+      fabrica: { n: 'Mercadoria que você fabrica', c: '5151', nat: 'Transferência de produção própria' },
+      ativo: { n: 'Bem do ativo', c: '5552', nat: 'Transferência de bem do ativo imobilizado' },
+      uso: { n: 'Material de uso e consumo', c: '5557', nat: 'Transferência de material de uso e consumo' } } },
+    export: { n: 'Exportação', d: 'Para o exterior ou para comercial exportadora', q: 'Como sai?', sub: {
+      revenda: { n: 'Direto ao exterior — mercadoria que comprou pronta', c: '7102', nat: 'Exportação de mercadoria de terceiros' },
+      fabrica: { n: 'Direto ao exterior — mercadoria que você fabrica', c: '7101', nat: 'Exportação de produção própria' },
+      trading: { n: 'Para comercial exportadora habilitada', c: '5502', caso: 0, nat: 'Remessa com fim específico de exportação',
+        obs: 'Se a mercadoria é de fabricação própria, o CFOP é <b>5501/6501</b>, no lugar de 5502/6502.' },
+      trading_sem: { n: 'Para comercial exportadora sem habilitação', c: '5502', caso: 1, nat: 'Remessa com fim específico de exportação',
+        obs: 'Se a mercadoria é de fabricação própria, o CFOP é <b>5501/6501</b>, no lugar de 5502/6502.' } } },
+    brinde: { n: 'Brinde, bonificação ou doação', d: 'Sai sem o cliente pagar', q: 'Qual é o caso?', c: '5910' }
+  };
+  function opDe(c) { return O.OPERACOES.filter(function (op) { return op.c.indexOf(c) > -1; })[0]; }
+  function subsDe(t) {
+    var T = TIPOS[t];
+    if (T.sub) return T.sub;
+    var op = opDe(T.c), out = {};
+    op.ibs.forEach(function (k, i) { out[String(i)] = { n: k.quando, c: T.c, nat: op.d, caso: i }; });
+    return out;
+  }
+
+  /* ─── Estado ───
+     O regime usa a mesma chave da página de consulta: escolhido numa, vale na
+     outra. A nota em andamento fica guardada para um recarregar não apagá-la. */
+  var CHAVE_REG = 'kluke-regime', CHAVE_NOTA = 'kluke-nota-rascunho';
+  var st = { regime: '', editarRegime: false, tipo: '', sub: '', destino: '', icms: '', itens: [] };
+  try {
+    st.regime = localStorage.getItem(CHAVE_REG) || '';
+    var r = JSON.parse(localStorage.getItem(CHAVE_NOTA) || 'null');
+    if (r && typeof r === 'object') ['tipo', 'sub', 'destino', 'icms'].forEach(function (k) { if (typeof r[k] === 'string') st[k] = r[k]; });
+    if (r && Array.isArray(r.itens)) st.itens = r.itens.filter(function (i) { return i && (NCM[i.ncm] || VINC[i.ncm]) && String(i.ncm).length === 8; }).map(function (i) {
+      return { ncm: i.ncm, desc: String(i.desc || '').slice(0, 120), cls: typeof i.cls === 'string' ? i.cls : '' };
+    });
+  } catch (e) {}
+  if (!O.REGIMES[st.regime]) st.regime = '';
+  if (!TIPOS[st.tipo]) st.tipo = '';
+  if (st.tipo && !subsDe(st.tipo)[st.sub]) st.sub = '';
+  if (['sc', 'fora'].indexOf(st.destino) < 0) st.destino = '';
+  st.itens.forEach(function (it) { if (it.cls && it.cls !== '000001' && !opcoes(it.ncm).some(function (o) { return o.cls === it.cls; })) it.cls = ''; });
+
+  function salvar() {
+    try {
+      if (st.regime) localStorage.setItem(CHAVE_REG, st.regime);
+      localStorage.setItem(CHAVE_NOTA, JSON.stringify({ tipo: st.tipo, sub: st.sub, destino: st.destino, icms: st.icms, itens: st.itens }));
+    } catch (e) {}
+  }
+
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function fmtNcm(n) { return n.slice(0, 4) + '.' + n.slice(4, 6) + '.' + n.slice(6); }
+  function dobra(s) { return String(s).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase(); }
+  function corta(s, n) { return s.length > n ? s.slice(0, n - 1).replace(/\s+\S*$/, '') + '…' : s; }
+  function opc(attr, val, atual, txt, sub, extra, titulo) {
+    return '<button type="button" class="opc' + (extra || '') + (val === atual ? ' on' : '') + '" ' + attr + '="' + esc(val) + '"' +
+      (titulo ? ' title="' + esc(titulo) + '"' : '') + '>' +
+      (extra ? '<b>' + esc(txt) + '</b>' : esc(txt)) + (sub ? '<small>' + esc(sub) + '</small>' : '') + '</button>';
+  }
+
+  /* ─── Nomenclatura: caminho até a folha ───
+     Mesma regra da consulta: o caminho fica em cima, pequeno; a folha é o
+     nome. Níveis com mais de 90 caracteres (os textos-inventário da posição)
+     saem, e o "…" marca o buraco onde ele acontece. */
+  function ancestrais(c) {
+    var out = [];
+    [2, 4, 5, 6, 7].forEach(function (i) {
+      var t = NCM[c.slice(0, i)];
+      if (t && (!out.length || out[out.length - 1] !== t)) out.push(t);
+    });
+    if (out.length && out[out.length - 1] === NCM[c]) out.pop();
+    return out;
+  }
+  function migalha(c) {
+    var a = ancestrais(c), out = [], pulou = false;
+    a.forEach(function (t) {
+      if (t.length > 90) { pulou = true; return; }
+      if (pulou) out.push('…');
+      out.push(t); pulou = false;
+    });
+    if (pulou) out.push('…');
+    if (!out.some(function (t) { return t !== '…'; }) && a.length) out = [corta(a[a.length - 1], 80)];
+    return out.join(' › ');
+  }
+  function folha(c) { return NCM[c] || (VINC[c] ? 'código substituído na nomenclatura vigente' : ''); }
+  /* Descrição inicial do item; o cliente pode trocar pela dele. Folha curta,
+     "Outros", ou que começa com preposição ou com um estado do produto, não se
+     sustenta sozinha ("Polido ou brunido", "Não descafeinado", "Fresco,
+     refrigerado ou congelado"): ganha na frente o ancestral curto mais próximo
+     que não comece assim, ou a posição cortada ("Toucinho — fresco,
+     refrigerado ou congelado"). */
+  var CONECTIVO = new RegExp('^((de|do|da|dos|das|em|com|sem|nao|para|outr[oa]s?|exceto|mesmo|simplesmente|crus?|vivos?|vivas?)\\b|' +
+    'fresc|refrigerad|congelad|sec[oa]s?\\b|salgad|defumad|cozid|inteir|cortad|triturad|moid|torrad|polid|preparad|conservad|desossad|descascad)');
+  function nomeCurto(c) {
+    var f = folha(c);
+    if (f.length >= 25 && !CONECTIVO.test(dobra(f))) return corta(f, 70);
+    var g = ancestrais(c).reverse().filter(function (t) { return t.length <= 50 && !CONECTIVO.test(dobra(t)); })[0] ||
+            (NCM[c.slice(0, 4)] ? corta(NCM[c.slice(0, 4)], 45) : '');
+    var w = g && dobra(g.split(/[ ,;(]/)[0]);
+    if (!g || new RegExp('(^|[^a-z])' + w + '([^a-z]|$)').test(dobra(f))) return corta(f, 70);
+    return corta(g + ' — ' + f.charAt(0).toLowerCase() + f.slice(1), 70);
+  }
+
+  /* ─── Classificações válidas de um código ───
+     Vedadas ficam de fora (o código cai na posição do anexo, mas o item o
+     excetua). Uma linha por cClassTrib, com o primeiro texto de anexo. */
+  // Nome de balcão de cada classificação: comum/operacoes.js (NOME_LEIGO), compartilhado com a consulta.
+  function leigo(k) { return O.NOME_LEIGO[k]; }
+  function opcoes(c) {
+    var vistas = {}, out = [];
+    (VINC[c] || []).forEach(function (r) {
+      if (r[7] === 2 || vistas[r[3]]) return;
+      vistas[r[3]] = 1;
+      var cl = V.classes[r[3]] || {};
+      out.push({ cls: r[3], cst: cl.cst, n: leigo(r[3]) || cl.n || r[3], oficial: cl.n || r[3], red: reducao(cl), item: r[2] >= 0 ? V.dic.desc[r[2]] : '', compl: r[9] === 1 });
+    });
+    return out;
+  }
+  function reducao(cl) {
+    var dif = cl.cst === '515' || cl.cst === '510' ? 'diferimento' : '';
+    if (!cl.ri && !cl.rc) return dif;
+    return (dif ? dif + ' e ' : '') + (cl.ri === cl.rc ? 'redução de ' + cl.ri + '%' : 'redução de ' + cl.ri + '% no IBS e ' + cl.rc + '% na CBS');
+  }
+
+  /* ─── Operação escolhida ─── */
+  function subAtual() { return st.tipo && st.sub ? subsDe(st.tipo)[st.sub] : null; }
+  function exterior() { var s = subAtual(); return !!s && s.c.charAt(0) === '7'; }
+  function entrada() { var s = subAtual(); return !!s && /^[12]/.test(s.c); }
+  function cfop() {
+    var s = subAtual(), fora = st.destino === 'fora';
+    if (!s) return '';
+    if (exterior()) return s.c;
+    if (fora && s.c6) return s.c6;
+    return (entrada() ? (fora ? '2' : '1') : (fora ? '6' : '5')) + s.c.slice(1);
+  }
+  function opAtual() { var s = subAtual(); return s ? opDe(cfop()) || opDe(s.c) : null; }
+  function casoAtual() { var s = subAtual(), op = opAtual(); return op ? op.ibs[s.caso || 0] : null; }
+  function simples() { return st.regime === 'sn' || st.regime === 'hib'; }
+  function grupoCsosn() { return simples() && cfop() ? O.CSOSN_CFOP[cfop()] : null; }
+  function precisaIcms() { var g = grupoCsosn(); return !!(g && g.casos.length > 1); }
+  function opPronta() { return !!(subAtual() && (st.destino || exterior()) && (!precisaIcms() || st.icms !== '')); }
+
+  /* A próxima escolha que falta, na ordem da tela; '' quando não falta nenhuma. */
+  function proxima() {
+    if (!st.regime || st.editarRegime) return 'regime';
+    if (!st.tipo) return 'tipo';
+    if (!st.sub) return 'sub';
+    if (!st.destino && !exterior()) return 'destino';
+    if (precisaIcms() && st.icms === '') return 'icms';
+    return st.itens.length ? '' : 'produtos';
+  }
+  var PASSO_DE = { regime: 'p1', tipo: 'p2', sub: 'p2', destino: 'p2', icms: 'p2', produtos: 'p3' };
+  function atual(chave) { return proxima() === chave ? ' atual' : ''; }
+
+  /* ─── Passos ─── */
+  function passo1() {
+    var el = document.getElementById('p1');
+    var feito = st.regime && !st.editarRegime;
+    el.className = 'passo' + (feito ? ' feito' : '') + atual('regime');
+    var h = '<div class="passo-h"><span class="passo-n">1</span><span class="passo-t">Sua empresa</span></div><div class="passo-c">';
+    if (feito) {
+      h += '<div class="resumo"><b>' + esc(O.REGIMES[st.regime].n) + '</b> <button class="link" data-acao="trocar-regime">trocar</button></div>' +
+           '<div class="dica">Guardamos isto neste navegador. Na próxima visita, você já começa daqui.</div>';
+    } else {
+      h += '<div class="opcoes">';
+      for (var k in O.REGIMES) h += opc('data-regime', k, st.regime, O.REGIMES[k].n, REG_D[k], ' grande');
+      h += '</div><div class="dica">Não sabe? Fale com a gente: é a mesma para todas as suas notas.</div>';
+    }
+    el.innerHTML = h + '</div>';
+  }
+
+  function passo2() {
+    var el = document.getElementById('p2');
+    var p = proxima();
+    el.className = 'passo' + (opPronta() ? ' feito' : '') + (PASSO_DE[p] === 'p2' ? ' atual' : '');
+    var h = '<div class="passo-h"><span class="passo-n">2</span><span class="passo-t">Que nota você vai emitir?</span></div><div class="passo-c">';
+    if (!st.regime) { el.innerHTML = h + '<div class="dica">Primeiro escolha o regime da empresa.</div></div>'; return; }
+    h += '<div class="opcoes">';
+    for (var k in TIPOS) h += opc('data-tipo', k, st.tipo, TIPOS[k].n, TIPOS[k].d, ' grande');
+    h += '</div>';
+    if (st.tipo) {
+      var subs = subsDe(st.tipo);
+      h += '<div class="pergunta' + atual('sub') + '" data-q="sub"><div class="pergunta-q">' + esc(TIPOS[st.tipo].q) + '</div><div class="opcoes">';
+      for (var s in subs) h += opc('data-sub', s, st.sub, subs[s].n);
+      h += '</div></div>';
+      if (st.sub && !exterior()) h += '<div class="pergunta' + atual('destino') + '" data-q="destino"><div class="pergunta-q">' + (entrada() ? 'De onde vem?' : 'Para onde vai?') + '</div><div class="opcoes">' +
+           opc('data-destino', 'sc', st.destino, entrada() ? 'De Santa Catarina' : 'Dentro de Santa Catarina') + opc('data-destino', 'fora', st.destino, 'Outro estado') + '</div></div>';
+      // O CSOSN às vezes depende de uma situação: as escolhas são os casos da tabela CSOSN.
+      if (precisaIcms()) {
+        h += '<div class="pergunta' + atual('icms') + '" data-q="icms"><div class="pergunta-q">' + (st.tipo === 'venda' ? 'Quem compra?' : 'Para o ICMS, qual é o caso?') + '</div><div class="opcoes">' +
+          grupoCsosn().casos.map(function (k, i) { return opc('data-icms', String(i), st.icms, k[0]); }).join('') + '</div></div>';
+      }
+    }
+    el.innerHTML = h + '</div>';
+  }
+
+  function passo3() {
+    var el = document.getElementById('p3');
+    el.className = 'passo' + atual('produtos');
+    var h = '<div class="passo-h"><span class="passo-n">3</span><span class="passo-t">Adicione os produtos</span></div>';
+    if (!opPronta()) { delete el.dataset.pronto; el.innerHTML = h + '<div class="passo-c"><div class="dica">Responda o passo 2 para adicionar produtos.</div></div>'; return; }
+    // Montado uma vez só, para a busca não perder o foco a cada render.
+    if (el.dataset.pronto) return;
+    el.dataset.pronto = '1';
+    el.innerHTML = h + '<div class="passo-d">Um de cada vez — eles vão entrando na nota abaixo.</div>' +
+      '<div class="passo-c"><div class="busca"><input id="q" type="search" autocomplete="off" placeholder="NCM do produto ou nome — ex.: 1006.30.21, arroz">' +
+      '<div class="sug" id="sug" hidden></div></div>' +
+      '<div class="dica">O mais seguro é o <b>NCM</b>, que está no cadastro do produto no seu sistema de notas. ' +
+      'Pelo nome, a busca usa os termos da tabela oficial, que nem sempre são os do dia a dia (“sabões de toucador”, não “sabonete”).</div></div>';
+  }
+
+  /* ─── Busca ───
+     Universo: todos os NCM vigentes. Cada um é procurado na folha, no
+     caminho e no texto dos anexos que o citam — este último pega nomes que a
+     nomenclatura não usa ("pão francês" mora em 1905.90.90 "Outros"). Ordem:
+     nome popular (comum/sinonimos.js) primeiro; depois casar na folha, no
+     título da posição (4 dígitos), no resto do caminho e, por último, no anexo.
+     O termo casa só no começo de palavra: "ração" não pode casar dentro de
+     "preparação", nem "ovo" dentro de "novo". Plural em -ões vale para -ão.
+     Frase primeiro, termos depois, como na consulta: "alho em pó" não pode
+     virar três palavras soltas. */
+  var IDX = null;
+  function indice() {
+    if (IDX) return IDX;
+    IDX = FOLHAS.concat(ANTIGOS).map(function (c) {
+      var anexo = {};
+      (VINC[c] || []).forEach(function (r) { if (r[2] >= 0) anexo[V.dic.desc[r[2]]] = 1; });
+      return { c: c, f: dobra(folha(c)), h: dobra(NCM[c.slice(0, 4)] || ''), p: dobra(ancestrais(c).join(' ')), a: dobra(Object.keys(anexo).join(' ')) };
+    });
+    return IDX;
+  }
+  function inicioDePalavra(w) {
+    return new RegExp('(^|[^a-z0-9])' + w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/ao$/, '(ao|oes|aes)'));
+  }
+
+  // Nomes populares ("sabonete" -> 3401.11…): comum/busca.js, compartilhado com a consulta.
+  // Sem comum/busca.js a busca segue só pelo texto oficial, em vez de quebrar a cada tecla.
+  function populares(t) { return window.KLUKE_BUSCA ? window.KLUKE_BUSCA.populares(t, FOLHAS) : {}; }
+  function buscar(q) {
+    var sug = document.getElementById('sug');
+    var t = dobra(q.trim()), dig = q.replace(/\D/g, '');
+    if (t.length < 2) { sug.hidden = true; return; }
+    var achou;
+    if (/^[\d.\s-]+$/.test(q.trim())) {
+      achou = indice().filter(function (x) { return x.c.indexOf(dig) === 0; }).map(function (x) { return { c: x.c, s: 3 }; });
+    } else {
+      var termos = t.split(/\s+/), frase = inicioDePalavra(t);
+      if (termos.length > 1 && indice().some(function (x) { return frase.test(x.f + ' ' + x.p + ' ' + x.a); })) termos = [t];
+      var re = termos.map(inicioDePalavra);
+      var todos = function (s) { return re.every(function (r) { return r.test(s); }); };
+      var pop = populares(t);
+      achou = [];
+      indice().forEach(function (x) {
+        // Código que o dicionário aponta e cuja folha já tem o termo é o melhor
+        // resultado: vai ao topo, sem a etiqueta de nome popular (o nome é o
+        // oficial). Sem isso, "maçã" (dobrado "maca", começo de "macarrão")
+        // listava o macarrão antes das Maçãs. Só a folha, não a posição: 8517 fala
+        // em "redes celulares", e o smartphone (8517.13) perderia o topo.
+        var p = pop[x.c], oficial = p && p.m >= 1 && todos(x.f);
+        // Entre esses, o nome exato (m 2: "tomate" -> 0702) vence o parcial (m 1: "molho de tomate" -> 2002).
+        var s = oficial ? 6 + p.m / 2 : p && p.m >= 1 ? 4 + p.m : todos(x.f) ? 3 : todos(x.h) ? 2.5 : todos(x.f + ' ' + x.p) ? 2 : todos(x.f + ' ' + x.p + ' ' + x.a) ? 1 : 0;
+        if (!s && p) s = 0.5;
+        if (s) achou.push({ c: x.c, s: s, pop: !oficial && (!!p && s >= 4 || s === 0.5), o: p ? p.o : 0 });
+      });
+      achou.sort(function (a, b) { return b.s - a.s || a.o - b.o || a.c.localeCompare(b.c); });
+    }
+    var h = achou.slice(0, 30).map(function (x) {
+      var c = x.c, ben = opcoes(c).length > 0;
+      // Caminho em cima, pequeno; folha embaixo, em destaque — como na consulta. A folha
+      // sozinha não se sustenta ("Fresco, refrigerado ou congelado"): é o "Toucinho ›"
+      // logo acima que diz do que ela fala.
+      var mig = migalha(c);
+      return '<button type="button" data-add="' + c + '">' + (mig ? '<span class="s-mig">' + esc(mig) + ' ›</span>' : '') +
+        '<span class="s-ncm">' + fmtNcm(c) + '</span>' + esc(corta(folha(c), 110)) +
+        (!NCM[c] ? '<span class="s-tag nor">código antigo</span>' : ben ? '<span class="s-tag ben">tem benefício</span>' : '<span class="s-tag nor">tributação normal</span>') +
+        (x.pop ? '<span class="s-tag pop">nome popular</span>' : '') + '</button>';
+    }).join('');
+    // Item coletivo: o termo só aparece no texto de um anexo que cita dez produtos
+    // numa frase e vincula os códigos de todos. A lei não diz qual código é qual.
+    if (achou.length && achou[0].s === 1) h = '<div class="s-msg">Nenhum código tem “' + esc(q) + '” no nome oficial. Os de baixo aparecem porque um item da lei ' +
+      'cita o termo junto com outros produtos, e boa parte deles não tem relação com o que você procura. Busque pelo NCM do cadastro do produto.</div>' + h;
+    if (achou.length && achou[0].pop) h = '<div class="s-msg">Na tabela oficial, “' + esc(q) + '” costuma estar nos códigos marcados como <b>nome popular</b>. ' +
+      'Confira com o NCM do cadastro do produto.</div>' + h;
+    if (achou.length > 30) h += '<div class="s-mais">Mais ' + (achou.length - 30) + ' códigos. Digite mais do NCM ou do nome para afinar.</div>';
+    if (!achou.length) {
+      h = dig.length === 8
+        ? '<div class="s-msg"><b>' + fmtNcm(dig) + ' não existe</b> na tabela NCM vigente (' + esc(N.meta.fonte) + '). Confira o código no cadastro do produto.</div>'
+        : '<div class="s-msg">Nada com “' + esc(q) + '”. Tente outra palavra, ou busque pelo NCM do cadastro do produto.</div>';
+    }
+    sug.innerHTML = h;
+    sug.hidden = false;
+  }
+
+  function adicionar(c) {
+    st.itens.push({ ncm: c, desc: nomeCurto(c), cls: '' });
+    var q = document.getElementById('q');
+    q.value = ''; document.getElementById('sug').hidden = true; q.focus();
+    render();
+  }
+
+  /* ─── A nota ───
+     codigos() devolve o que vai em cada coluna: string = código; null = fale
+     com a gente; '' ou '?' = falta o cliente responder; 'sn', 'orig' e
+     'caso' são textos fixos (ver celula()). */
+  function codigos(it) {
+    var r = {}, k = casoAtual(), op = opAtual(), g = grupoCsosn();
+    if (simples()) r.icms = !g ? null : g.casos.length === 1 ? g.casos[0][1] : st.icms === '' ? '?' : g.casos[+st.icms][1];
+    else {
+      var cst = ((op.normal && op.normal[cfop()]) || []).filter(function (x) { return /^ICMS — CST/.test(x[0]); })[0];
+      // Devolução repete o tratamento da nota de compra, como o CSOSN 900 já
+      // manda no Simples; a Kluke confirmou para o regime normal (29/10/2026).
+      r.icms = cst ? cst[1] : k.t === 'original' ? 'orig' : 'caso';
+    }
+    if (st.regime === 'sn') { r.cst = r.cls = 'sn'; return r; }
+    if (k.t === 'fixo') r.cls = k.c;
+    else if (k.t === 'original') r.cls = 'orig';
+    else if (k.t === 'consulte') r.cls = null;
+    else if (!opcoes(it.ncm).length) r.cls = antigoDe(it.ncm) || !NCM[it.ncm] ? null : '000001';
+    else r.cls = it.cls;
+    var cl = r.cls && (O.CLASSE_OP[r.cls] || V.classes[r.cls]);
+    r.cst = cl ? cl.cst : r.cls === '000001' ? '000' : r.cls;
+    return r;
+  }
+
+  function celula(v) {
+    if (v === 'sn') return '<span class="nada" title="No Simples, o IBS e a CBS não são preenchidos em 2026">não preencher</span>';
+    if (v === 'orig') return '<span class="nada">igual à nota de ' + (entrada() ? 'venda' : 'compra') + '</span>';
+    if (v === 'caso' || v === null) return '<span class="nada">fale com a gente</span>';
+    // No papel as opções somem; "escolha a situação" sem elas não diz nada.
+    if (v === '?' || v === '') return '<span class="pend"><span class="so-tela">escolha a situação</span><span class="so-papel">falta definir</span></span>';
+    return '<button type="button" class="cp" data-copia="' + esc(v) + '" title="Clique para copiar">' + esc(v) + '</button>';
+  }
+
+  function linkConsulta(c) {
+    return '<a class="link" style="font-size:12px" href="vinculo-ncm-nbs-cclasstrib.html#q=' + fmtNcm(c) + '" target="_blank" rel="noopener">ver na consulta</a>';
+  }
+
+  function situacao(it, i) {
+    var k = casoAtual(), c = it.ncm;
+    var aviso = !NCM[c] ? '<div class="sit alerta">Este código foi substituído na tabela NCM vigente. Confira o NCM no cadastro do produto.</div>' : '';
+    if (st.regime === 'sn') return aviso;
+    if (k.t === 'fixo') return aviso + '<div class="sit">O código vem da operação, não do produto: ' + esc(O.CLASSE_OP[k.c].n.toLowerCase()) + '.</div>';
+    if (k.t !== 'produto') return aviso;
+    var ops = opcoes(c), ant = antigoDe(c);
+    if (!ops.length) {
+      if (ant) return aviso + '<div class="sit alerta">Confira com a gente: este código saiu do desdobramento do ' + fmtNcm(ant) +
+        ', que tem benefício, e não aparece na tabela oficial. Pode ou não ter o mesmo tratamento.</div>';
+      return aviso + '<div class="sit">Sem benefício: tributação normal.</div>';
+    }
+    if (it.cls && !it.trocar) {
+      var o = ops.filter(function (x) { return x.cls === it.cls; })[0];
+      return aviso + '<div class="sit">' + (o ? '<span class="ben">' + esc(o.n) + '</span>' + (o.red ? ' · ' + esc(o.red) : '') : 'Nenhuma das situações com benefício: tributação normal') +
+        ' <button class="link" style="font-size:12.5px" data-trocar="' + i + '">trocar</button></div>';
+    }
+    return aviso + '<div class="escolha"><div class="escolha-q">Este código tem benefício só em alguns casos. Qual é o seu?</div><div class="opcoes">' +
+      ops.map(function (o) {
+        // Trecho do anexo só quando descreve o produto ("Pão comumente denominado pão francês…"):
+        // começo que já é lista de códigos ("Arroz das subposições 1006.20…") não ajuda, e nos
+        // insumos o texto é inventário de sementes e rações que o nome já resume.
+        var ex = corta(o.item || '', 70);
+        if (/\d{4}\.\d{2}/.test(ex) || o.cst === '515' || o.cls === '200038') ex = '';
+        return opc('data-cls="' + o.cls + '" data-item', String(i), '', o.n, [o.red, ex].filter(Boolean).join(' · '), '', o.oficial + (o.item ? '\n\n' + o.item : ''));
+      }).join('') +
+      opc('data-cls="000001" data-item', String(i), '', 'Nenhuma dessas', 'tributação normal') + '</div>' +
+      '<div class="sit">Na dúvida sobre qual é o seu, ' + linkConsulta(c) + ' ou fale com a gente.</div></div>';
+  }
+
+  function nota() {
+    var s = subAtual(), op = opAtual(), k = casoAtual(), pronta = opPronta();
+    document.getElementById('d-nat').textContent = s ? s.nat : '—';
+    document.getElementById('d-reg').textContent = st.regime ? O.REGIMES[st.regime].n : '—';
+    document.getElementById('d-dest').textContent = exterior() ? 'Exterior' : st.destino ? (st.destino === 'sc' ? 'Dentro de SC' : 'Outro estado') : '—';
+    var rIcms = st.regime === 'rn' ? 'CST ICMS' : 'CSOSN';
+    document.getElementById('h-icms').textContent = rIcms;
+
+    var corpo = document.getElementById('corpo');
+    if (!st.itens.length || !pronta) {
+      corpo.innerHTML = '<tr><td colspan="8" class="vazio">' + (pronta ? 'Adicione o primeiro produto no passo 3.' : 'A nota aparece aqui conforme você responde.') + '</td></tr>';
+    } else {
+      corpo.innerHTML = st.itens.map(function (it, i) {
+        var c = codigos(it);
+        return '<tr><td class="num">' + (i + 1) + '</td>' +
+          '<td><input class="desc" data-desc="' + i + '" value="' + esc(it.desc) + '" aria-label="Descrição do item ' + (i + 1) + '">' +
+          '<span class="mig">' + esc(migalha(it.ncm) ? migalha(it.ncm) + ' › ' + corta(folha(it.ncm), 60) : folha(it.ncm)) + '</span>' + situacao(it, i) + '</td>' +
+          '<td data-l="NCM">' + celula(fmtNcm(it.ncm)) + '</td><td data-l="CFOP">' + celula(cfop()) + '</td><td data-l="' + rIcms + '">' + celula(c.icms) + '</td>' +
+          '<td data-l="CST IBS/CBS">' + celula(c.cst) + '</td><td data-l="cClassTrib">' + celula(c.cls) + '</td>' +
+          '<td class="rm-c"><button class="rm" data-rm="' + i + '" aria-label="Remover item" title="Remover">×</button></td></tr>';
+      }).join('');
+    }
+
+    // Notas: textos curados em operacoes.js (HTML confiável, com os links da norma).
+    var n = [];
+    if (st.regime) n.push(O.REGIMES[st.regime].nota);
+    if (pronta) {
+      if (op.aviso) n.push(op.aviso);
+      if (k && k.nota) n.push(k.nota);
+      if (s.obs) n.push(s.obs);
+      if (k && k.t === 'original') n.push('Na devolução, repita os mesmos CST e cClassTrib da nota de ' + (entrada() ? 'venda' : 'compra') + ' no IBS/CBS' +
+        (st.regime === 'rn' ? ', e o mesmo CST, base e alíquota no ICMS.' : '.'));
+      var temCst = ((op.normal && op.normal[cfop()]) || []).some(function (x) { return /^ICMS — CST/.test(x[0]); });
+      var vendaComum = /^5(101|102)$/.test(s.c);
+      if (st.regime === 'rn' && vendaComum && !temCst) n.push('<b>CST do ICMS na venda:</b> depende do produto (tributado, com redução de base, isento ou com ST já recolhida), ' +
+        'de quem compra (contribuinte ou não; DIFAL na venda a consumidor de outro estado) e de regime especial da sua empresa. ' +
+        'Um código só por CFOP sairia errado em boa parte das notas: <b>configuramos com você</b>, produto a produto.');
+      var g = grupoCsosn();
+      if (g) n.push('<b>CSOSN:</b> ' + g.fonte);
+      else if (simples()) n.push('<b>CSOSN:</b> o desta operação ainda não está nesta página. Fale com a gente.');
+      var outros = ((op.normal && op.normal[cfop()]) || []).filter(function (x) { return !/^ICMS — CST/.test(x[0]); });
+      if (st.regime === 'rn' && outros.length) n.push('Também nesta nota: ' + outros.map(function (x) { return esc(x[0]) + ' <b>' + esc(x[1] || 'fale com a gente') + '</b>'; }).join(' · ') + '.');
+      if (vendaComum) n.push('Se a mercadoria tem substituição tributária (ST), o CFOP é outro: escolha uma das opções "com ST" acima.');
+    }
+    var h = n.map(function (x) { return '<li>' + x + '</li>'; }).join('');
+    h += '<li class="fonte-dados">Fontes: tabela cClassTrib do SVRS, coletada em ' + esc(V.meta.coletadoEm.split('-').reverse().join('/')) +
+         '; tabela NCM, ' + esc(N.meta.fonte) + '; operações e CSOSN, curadoria Kluke.</li>';
+    document.getElementById('notas').innerHTML = h;
+    document.getElementById('b-copiar').disabled = !(st.itens.length && pronta);
+  }
+
+  function render() { passo1(); passo2(); passo3(); nota(); salvar(); }
+
+  /* ─── Eventos ─── */
+  var toastT;
+  function toast(t) {
+    var el = document.getElementById('toast');
+    el.textContent = t; el.classList.add('on');
+    clearTimeout(toastT); toastT = setTimeout(function () { el.classList.remove('on'); }, 1400);
+  }
+  function copiar(txt, msg) {
+    var ok = function () { toast(msg); };
+    if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(txt).then(ok, function () { fallback(txt); ok(); });
+    else { fallback(txt); ok(); }
+  }
+  function fallback(txt) {
+    var ta = document.createElement('textarea'); ta.value = txt; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); } catch (e) {} ta.remove();
+  }
+
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('button');
+    if (!b) { if (!e.target.closest('.busca')) { var sg = document.getElementById('sug'); if (sg) sg.hidden = true; } return; }
+    var d = b.dataset;
+    if (d.regime) { st.regime = d.regime; st.editarRegime = false; st.icms = ''; }
+    else if (d.acao === 'trocar-regime') st.editarRegime = true;
+    else if (d.tipo) { if (st.tipo !== d.tipo) { st.tipo = d.tipo; st.sub = ''; st.icms = ''; } }
+    else if (d.sub) { if (st.sub !== d.sub) { st.sub = d.sub; st.icms = ''; } }
+    else if (d.destino) st.destino = d.destino;
+    else if (d.icms) st.icms = d.icms;
+    else if (d.add) return adicionar(d.add);
+    else if (d.cls && d.item) { var it = st.itens[+d.item]; it.cls = d.cls; delete it.trocar; }
+    else if (d.trocar) st.itens[+d.trocar].trocar = true;
+    else if (d.rm) st.itens.splice(+d.rm, 1);
+    else if (d.copia) return copiar(d.copia, 'Copiado: ' + d.copia);
+    else if (b.id === 'b-copiar') return copiarTabela();
+    else if (b.id === 'b-imprimir') {
+      var falta = document.querySelectorAll('#corpo .pend').length;
+      if (falta && !confirm('Há produto sem a situação escolhida: no papel ele sai como "falta definir". Imprimir assim mesmo?')) return;
+      return window.print();
+    }
+    else if (b.id === 'b-limpar') {
+      if (st.itens.length && !confirm('Apagar esta nota e começar outra? O regime continua guardado.')) return;
+      st.tipo = st.sub = st.destino = st.icms = ''; st.itens = [];
+    } else return;
+    render();
+    if (d.regime || d.tipo || d.sub || d.destino || d.icms) mostraProxima();
+  });
+  /* Depois de uma escolha, a próxima pergunta pode ter aparecido abaixo da
+     dobra (no celular, quase sempre). Só rola quando ela está fora da tela, e
+     para o meio: na borda de baixo, o botão de imprimir a cobriria. No passo 3 o cursor vai para a busca, menos em tela de
+     toque: no celular o foco abriria o teclado por cima das opções. */
+  function mostraProxima() {
+    var p = proxima();
+    if (!p) return;
+    var el = document.querySelector('[data-q="' + p + '"]') || document.getElementById(PASSO_DE[p]);
+    var r = el.getBoundingClientRect();
+    if (r.top < 0 || r.bottom > window.innerHeight)
+      el.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'center' });
+    if (p === 'produtos' && !matchMedia('(pointer: coarse)').matches) document.getElementById('q').focus({ preventScroll: true });
+  }
+  var deb;
+  document.addEventListener('input', function (e) {
+    if (e.target.id === 'q') { clearTimeout(deb); var v = e.target.value; deb = setTimeout(function () { buscar(v); }, 120); }
+    else if (e.target.dataset.desc) { st.itens[+e.target.dataset.desc].desc = e.target.value.slice(0, 120); salvar(); }
+  });
+  // Setas andam pela lista, Enter adiciona (no campo, o primeiro), Esc fecha e volta ao campo.
+  document.addEventListener('keydown', function (e) {
+    var sug = document.getElementById('sug'), q = document.getElementById('q');
+    if (!sug || sug.hidden) return;
+    var bs = [].slice.call(sug.querySelectorAll('[data-add]')), i = bs.indexOf(document.activeElement);
+    if (e.target === q && e.key === 'Enter') { if (bs[0]) bs[0].click(); }
+    else if (e.key === 'ArrowDown' && (e.target === q || i > -1)) { e.preventDefault(); if (bs[i + 1]) bs[i + 1].focus(); }
+    else if (e.key === 'ArrowUp' && i > -1) { e.preventDefault(); (i ? bs[i - 1] : q).focus(); }
+    else if (e.key === 'Escape' && (e.target === q || i > -1)) { sug.hidden = true; q.focus(); }
+  });
+
+  // Tabulado: cola direto em planilha, uma coluna por campo.
+  function copiarTabela() {
+    var cab = ['Descrição', 'NCM', 'CFOP', st.regime === 'rn' ? 'CST ICMS' : 'CSOSN', 'CST IBS/CBS', 'cClassTrib'];
+    var txt = function (v) { return v === 'sn' ? 'não preencher' : v === 'orig' ? 'igual à nota de ' + (entrada() ? 'venda' : 'compra') : v === 'caso' || v === null ? 'fale com a gente' : v === '?' || v === '' ? 'pendente' : v; };
+    var linhas = st.itens.map(function (it) {
+      var c = codigos(it);
+      return [it.desc, fmtNcm(it.ncm), cfop(), txt(c.icms), txt(c.cst), txt(c.cls)].join('\t');
+    });
+    copiar([cab.join('\t')].concat(linhas).join('\n'), 'Tabela copiada — cole numa planilha');
+  }
+
+  render();
+})();
+</script>
+</body>
+</html>
